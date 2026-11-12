@@ -640,12 +640,13 @@ function celebrate(list, done){
   mem.set("celebrated", [...seen]);
   if (allFresh) {
     const h = document.querySelector(".finish h1"), r = h ? h.getBoundingClientRect() : {left:innerWidth/2, top:200, width:0};
-    confetti(r.left + 160, r.top + 20, 180); setTimeout(() => confetti(innerWidth*0.75, innerHeight*0.35, 120), 350);
+    confetti(innerWidth/2, innerHeight/2, 200); setTimeout(() => confetti(innerWidth/2, innerHeight/2, 140), 380);
     FIRST = false; return;
   }
   const g = fresh[fresh.length - 1], i = list.indexOf(g), next = list[i + 1];
   const num = document.querySelector(`.stepper li[data-key="${g.key}"] .node`);
-  if (num) { num.classList.add("pop"); const r = num.getBoundingClientRect(); confetti(r.left + r.width/2, r.top + r.height/2, 110); }
+  if (num) num.classList.add("pop");
+  confetti(innerWidth/2, innerHeight/2, 130);
 
   FIRST = false;
 }
@@ -663,8 +664,8 @@ function confetti(x, y, n){
   document.body.appendChild(c);
   const g = c.getContext("2d"); g.scale(dpr, dpr);
   const cols = ["#024B8F", "#DA332B", "#FEDD1B"];
-  const P = Array.from({length: n}, () => { const a = -Math.PI/2 + (Math.random() - .5) * Math.PI * .95, sp = 5 + Math.random() * 9;
-    return {x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: Math.random() * 6, vr: (Math.random() - .5) * .35,
+  const P = Array.from({length: n}, () => { const a = Math.random() * Math.PI * 2, sp = 4 + Math.random() * 10;
+    return {x, y, vx: Math.cos(a) * sp * 1.3, vy: Math.sin(a) * sp - 6, r: Math.random() * 6, vr: (Math.random() - .5) * .35,
             w: 5 + Math.random() * 6, h: 3 + Math.random() * 3, c: cols[Math.floor(Math.random() * 3)]}; });
   const t0 = performance.now();
   (function frame(t){
