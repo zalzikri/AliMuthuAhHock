@@ -1,0 +1,26 @@
+[
+  {
+    "name": "bg-ref-hibiscus-top",
+    "aspect": "16:9",
+    "prompt": "Abstract editorial poster background for a web page, on a pure bright white background. NO people, no faces, no hands, no text. Composition modelled on a contemporary gig poster: one dominant navy blue cut-paper mass enters from the left edge and bleeds off the bottom, with angular edges and a jagged white zig-zag cut through it. The navy is sprayed, not flat: dense on one edge, fading into speckled airbrush spray on the other, with fine risograph grain. A SMALL red hibiscus flower (bunga raya), about one tenth of the canvas width, sits over the top edge of the navy mass, its petals sprayed red with a short golden yellow stamen. One small sprayed golden yellow shape near the top-left corner. The right sixty percent of the canvas is empty pure white.",
+    "style": "Use ONLY these four colours: navy blue #024B8F, red #DA332B, golden yellow #FEDD1B, and pure white #FFFFFF. No cream, no beige, no peach, no orange, no pink, no brown, no warm paper tone. Background must be pure white. No crescent, no star."
+  },
+  {
+    "name": "bg-ref-hibiscus-low",
+    "aspect": "16:9",
+    "prompt": "Abstract editorial poster background for a web page, on a pure bright white background. NO people, no faces, no hands, no text. One dominant navy blue cut-paper mass, like the silhouette of an oversized jacket, enters from the left edge and bleeds off the bottom, with angular edges and a jagged white lightning-shaped zig-zag cut through its lower half. The navy is sprayed with an airbrush, dense along one edge and fading into speckled spray, with fine risograph grain. A SMALL sprayed red hibiscus flower (bunga raya), about one eighth of the canvas width, sits at the right edge of the navy mass at mid height, half overlapping it, with a short golden yellow stamen. A thin sprayed red sliver runs along the bottom-left. The right sixty percent of the canvas is empty pure white.",
+    "style": "Use ONLY these four colours: navy blue #024B8F, red #DA332B, golden yellow #FEDD1B, and pure white #FFFFFF. No cream, no beige, no peach, no orange, no pink, no brown, no warm paper tone. Background must be pure white. No crescent, no star."
+  },
+  {
+    "name": "logo-cartoon-cubes-row",
+    "aspect": "1:1",
+    "prompt": "A cute cartoon logo of three heads that are perfect CUBES: each head is a sharp-cornered square block seen in slight three-quarter view, so the front face, the top and one side are visible, like toy building blocks. The cartoon face is drawn on the front of each cube: simple friendly eyes, eyebrows, a smile, and hair drawn as a flat block on top. One Malay man, one Chinese man, one Indian man, each with a natural cartoon skin tone and a different simple hairstyle, all smiling warmly. The three cube heads sit side by side at slightly different heights, touching. Clean flat cartoon shading with soft simple highlights, smooth vector style, not realistic, not photographic. Heads only, no necks, no bodies, no clothing, no accessories, no costume.",
+    "style": "Isolated on a completely plain pure white background. No backdrop, no floor, no ground shadow, no frame, no circle behind them. Small accent details may use only navy #024B8F, red #DA332B and golden yellow #FEDD1B. No text, no symbols, no crescent, no star."
+  },
+  {
+    "name": "logo-cartoon-cubes-stack",
+    "aspect": "1:1",
+    "prompt": "A cute cartoon logo of three heads that are perfect CUBES: each head is a square block with clean corners, seen in slight three-quarter view so the front face, the top and one side show, like toy blocks. A simple friendly cartoon face on the front of each cube: round eyes, eyebrows, a warm smile, hair as a flat block shape on top. One Malay man, one Chinese man, one Indian man, natural cartoon skin tones, different simple hairstyles. The cubes are stacked asymmetrically: two cubes at the bottom, slightly apart, and the third resting off-centre on top, tilted a little. Smooth flat vector cartoon style with soft simple shading, not realistic. Heads only, no bodies, no clothing, no costume, no accessories.",
+    "style": "Isolated on a completely plain pure white background. No backdrop, no floor, no ground shadow, no frame. Small accent details may use only navy #024B8F, red #DA332B and golden yellow #FEDD1B. No text, no symbols, no crescent, no star."
+  }
+]
