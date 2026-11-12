@@ -24,7 +24,7 @@ def guess_email(name: str) -> str:
 
 
 FIELDS = ("id", "token", "name", "employment", "job_family", "project", "start_date",
-          "starter_email", "personal_email", "work_email", "bitbucket_user", "want_claude")
+          "starter_email", "personal_email", "work_email", "bitbucket_user", "want_claude", "manual")
 
 
 def _row(conn, oid) -> dict | None:
@@ -56,12 +56,13 @@ def create(conn, desk, data: dict) -> int:
     token = secrets.token_urlsafe(9)
     cur = conn.execute(
         "INSERT INTO onboarding (token, name, employment, job_family, project, start_date,"
-        " starter_email, personal_email, want_claude, created_at)"
-        " VALUES (?,?,?,?,?,?,?,?,?,?)",
+        " starter_email, personal_email, want_claude, manual, created_at)"
+        " VALUES (?,?,?,?,?,?,?,?,?,?,?)",
         (token, data["name"], data.get("employment", "staff"),
          data.get("job_family", "developer"), data.get("project") or None,
          data.get("start_date", ""), data.get("starter_email", ""),
-         data.get("personal_email", ""), int(data.get("want_claude", True)), now))
+         data.get("personal_email", ""), int(data.get("want_claude", True)),
+         int(bool(data.get("manual", False))), now))
     oid = cur.lastrowid
     for s in flow.plan(data.get("employment", "staff"), data.get("job_family", "developer"),
                        data.get("project") or None, data.get("want_claude", True)):
@@ -116,6 +117,7 @@ def advance(conn, desk, oid: int) -> None:
                                      (found.group(0), oid))
                         conn.commit()
                         o = _row(conn, oid)
+                        assert o is not None
 
         states = _states(conn, oid)
         for step_id, state in states.items():
@@ -126,7 +128,11 @@ def advance(conn, desk, oid: int) -> None:
             if not all(states.get(d) == DONE for d in deps if d in states):
                 continue
             if s.channel == flow.GSD_AUTO:
-                t = desk.create_ticket(s.subject.format(**ctx), s.body.format(**ctx), requester)
+                if o["manual"] and hasattr(desk, "resolve"):
+                    t = desk.create_ticket(s.subject.format(**ctx), s.body.format(**ctx), requester,
+                                           manual=True)
+                else:
+                    t = desk.create_ticket(s.subject.format(**ctx), s.body.format(**ctx), requester)
                 _set(conn, oid, step_id, OPEN, int(t["id"]))
             elif s.channel == flow.PERSON:
                 _set(conn, oid, step_id, WAIT_PERSON)
@@ -145,6 +151,15 @@ def confirm(conn, desk, oid: int, step_id: str, work_email: str = "") -> None:
     held = any(states.get(d) not in (None, DONE) for d in flow.STEP_BY_ID[step_id].self_after)
     if states.get(step_id) in (WAIT_USER, WAIT_PERSON) and not held:
         _set(conn, oid, step_id, DONE)
+    advance(conn, desk, oid)
+
+
+def resolve_next(conn, desk, oid: int) -> None:
+    """Demo only: IT resolves the oldest open request of THIS hire."""
+    row = conn.execute("SELECT MIN(ticket_id) FROM step WHERE onboarding_id=? AND state=?"
+                       " AND ticket_id IS NOT NULL", (oid, OPEN)).fetchone()
+    if row and row[0] is not None:
+        desk.resolve(row[0])
     advance(conn, desk, oid)
 
 

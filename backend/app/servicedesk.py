@@ -27,12 +27,13 @@ class MockServiceDesk:
         self.conn = conn
         self.demo_seconds = demo_seconds
 
-    def create_ticket(self, subject: str, description: str, email: str) -> dict:
+    def create_ticket(self, subject: str, description: str, email: str, manual: bool = False) -> dict:
         now = time.time()
+        wait = 10 ** 9 if manual else self.demo_seconds     # a tour ticket waits for the tour
         cur = self.conn.execute(
             "INSERT INTO mock_ticket (subject, description, email, created_at, resolve_at) "
             "VALUES (?,?,?,?,?)",
-            (subject, description, email, now, now + self.demo_seconds),
+            (subject, description, email, now, now + wait),
         )
         self.conn.commit()
         return self.get_ticket(int(cur.lastrowid or 0))

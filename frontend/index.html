@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Day One</title>
+<title>Day One · GTech onboarding</title>
 <link rel="icon" type="image/png" href="/brand/favicon.png?v=6">
 <style>
 /* Self-hosted, so the demo does not depend on the venue Wi-Fi.
@@ -271,6 +271,47 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .nx:first-child{border-color:var(--blue)}
 .more{all:unset;cursor:pointer;font:700 12.5px/1 var(--display);border-bottom:1.5px solid var(--blue);padding-bottom:2px;margin-top:6px}
 @media (prefers-reduced-motion: reduce){.nx,.node.pop{animation:none}}
+
+/* ---------- header: name of the app, tour button ---------- */
+header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:-2px}
+.tourbtn{all:unset;cursor:pointer;margin-left:auto;align-self:flex-start;margin-top:10px;
+  font:600 12.5px/1 var(--font);padding:9px 14px;border:1px solid rgba(2,75,143,.25);border-radius:999px 999px 999px 7px;background:var(--white)}
+.tourbtn:hover{border-color:var(--blue)}
+
+/* ---------- tour ---------- */
+#tour{display:none}
+#tour.on{display:block}
+.tour-block{position:fixed;inset:0;z-index:80}
+.tour-spot{position:fixed;z-index:81;pointer-events:none;border-radius:22px 22px 22px 8px;
+  box-shadow:0 0 0 2px var(--yellow),0 0 0 9999px rgba(10,16,51,.56);
+  transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1)}
+.tour-card{position:fixed;z-index:82;width:380px;padding:18px 20px 16px 20px;background:var(--white);color:var(--ink);
+  border-radius:28px 28px 28px 8px;box-shadow:0 30px 60px -28px rgba(10,16,51,.6);
+  transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1)}
+.tour-card.in{animation:cardin .4s cubic-bezier(.2,.9,.25,1.2)}
+@keyframes cardin{0%{opacity:0;transform:translateY(10px) scale(.97)}100%{opacity:1;transform:none}}
+.tour-card .face{position:absolute;left:-14px;top:-46px;width:84px;height:84px;filter:drop-shadow(0 10px 14px rgba(10,16,51,.25));
+  animation:bob .5s cubic-bezier(.2,.9,.25,1.4)}
+@keyframes bob{0%{transform:translateY(14px) scale(.8);opacity:0}100%{transform:none;opacity:1}}
+.tour-card .faces{position:absolute;left:-8px;top:-50px;display:flex}
+.tour-card .faces img{width:74px;height:74px;margin-right:-18px;filter:drop-shadow(0 10px 14px rgba(10,16,51,.25));animation:bob .5s cubic-bezier(.2,.9,.25,1.4) both}
+.tour-card .faces img:nth-child(2){animation-delay:.08s} .tour-card .faces img:nth-child(3){animation-delay:.16s}
+.tour-card .who{display:flex;align-items:baseline;gap:8px;margin:10px 0 6px 64px}
+.tour-card .faces~.who{margin-left:0;margin-top:22px}
+.tour-card .who b{font:850 16px/1 var(--display);font-stretch:104%}
+.tour-card .who span{font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.09em;text-transform:uppercase;color:var(--mute)}
+.tour-card p{margin:0;font-size:15px;line-height:1.5}
+.tour-card p small{display:block;margin-top:6px;font-size:11.5px;color:var(--mute)}
+.tour-ctl{display:flex;align-items:center;gap:8px;margin-top:14px}
+.tour-ctl .count{font:500 11.5px/1 var(--mono);color:var(--mute);margin-right:auto}
+.tb{all:unset;cursor:pointer;font:600 13px/1 var(--font);padding:9px 16px;border-radius:999px 999px 999px 8px;background:var(--blue);color:var(--white)}
+.tb.ghost{background:transparent;color:var(--mute);padding:9px 8px}
+.tb.ghost:empty{display:none}
+.tour-card[data-tail="up"]::before,.tour-card[data-tail="down"]::before{content:"";position:absolute;left:34px;width:16px;height:16px;background:var(--white);transform:rotate(45deg);border-radius:3px}
+.tour-card[data-tail="up"]::before{top:-7px}
+.tour-card[data-tail="down"]::before{bottom:-7px}
+.confetti{z-index:90}
+.toast{z-index:86}
 </style></head>
 <body>
 <div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=6" alt=""><img class="accent" src="/brand/accent.png?v=6" alt=""></div>
@@ -280,9 +321,11 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
   <div class="mark">
     <img class="logo" src="/brand/logo-420.png?v=6" alt="Ali, Muthu and Ah Hock">
     <div class="title">
+      <span class="kicker">GTech new-hire onboarding</span>
       <b>Day&nbsp;One</b>
       <div class="with"><i>with</i><span class="name n1">Ali</span><span class="name n2">Muthu</span><span class="name n3">Ah&nbsp;Hock</span></div>
     </div>
+    <button class="tourbtn" id="tourbtn" type="button">Take the tour</button>
   </div>
   <div class="rule"></div>
 </header>
@@ -312,7 +355,7 @@ function renderForm(){
   $("#app").innerHTML = `
   <div class="cols">
     <div class="main panel">
-      <div class="hello"><div class="k">Start onboarding</div><h1>Add a new hire</h1>
+      <div class="hello"><div class="k">For new hires at Gamuda Technologies</div><h1>Add a new hire</h1>
         <p>Fill in this form one time. Day One sends each access request to IT in the correct order.</p></div>
       <div class="field"><label>Full name of the new hire</label><input id="name" placeholder="Nurul Aina binti Rahim"></div>
       <div class="field"><label>Your work email. IT gets the requests from you.</label>
@@ -365,7 +408,9 @@ async function submit(){
   $("#go").disabled = true;
   const v = await api("/onboardings", {method:"POST", headers:{"content-type":"application/json"},
     body: JSON.stringify({name, starter_email:starter, employment:F.employment,
-      job_family:F.job_family, project:F.project||null, start_date:$("#start").value.trim()})});
+      job_family:F.job_family, project:F.project||null, start_date:$("#start").value.trim(),
+      manual: TOUR.on && TOUR.mode === "presenter"})});
+  TOUR.token = v.token;
   const url = location.origin + "/n/" + v.token;
   $("#app").innerHTML = `<div class="panel" style="max-width:560px">
     <h2>Onboarding started</h2>
@@ -374,7 +419,7 @@ async function submit(){
       <div class="d">${v.progress.total - 1} more steps wait for it. Day One sends each step when the step before it is done.</div></div>
     <p class="muted">Send this link to ${esc(callName(name))}. It opens the page of the new hire. No password is necessary.</p>
     <div class="link">${url}</div>
-    <div class="acts"><button class="btn" onclick="location.href='/n/${v.token}'">Open the new hire's page</button>
+    <div class="acts"><button class="btn" onclick="openHire('${v.token}')">Open the new hire's page</button>
     <button class="btn ghost sm" onclick="navigator.clipboard.writeText('${url}')">Copy link</button></div>
   </div>`;
 }
@@ -398,10 +443,12 @@ const mem = {
   get: k => { try { return JSON.parse(localStorage.getItem(`dayone:${TOKEN}:${k}`)); } catch(e){ return null; } },
   set: (k, v) => { try { localStorage.setItem(`dayone:${TOKEN}:${k}`, JSON.stringify(v)); } catch(e){} },
 };
+function openHire(token){ history.pushState({}, "", "/n/" + token); LAST = ""; watch(token); }
 function watch(token){
   TOKEN = token;
   const tick = async () => { try { await render(await api("/n/" + token), token); } catch(e){ console.warn(e); } };
-  tick(); clearInterval(TIMER); TIMER = setInterval(tick, 1500);
+  tick().then(() => { if (!TOUR.on && !mem.get("toured")) setTimeout(() => startTour("hire"), 600); });
+  clearInterval(TIMER); TIMER = setInterval(tick, 1500);
 }
 const rerender = () => { LAST = ""; if (V) render(V, TOKEN); };
 
@@ -478,7 +525,7 @@ function journey(v, list){
     : withIT ? `IT is working on ${withIT} request${withIT>1?"s":""}` : "Almost there";
   const p = n ? "Open the yellow step in the list below." : "You have nothing to do now. When IT is done, your next step shows here.";
   return `<section class="journey panel">
-    <div class="hello"><div class="k">Welcome, ${esc(callName(v.name))}</div><h1>${h1}</h1><p>${p}</p></div>
+    <div class="hello"><div class="k">Welcome to Gamuda Technologies, ${esc(callName(v.name))}</div><h1>${h1}</h1><p>${p}</p></div>
     ${stepper(list)}
     ${flatList(v)}
   </section>`;
@@ -619,6 +666,142 @@ function confetti(x, y, n){
     if (k < 2.2) requestAnimationFrame(frame); else c.remove();
   })(t0);
 }
+/* ---------- the tour: Ali, Muthu and Ah Hock walk through the LIVE app ---------- */
+const WHO = {
+  ali:    {name:"Ali",     role:"The problem",       img:"/brand/av-ali.png"},
+  muthu:  {name:"Muthu",   role:"How Day One helps", img:"/brand/av-muthu.png"},
+  ahhock: {name:"Ah Hock", role:"How it works",      img:"/brand/av-ahhock.png"},
+  team:   {name:"Ali, Muthu and Ah Hock", role:"Day One", img:""},
+};
+const TOUR = {on:false, mode:"", i:0, ran:new Set(), token:""};
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function typeInto(sel, text){ const el = $(sel); if (!el) return; el.value = "";
+  for (const ch of text) { el.value += ch; await sleep(28); } }
+function setSeg(sel, val){ const b = $(sel) && [...$(sel).children].find(x => x.dataset.v === val); if (b) b.click(); }
+async function tokenView(){ return api("/n/" + TOUR.token); }
+async function post(p, body){ return api(p, {method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify(body || {})}); }
+async function fastForward(){
+  for (let k = 0; k < 25; k++) {
+    const v = await tokenView();
+    if (v.progress.done === v.progress.total) break;
+    const mine = v.steps.filter(x => x.state === "waiting_person" || (x.state === "waiting_user" && !(x.held_by||[]).length));
+    if (mine.length) { for (const x of mine) await post(`/n/${TOUR.token}/steps/${x.id}/confirm`, {}); }
+    else await post(`/n/${TOUR.token}/demo/next`);
+  }
+  LAST = ""; await render(await tokenView(), TOUR.token);
+}
+const PRESENTER = [
+  {who:"ali", t:"header .mark", text:"Hello. We are Ali, Muthu and Ah Hock. This is <b>Day One</b>, the onboarding app for new hires at GTech."},
+  {who:"ali", t:".side.panel", text:"Before a new hire can work, they need up to 11 accesses: email, HR systems, GSD, Slack, Atlassian, Bitbucket and more."},
+  {who:"ali", t:".side.panel", text:"Each access is a separate request, and the requests must go in order. <b>4 hand-offs &times; 3&ndash;5 days = 12 to 20 working days</b> before a new hire has all access.<small>Estimate from GT staff.</small>"},
+  {who:"ali", t:".main.panel", text:"Today, a person must remember each next request. Nobody can see where the new hire is stuck."},
+  {who:"muthu", t:".main.panel", go: async () => { await typeInto("#name", "Nurul Aina"); await typeInto("#starter", "zal@gamuda.com.my");
+      setSeg("#seg-emp", "staff"); setSeg("#seg-job", "developer"); $("#project").value = "odin"; F.project = "odin"; await preview(); },
+   text:"I am Muthu. With Day One, the buddy fills in <b>one form, one time</b>."},
+  {who:"muthu", t:".cols", go: async () => { setSeg("#seg-emp", "intern"); await sleep(250); },
+   text:"The steps change with the hire. An intern gets 8 steps, not 11. A non-developer does not get Bitbucket or GCP."},
+  {who:"muthu", t:"#go", go: async () => { setSeg("#seg-emp", "staff"); await sleep(250); },
+   text:"Press <b>Start</b>. Day One sends only the first request to IT. The other requests wait for it."},
+  {who:"muthu", t:".link", go: async () => { await submit(); },
+   text:"The new hire gets one link to their own page. No password is necessary."},
+  {who:"muthu", t:".stepper", go: async () => { openHire(TOUR.token); await sleep(700); },
+   text:"This is the page of the new hire. The stepper shows the stage. The red dot shows where they are now."},
+  {who:"muthu", t:".flat .row", text:"Day One raised this GSD ticket and checks its status. Nobody types updates."},
+  {who:"muthu", t:".mine", go: async () => { await post(`/n/${TOUR.token}/demo/next`); LAST = ""; await render(await tokenView(), TOUR.token); },
+   text:"IT created the account. Now the new hire must do one thing. The <b>yellow step</b> shows it."},
+  {who:"muthu", t:".mine", go: async () => { EXP.add("password_reset"); rerender(); await sleep(150); },
+   text:"The step tells the new hire what to do, in short steps."},
+  {who:"muthu", t:".stepper", go: async () => { await confirmStep(TOUR.token, "password_reset"); await sleep(300); },
+   text:"The new hire confirms. <b>Stage 1 is done.</b> Day One sends the next requests to IT at once."},
+  {who:"muthu", t:"#car", text:"While IT works, the new hire learns about the GTech products. Each card shows a contact person."},
+  {who:"muthu", t:".quizcard", text:"Then a short quiz about GTech."},
+  {who:"muthu", t:".finish", go: async () => { await fastForward(); window.scrollTo({top:0}); await sleep(400); },
+   text:"When all steps are done, the new hire is ready to work."},
+  {who:"ahhock", t:".finish .stepper", text:"I am Ah Hock. How does it work? Each step knows which steps must be done before it. <b>One map</b> covers staff, interns, developers and non-developers."},
+  {who:"ahhock", t:".finish .flat", go: async () => { TOGGLE.__all = true; rerender(); await sleep(200); },
+   text:"Day One creates each request through the <b>Freshservice API</b>, the same API that GSD uses. This demo uses a local copy of that API. One setting connects Day One to the real GSD."},
+  {who:"team", t:null, go: async () => { TOGGLE.__all = false; rerender(); window.scrollTo({top:0}); },
+   text:"Next: connect Day One to the real GSD, and add the GTech quiz.<br><b>From day one, every new hire knows the next step.</b> Thank you."},
+];
+const HIRE = [
+  {who:"ali", t:".hello", text:"Welcome to Gamuda Technologies. I am Ali. This page shows your onboarding."},
+  {who:"muthu", t:".stepper", text:"The stepper shows your stage. The red dot shows where you are now."},
+  {who:"muthu", t:".flat", text:"These are all your steps. Day One sends the requests to IT for you. When a step is yellow, open it and do what it says."},
+  {who:"ahhock", t:"#explore", text:"While you wait, learn about the GTech products. Then try the quiz."},
+];
+function startTour(mode){
+  if (TOUR.on) return;
+  Object.assign(TOUR, {on:true, mode, i:0, ran:new Set()});
+  if (!$("#tour")) document.body.insertAdjacentHTML("beforeend",
+    `<div id="tour"><div class="tour-block"></div><div class="tour-spot" id="tour-spot"></div>
+      <div class="tour-card" id="tour-card"></div></div>`);
+  $("#tour").classList.add("on");
+  showStep(0);
+  (function loop(){ if (!TOUR.on) return; place(); requestAnimationFrame(loop); })();
+}
+function steps(){ return TOUR.mode === "presenter" ? PRESENTER : HIRE; }
+function endTour(){
+  TOUR.on = false; if ($("#tour")) $("#tour").classList.remove("on");
+  if (TOKEN) mem.set("toured", true);
+}
+let BUSY = false;
+async function showStep(i){
+  const list = steps();
+  if (i < 0 || BUSY) return;
+  if (i >= list.length) return endTour();
+  BUSY = true;
+  const st = list[i];
+  if (st.go && !TOUR.ran.has(i)) { TOUR.ran.add(i); try { await st.go(); } catch(e){ console.warn(e); } }
+  TOUR.i = i;
+  const w = WHO[st.who];
+  const face = st.who === "team"
+    ? `<span class="faces"><img src="/brand/av-ali.png" alt=""><img src="/brand/av-muthu.png" alt=""><img src="/brand/av-ahhock.png" alt=""></span>`
+    : `<img class="face" src="${w.img}" alt="">`;
+  $("#tour-card").innerHTML = `${face}
+    <div class="who"><b>${w.name}</b><span>${TOUR.mode === "hire" ? "Your guide" : w.role}</span></div>
+    <p>${st.text}</p>
+    <div class="tour-ctl"><span class="count">${i + 1} / ${list.length}</span>
+      <button class="tb ghost" data-tour="close">${i === list.length - 1 ? "" : "Skip"}</button>
+      ${i > 0 ? '<button class="tb ghost" data-tour="back">Back</button>' : ""}
+      <button class="tb" data-tour="next">${i === list.length - 1 ? "Finish" : "Next"}</button></div>`;
+  $("#tour-card").classList.remove("in"); void $("#tour-card").offsetWidth; $("#tour-card").classList.add("in");
+  const el = st.t && document.querySelector(st.t);
+  if (el) { const r = el.getBoundingClientRect();
+    if (r.top < 90 || r.bottom > innerHeight - 40) el.scrollIntoView({behavior:"smooth", block: r.height > innerHeight * .6 ? "start" : "center"}); }
+  BUSY = false;
+}
+function place(){
+  const st = steps()[TOUR.i], spot = $("#tour-spot"), card = $("#tour-card");
+  if (!st || !spot || !card) return;
+  const el = st.t && document.querySelector(st.t);
+  const cw = card.offsetWidth, ch = card.offsetHeight, gap = 22, pad = 10;
+  let x, y, tail = "none";
+  if (!el) {
+    spot.style.cssText = `left:${innerWidth/2}px;top:${innerHeight/2}px;width:0;height:0;border-radius:50%`;
+    x = (innerWidth - cw) / 2; y = (innerHeight - ch) / 2;
+  } else {
+    const r = el.getBoundingClientRect();
+    const top = Math.max(r.top - pad, 6), bottom = Math.min(r.bottom + pad, innerHeight - 6);
+    spot.style.cssText = `left:${r.left - pad}px;top:${top}px;width:${r.width + pad*2}px;height:${Math.max(bottom - top, 0)}px`;
+    x = Math.max(16, Math.min(innerWidth - cw - 16, r.left));
+    if (bottom + gap + ch < innerHeight - 10) { y = bottom + gap; tail = "up"; }
+    else if (top - gap - ch > 10) { y = top - gap - ch; tail = "down"; }
+    else { y = Math.max(16, Math.min(innerHeight - ch - 16, top + 30));
+      x = r.left - pad - gap - cw > 10 ? r.left - pad - gap - cw : Math.min(innerWidth - cw - 16, r.right + pad + gap); tail = "side"; }
+  }
+  card.style.left = Math.round(x) + "px"; card.style.top = Math.round(y) + "px"; card.dataset.tail = tail;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-tour]");
+  if (b) { const a = b.dataset.tour; if (a === "next") showStep(TOUR.i + 1); else if (a === "back") showStep(TOUR.i - 1); else endTour(); return; }
+  if (e.target.closest("#tourbtn")) startTour(location.pathname.startsWith("/n/") ? "hire" : "presenter");
+});
+document.addEventListener("keydown", e => {
+  if (!TOUR.on) return;
+  if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") { e.preventDefault(); showStep(TOUR.i + 1); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); showStep(TOUR.i - 1); }
+  else if (e.key === "Escape") endTour();
+});
 /* ---------- clicks ---------- */
 document.addEventListener("click", e => {
   const st = e.target.closest("[data-step]");

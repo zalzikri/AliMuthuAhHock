@@ -27,6 +27,7 @@ class NewHire(BaseModel):
     project: str | None = None
     start_date: str = ""
     want_claude: bool = True
+    manual: bool = False                  # demo tour: tickets wait for the tour
 
 
 def _oid_for_token(token: str) -> int:
@@ -57,6 +58,16 @@ def show(token: str):
 def confirm(token: str, step_id: str, payload: dict | None = None):
     oid = _oid_for_token(token)
     engine.confirm(conn, desk, oid, step_id, (payload or {}).get("work_email", ""))
+    return engine.view(conn, desk, oid)
+
+
+@app.post("/api/n/{token}/demo/next")
+def demo_next_for(token: str):
+    """Stage control for one hire: IT resolves its oldest open request."""
+    if not isinstance(desk, servicedesk.MockServiceDesk):
+        raise HTTPException(400, "resolve it in Freshservice instead")
+    oid = _oid_for_token(token)
+    engine.resolve_next(conn, desk, oid)
     return engine.view(conn, desk, oid)
 
 

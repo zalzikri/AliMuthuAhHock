@@ -78,6 +78,14 @@ def run(employment, job_family, project):
     return v
 
 
+# a tour hire's tickets never resolve by themselves; resolve_next resolves only its own
+fast = servicedesk.MockServiceDesk(conn, demo_seconds=0)
+t1 = engine.create(conn, fast, {"name": "Tour Hire", "starter_email": "zal@gamuda.com.my", "manual": True})
+assert engine.view(conn, fast, t1)["steps"][0]["state"] == "open", "manual ticket must not auto-resolve"
+engine.resolve_next(conn, fast, t1)
+assert engine.view(conn, fast, t1)["your_turn"]["id"] == "password_reset"
+print("manual tour hire: waits for the tour, resolve_next works: ok")
+
 a = run("staff", "developer", "odin")
 b = run("intern", "developer", "odin")
 c = run("staff", "other", None)
