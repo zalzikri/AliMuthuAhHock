@@ -1,0 +1,10 @@
+{
+  "title": "How well do you know GTech?",
+  "note": "Placeholder. Replace questions with the challenge-round bank.",
+  "questions": [
+    {"q": "Which GTech product do other GT products build their agents on?",
+     "options": ["Trudax", "Odin", "SpatialQ"], "answer": 1},
+    {"q": "Which access does NOT go through the service desk?",
+     "options": ["Slack", "Atlassian", "GCP"], "answer": 2}
+  ]
+}

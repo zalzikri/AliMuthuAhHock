@@ -1,0 +1,162 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}
+.sec{margin-bottom:24px}
+h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;margin:0 0 3px}
+.sub{font-size:12px;color:var(--muted-foreground);margin:0 0 11px}
+.row{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.fr{border:1px solid var(--border);border-radius:6px;overflow:hidden;width:286px}
+.fr.big{width:600px}
+.tb{padding:6px 10px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-foreground)}
+.bd{padding:12px;font-size:12px;line-height:1.45}
+.brand{display:flex;align-items:baseline;gap:7px;margin-bottom:10px}
+.brand b{font-size:16px}
+.brand span{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground)}
+.turn{border:2px solid var(--foreground);border-radius:6px;padding:12px;margin-bottom:12px}
+.turn.calm{border:1px solid var(--border);background:var(--card)}
+.k{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted-foreground)}
+.v{font-size:16px;font-weight:600;margin:5px 0 4px;line-height:1.2}
+.d{font-size:11.5px;color:var(--muted-foreground)}
+.btn{display:inline-block;border:1px solid var(--foreground);border-radius:4px;padding:5px 12px;font-size:11.5px;font-weight:600;margin-top:9px}
+.btn.q{border-color:var(--border);color:var(--muted-foreground);font-weight:400}
+.cmd{border:1px solid var(--border);border-radius:4px;padding:7px 8px;font-size:11px;margin-top:8px;background:var(--card)}
+.cmd code{font-size:11px}
+.two{display:flex;gap:12px}
+.two>div:first-child{width:56%}
+.two>div:last-child{width:44%}
+.li{display:flex;gap:7px;font-size:11.5px;padding:4px 0;border-bottom:1px solid var(--border)}
+.li:last-child{border-bottom:0}
+.li i{width:13px;height:13px;border:1px solid var(--border);border-radius:3px;flex:none;margin-top:2px;font-style:normal;font-size:8px;display:flex;align-items:center;justify-content:center;color:var(--muted-foreground)}
+.li i.ok{background:var(--accent);border-color:var(--accent)}
+.li i.run{border-width:2px;border-color:var(--foreground)}
+.li em{font-style:normal;color:var(--muted-foreground);font-size:10.5px;display:block}
+.lbl{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground);margin:12px 0 5px}
+.doc{font-size:11.5px;padding:4px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:6px}
+.doc:last-child{border-bottom:0}
+.new{border:1px solid var(--foreground);border-radius:3px;padding:0 5px;font-size:9px;height:fit-content}
+.card{border:1px solid var(--border);border-radius:5px;padding:8px 9px;margin-bottom:6px}
+.card b{font-size:12px}
+.card p{margin:2px 0 6px;font-size:10.5px;color:var(--muted-foreground)}
+.chip{display:inline-block;border:1px solid var(--border);border-radius:3px;padding:0 5px;font-size:9px;color:var(--muted-foreground);margin-right:3px}
+.note{font-size:11.5px;color:var(--muted-foreground);line-height:1.5;margin-top:7px}
+.tagline{font-size:10px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--border);border-radius:3px;padding:1px 6px;color:var(--muted-foreground)}
+</style></head><body>
+
+<div class="sec">
+  <h2>One screen. One URL. No roles.</h2>
+  <p class="sub">The starter sees the form. After that, the same page shows the status. Nobody logs in anywhere.</p>
+  <div class="fr big">
+    <div class="tb">day-one.gamuda.tech/n/8fK2x9</div>
+    <div class="bd">
+      <div class="brand"><b>Day One</b><span>Ali Muthu Ah Hock</span></div>
+      <div class="two">
+        <div>
+          <div class="turn">
+            <div class="k">Your turn — 1 thing</div>
+            <div class="v">Set your password</div>
+            <div class="d">Your email is live: nurul.aina@gamuda.com.my</div>
+            <div class="btn">Open Google</div> <span class="btn q">I have done it</span>
+          </div>
+          <div class="lbl">Everything else — 3 of 11 ready</div>
+          <div class="li"><i class="ok">&#10003;</i><span>Google Workspace email<em>ready</em></span></div>
+          <div class="li"><i class="run"></i><span>Set your password<em>your turn</em></span></div>
+          <div class="li"><i></i><span>GEMS<em>queued, fires when the password is set</em></span></div>
+          <div class="li"><i class="ok">&#10003;</i><span>GES<em>ready</em></span></div>
+          <div class="li"><i class="ok">&#10003;</i><span>GSD portal<em>ready</em></span></div>
+          <div class="li"><i class="run"></i><span>Bitbucket<em>with IT &middot; GSD #41882 &middot; 2 days left</em></span></div>
+          <div class="li"><i class="run"></i><span>Slack<em>with IT &middot; GSD #41883</em></span></div>
+          <div class="li"><i></i><span>GCP project access<em>queued &middot; you will send this one</em></span></div>
+          <div class="li"><i></i><span>Add to repo gt-odin<em>blocked by Bitbucket &middot; Jeremy</em></span></div>
+        </div>
+        <div>
+          <div class="lbl">Read this while you wait</div>
+          <div class="doc"><span>Odin &middot; Concepts</span></div>
+          <div class="doc"><span>Odin &middot; Architecture</span></div>
+          <div class="doc"><span>Platform &middot; Requests</span></div>
+          <div class="lbl">GTech builds 21 things</div>
+          <div class="card"><b>Odin</b><p>The agent harness other GT products build on.</p><span class="chip">internal</span><span class="chip">FastAPI</span></div>
+          <div class="card"><b>SpatialQ</b><p>No-code geospatial analysis by conversation.</p><span class="chip">live</span></div>
+          <div class="card" style="text-align:center;color:var(--muted-foreground);font-size:10.5px">+ 19 more</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="note"><b>No service desk screen.</b> Requests resolve by themselves in the demo, on a timer. A hidden control at <code>?demo=1</code> lets you force the next one on stage if you want manual timing.</p>
+</div>
+
+<div class="sec">
+  <h2>The card has three kinds, not four</h2>
+  <p class="sub">Dropping "nudge" collapsed two kinds into one. The point of contact is now just a line of text.</p>
+  <div class="row">
+
+    <div class="fr">
+      <div class="tb">1 &middot; self &mdash; she acts</div>
+      <div class="bd"><div class="turn" style="margin:0">
+        <div class="k">Your turn</div>
+        <div class="v">Set your password</div>
+        <div class="d">Two minutes. Then GEMS goes out by itself.</div>
+        <div class="btn">Open Google</div> <span class="btn q">I have done it</span>
+      </div></div>
+    </div>
+
+    <div class="fr">
+      <div class="tb">2 &middot; slack guided &mdash; she sends it</div>
+      <div class="bd"><div class="turn" style="margin:0">
+        <div class="k">Your turn &middot; this one is not GSD</div>
+        <div class="v">Ask for GCP access</div>
+        <div class="d">GCP is the one access that goes through Slack, not the service desk.</div>
+        <div class="cmd"><code>/gcp-request</code><br><span style="color:var(--muted-foreground)">in #gcp-requests &middot; we filled the form text for you</span></div>
+        <div class="btn">Copy the text</div> <span class="btn q">I have sent it</span>
+      </div></div>
+    </div>
+
+    <div class="fr">
+      <div class="tb">3 &middot; waiting &mdash; nothing for her</div>
+      <div class="bd"><div class="turn calm" style="margin:0">
+        <div class="k">Nothing for you today</div>
+        <div class="v">Jeremy must add you to gt-odin</div>
+        <div class="d">We asked for you &middot; GSD #41887, 2 days ago.<br>Chase him: jeremy@example.com</div>
+        <div class="btn q">Meanwhile: Odin &middot; Concepts &rarr;</div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="sec">
+  <h2>F8 &mdash; the reading list, before and after</h2>
+  <p class="sub">The same panel, 10 seconds apart. Bitbucket arrived. Nobody touched the list.</p>
+  <div class="row">
+    <div class="fr">
+      <div class="tb">before &middot; no Bitbucket</div>
+      <div class="bd">
+        <div class="doc"><span>Odin &middot; Concepts</span></div>
+        <div class="doc"><span>Odin &middot; Architecture</span></div>
+        <div class="doc"><span>Platform &middot; Requests</span></div>
+        <p class="note">3 pages. Everything needing a repo is hidden, because she cannot open one.</p>
+      </div>
+    </div>
+    <div class="arrow" style="align-self:center;font-size:17px;color:var(--muted-foreground)">&rarr;</div>
+    <div class="fr">
+      <div class="tb">after &middot; Bitbucket ready</div>
+      <div class="bd">
+        <div class="doc"><span>Odin &middot; Concepts</span></div>
+        <div class="doc"><span>Odin &middot; Architecture</span></div>
+        <div class="doc"><span>Platform &middot; Requests</span></div>
+        <div class="doc"><span>Odin &middot; Getting started</span><span class="new">new</span></div>
+        <div class="doc"><span>Platform &middot; Conventions</span><span class="new">new</span></div>
+        <p class="note">5 pages. Two appeared the moment the ticket closed.</p>
+      </div>
+    </div>
+    <div class="fr">
+      <div class="tb">why it matters</div>
+      <div class="bd">
+        <p class="note" style="margin-top:0">Day One renders these pages <b>itself</b>, from the gtech-docs repo.<br><br>
+        She cannot open docs-internal.gamuda.tech: it is behind Google IAP, and her Google account is step 1 of the chain.<br><br>
+        <b>That is the whole argument in one screen.</b> The instructions for your first week live behind a login you get in your second week.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body></html>

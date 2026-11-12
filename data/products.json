@@ -1,0 +1,92 @@
+[
+  {
+    "key": "odin",
+    "name": "Odin",
+    "status": "internal",
+    "audience": "GT product teams",
+    "one_line": "The agent harness GT products build on: sessions, tool calling, streaming and skills as a managed service.",
+    "url": "https://gt-odin-dev.web.app/",
+    "docs_url": "https://docs-internal.gamuda.tech/apps/odin",
+    "poc_name": "Jeremy",
+    "poc_email": "jeremy@gamuda.tech",
+    "repo": "get-rnd/gt-odin",
+    "gcp_project": "gtech-odin-dev",
+    "stack": [
+      "FastAPI",
+      "Postgres",
+      "MCP"
+    ],
+    "try_in_5": "Open the dev UI, start a session and ask it something."
+  },
+  {
+    "key": "trudax",
+    "name": "Trudax",
+    "status": "live",
+    "audience": "Gamuda business users",
+    "one_line": "An AI business-intelligence assistant that gives clear, grounded answers from your Power BI dashboards in minutes.",
+    "url": "https://dev.trudax.ai/",
+    "docs_url": "",
+    "poc_name": "Ian",
+    "poc_email": "ian@gamuda.tech",
+    "repo": "get-rnd/trudax",
+    "gcp_project": "gtech-trudax-dev",
+    "stack": [
+      "LangGraph",
+      "Power BI"
+    ],
+    "try_in_5": "Ask it a question about a dashboard you already know the answer to."
+  },
+  {
+    "key": "spatialq",
+    "name": "SpatialQ",
+    "status": "live",
+    "audience": "Clients and councils",
+    "one_line": "A no-code, AI-powered platform that turns complex earth and geospatial data into answers, by conversation instead of GIS workflows.",
+    "url": "https://spatial-q.ai/login",
+    "docs_url": "https://docs-internal.gamuda.tech/apps/spatialq",
+    "poc_name": "Carter",
+    "poc_email": "carter@gamuda.tech",
+    "repo": "get-rnd/spatialq",
+    "gcp_project": "gtech-spatialq-dev",
+    "stack": [
+      "Odin",
+      "GIS"
+    ],
+    "try_in_5": "Ask it for schools near an LRT station."
+  },
+  {
+    "key": "agentlinc",
+    "name": "Agentlinc",
+    "status": "live",
+    "audience": "All Gamuda staff",
+    "one_line": "A centralised knowledge platform that connects to the organisation's data sources and helps draft, summarise and research.",
+    "url": "https://app.agentlinc.ai/",
+    "docs_url": "",
+    "poc_name": "Hakim",
+    "poc_email": "hakim@gamuda.tech",
+    "repo": "get-rnd/agentlinc",
+    "gcp_project": "gtech-agentlinc-dev",
+    "stack": [
+      "RAG"
+    ],
+    "try_in_5": "Ask it to summarise a policy document you already know."
+  },
+  {
+    "key": "gt-console",
+    "name": "GT-Console",
+    "status": "internal",
+    "audience": "GT product teams",
+    "one_line": "The shared backend and admin console behind GT products: tenants, users, access and quotas in one place.",
+    "url": "https://gt-console-staging.gamuda.tech/",
+    "docs_url": "https://docs-internal.gamuda.tech/apps/gt-console",
+    "poc_name": "Iqhwan",
+    "poc_email": "iqhwan@gamuda.tech",
+    "repo": "get-rnd/gt-console",
+    "gcp_project": "gtech-console-dev",
+    "stack": [
+      "Tenancy",
+      "Auth"
+    ],
+    "try_in_5": "Find your own tenant and look at who has access."
+  }
+]

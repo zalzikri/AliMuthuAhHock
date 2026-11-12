@@ -1,0 +1,163 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}
+.sec{margin-bottom:24px}
+h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;margin:0 0 3px}
+.sub{font-size:12px;color:var(--muted-foreground);margin:0 0 11px}
+.row{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.fr{border:1px solid var(--border);border-radius:6px;overflow:hidden;width:430px}
+.fr.sm{width:300px}
+.tb{padding:6px 10px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-foreground)}
+.bd{padding:12px;font-size:12px;line-height:1.45}
+.brand{display:flex;align-items:baseline;gap:7px;margin-bottom:11px}
+.brand b{font-size:16px}
+.brand span{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground)}
+.two{display:flex;gap:13px}
+.two>div:first-child{width:54%}
+.two>div:last-child{width:46%;border-left:1px solid var(--border);padding-left:13px}
+.fld{margin-bottom:9px}
+.fld>span{display:block;font-size:10px;letter-spacing:.04em;color:var(--muted-foreground);margin-bottom:3px}
+.inp{border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:11.5px}
+.inp.ghost{color:var(--muted-foreground)}
+.seg{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;width:fit-content}
+.seg div{padding:4px 10px;font-size:11px;border-right:1px solid var(--border);color:var(--muted-foreground)}
+.seg div:last-child{border-right:0}
+.seg div.on{background:var(--accent);color:var(--foreground);font-weight:600}
+.btn{display:inline-block;border:1px solid var(--foreground);border-radius:4px;padding:6px 14px;font-size:11.5px;font-weight:600;margin-top:6px}
+.btn.q{border-color:var(--border);color:var(--muted-foreground);font-weight:400}
+.lbl{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground);margin:0 0 6px}
+.st{font-size:11px;padding:3px 0;border-bottom:1px solid var(--border);display:flex;gap:6px}
+.st:last-child{border-bottom:0}
+.st u{text-decoration:none;color:var(--muted-foreground);font-size:9.5px}
+.st s{text-decoration:line-through;color:var(--muted-foreground)}
+.cnt{font-size:13px;font-weight:600;margin-bottom:5px}
+.link{border:1px solid var(--border);border-radius:4px;padding:7px 9px;font-size:11px;background:var(--card);margin-top:7px;word-break:break-all}
+.note{font-size:11.5px;color:var(--muted-foreground);line-height:1.5;margin-top:8px}
+.turn{border:1px solid var(--border);border-radius:6px;padding:12px;background:var(--card)}
+.k{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted-foreground)}
+.v{font-size:16px;font-weight:600;margin:5px 0 4px;line-height:1.2}
+.d{font-size:11.5px;color:var(--muted-foreground)}
+.msg{border:1px solid var(--border);border-radius:4px;padding:8px 9px;font-size:11px;margin-top:8px;line-height:1.5}
+.bad{border:1px dashed var(--border);border-radius:5px;padding:9px 10px;font-size:11.5px;color:var(--muted-foreground)}
+.arrow{align-self:center;font-size:17px;color:var(--muted-foreground)}
+</style></head><body>
+
+<div class="sec">
+  <h2>The start form — and the live plan beside it</h2>
+  <p class="sub">Six fields. The right column rewrites itself as you change the two toggles. That is demo beat 1.</p>
+  <div class="row">
+
+    <div class="fr">
+      <div class="tb">staff · developer · Odin → 11 requests</div>
+      <div class="bd">
+        <div class="brand"><b>Day One</b><span>Ali Muthu Ah Hock</span></div>
+        <div class="two">
+          <div>
+            <div class="fld"><span>FULL NAME</span><div class="inp">Nurul Aina binti Rahim</div></div>
+            <div class="fld"><span>PERSONAL EMAIL — we send her link here</span><div class="inp">nurul.aina@gmail.com</div></div>
+            <div class="fld"><span>EMPLOYMENT</span><div class="seg"><div class="on">Staff</div><div>Intern</div></div></div>
+            <div class="fld"><span>JOB</span><div class="seg"><div class="on">Developer</div><div>Non-developer</div></div></div>
+            <div class="fld"><span>PROJECT — optional</span><div class="inp">odin ▾</div></div>
+            <div class="fld"><span>START DATE</span><div class="inp">17-11-2026</div></div>
+            <div class="btn">Start onboarding</div>
+          </div>
+          <div>
+            <div class="lbl">What we will ask for</div>
+            <div class="st"><span>Google Workspace email<u> now</u></span></div>
+            <div class="st"><span>Set password<u> her</u></span></div>
+            <div class="st"><span>GEMS<u> staff</u></span></div>
+            <div class="st"><span>GES<u> staff</u></span></div>
+            <div class="st"><span>GSD portal<u> staff</u></span></div>
+            <div class="st"><span>Slack</span></div>
+            <div class="st"><span>Atlassian</span></div>
+            <div class="st"><span>Bitbucket<u> dev</u></span></div>
+            <div class="st"><span>GCP access<u> dev · slack</u></span></div>
+            <div class="st"><span>Add to repo gt-odin<u> dev · Jeremy</u></span></div>
+            <div class="st"><span>Claude Code seat<u> optional</u></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fr sm">
+      <div class="tb">flip both toggles → 6 requests</div>
+      <div class="bd">
+        <div class="fld"><span>EMPLOYMENT</span><div class="seg"><div>Staff</div><div class="on">Intern</div></div></div>
+        <div class="fld"><span>JOB</span><div class="seg"><div>Developer</div><div class="on">Non-developer</div></div></div>
+        <div class="lbl" style="margin-top:11px">What we will ask for</div>
+        <div class="st"><span>Google Workspace email</span></div>
+        <div class="st"><span>Set password</span></div>
+        <div class="st"><s>GEMS</s><u> interns do not get this</u></div>
+        <div class="st"><s>GES</s><u> interns do not get this</u></div>
+        <div class="st"><s>GSD portal</s><u> so we raise everything</u></div>
+        <div class="st"><span>Slack</span></div>
+        <div class="st"><span>Atlassian</span></div>
+        <div class="st"><s>Bitbucket</s><u> not a developer</u></div>
+        <div class="st"><s>GCP access</s><u> not a developer</u></div>
+        <div class="st"><s>Add to repo</s><u> not a developer</u></div>
+        <div class="st"><span>Claude Code seat</span></div>
+        <p class="note">Eleven becomes six, live, in front of the judges. No page reload.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="sec">
+  <h2>How her page knows it is hers</h2>
+  <p class="sub">No login, because she has no account yet. An unguessable link instead.</p>
+  <div class="row">
+    <div class="fr sm">
+      <div class="tb">after you press start</div>
+      <div class="bd">
+        <div class="cnt">Started for Nurul Aina</div>
+        <div class="note" style="margin-top:0">1 request raised now. 10 are queued behind it.<br>We emailed her private link to nurul.aina@gmail.com.</div>
+        <div class="link">day-one.gamuda.tech/n/<b>8fK2x9vQ3mTa</b></div>
+        <div class="btn q">Copy link</div>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="fr sm">
+      <div class="tb">how it works</div>
+      <div class="bd">
+        <div class="note" style="margin-top:0">
+        · On create we generate a random 12-character token and store it on her record.<br><br>
+        · The token is the page. Whoever holds the link sees her status — her, you, her buddy.<br><br>
+        · Same model as a shared document link. Unguessable, not secret.<br><br>
+        · Nothing sensitive is ever shown: no passwords, no employee ID, no temporary codes.<br><br>
+        · <b>Production path:</b> the day her Google account is live, the page can switch to Google sign-in. The link is only needed before she has an identity.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <h2>Point 9 — "chase him" was weak. Replaced.</h2>
+  <p class="sub">The principle: Day One never tells her to go ask someone. It writes the message for her.</p>
+  <div class="row">
+    <div class="fr sm">
+      <div class="tb">before · not enough context</div>
+      <div class="bd"><div class="bad">Jeremy must add you to gt-odin.<br>Chase him: jeremy@example.com<br><br>→ She does not know what to say, what he needs from her, or when it is fair to chase.</div></div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="fr">
+      <div class="tb">after · everything she needs</div>
+      <div class="bd">
+        <div class="turn">
+          <div class="k">Nothing for you today · waiting on a person</div>
+          <div class="v">Jeremy has to add you to gt-odin</div>
+          <div class="d">He is the Odin repo admin. We already asked for you: <b>GSD #41887</b>, raised Tuesday. This usually takes 1 day.</div>
+          <div class="msg">
+            <b>Ready to send</b><br>
+            Hi Jeremy — I joined Odin as a backend developer on 17 Nov. My Bitbucket username is <b>nurul.aina</b>. Could you add me to <b>get-rnd/gt-odin</b>? GSD #41887 is already open. Thanks.
+          </div>
+          <div class="btn">Copy message</div> <span class="btn q">Email Jeremy</span>
+          <div class="note">If nothing by Thursday, tell your buddy. We will remind you.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="note"><b>Why this is better:</b> it names the person and his role, proves the ask was already made, gives the ticket number, supplies her Bitbucket username so he can act immediately, sets the normal wait, and says when escalating is fair. Same pattern as the Slack GCP card — whenever a human must act, Day One writes the words.</p>
+</div>
+
+</body></html>

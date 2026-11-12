@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  *{box-sizing:border-box}
+  .sec{margin-bottom:26px}
+  h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;margin:0 0 3px}
+  .sub{font-size:12px;color:var(--muted-foreground);margin:0 0 11px}
+  .row{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+  .fr{border:1px solid var(--border);border-radius:6px;overflow:hidden;width:272px}
+  .fr.w{width:420px}
+  .fr.xw{width:560px}
+  .tb{padding:6px 10px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-foreground)}
+  .bd{padding:11px 12px;font-size:12px;line-height:1.45;min-height:120px}
+  .brand{display:flex;align-items:baseline;gap:7px;margin-bottom:9px}
+  .brand b{font-size:17px;letter-spacing:-.01em}
+  .brand span{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground)}
+  .turn{border:2px solid var(--foreground);border-radius:6px;padding:12px}
+  .turn .k{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted-foreground)}
+  .turn .v{font-size:17px;font-weight:600;margin:5px 0 4px;line-height:1.2}
+  .turn .d{font-size:11.5px;color:var(--muted-foreground)}
+  .btn{display:inline-block;border:1px solid var(--foreground);border-radius:4px;padding:5px 12px;font-size:11.5px;font-weight:600;margin-top:9px}
+  .btn.q{border-color:var(--border);color:var(--muted-foreground);font-weight:400}
+  .calm{border:1px solid var(--border);border-radius:6px;padding:12px;background:var(--card)}
+  .li{display:flex;gap:7px;font-size:11.5px;padding:4px 0;border-bottom:1px solid var(--border)}
+  .li:last-child{border-bottom:0}
+  .li i{width:13px;height:13px;border:1px solid var(--border);border-radius:3px;flex:none;margin-top:2px;font-style:normal;font-size:8px;display:flex;align-items:center;justify-content:center;color:var(--muted-foreground)}
+  .li i.ok{background:var(--accent);border-color:var(--accent)}
+  .li i.run{border-width:2px;border-color:var(--foreground)}
+  .li em{font-style:normal;color:var(--muted-foreground);font-size:10.5px;display:block}
+  .mail{border:1px solid var(--border);border-radius:5px;padding:9px 10px;font-size:11.5px}
+  .mail .from{font-size:10px;color:var(--muted-foreground);margin-bottom:3px}
+  .arrow{align-self:center;font-size:17px;color:var(--muted-foreground)}
+  .card{border:1px solid var(--border);border-radius:6px;padding:11px 12px;width:262px}
+  .card h4{margin:0;font-size:13.5px}
+  .card .ol{font-size:11.5px;color:var(--muted-foreground);margin:3px 0 8px}
+  .chip{display:inline-block;border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-size:9.5px;color:var(--muted-foreground);margin:0 3px 3px 0}
+  .kv{font-size:11px;display:flex;gap:6px;padding:2px 0}
+  .kv b{font-weight:400;color:var(--muted-foreground);width:74px;flex:none}
+  .dl{font-size:11px;padding:2px 0;border-bottom:1px solid var(--border)}
+  .dl:last-child{border-bottom:0}
+  .note{font-size:11.5px;color:var(--muted-foreground);margin-top:7px;line-height:1.5}
+  .pick{font-size:10px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--foreground);border-radius:3px;padding:1px 6px;margin-left:6px}
+</style>
+</head>
+<body>
+
+<div class="sec">
+  <h2>Point 3 — getting in with no company email</h2>
+  <p class="sub">Three frames, in order. She never types a password and never installs anything.</p>
+  <div class="row">
+    <div class="fr">
+      <div class="tb">1 · Buddy presses Start</div>
+      <div class="bd">
+        <div class="calm">Onboarding started for <b>Nurul Aina</b>.<br><br>We emailed her a private link at<br>nurul.aina@gmail.com<br><br>Ticket #41880 raised for her Gamuda email.</div>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="fr">
+      <div class="tb">2 · Her personal inbox</div>
+      <div class="bd">
+        <div class="mail">
+          <div class="from">Day One · Gamuda Tech</div>
+          <b>Your first day, before day one</b><br><br>
+          Hi Nurul. Everything for your start is already moving. Open your page to see what is ready and what is still with IT.
+          <div class="btn">Open my page</div>
+        </div>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="fr">
+      <div class="tb">3 · Her page opens</div>
+      <div class="bd">
+        <div class="brand"><b>Day One</b><span>Ali Muthu Ah Hock</span></div>
+        <div style="font-size:11.5px;color:var(--muted-foreground)">Signed in as Nurul Aina · Odin · Backend developer<br><br>No password. The link carries a signed token that expires in 30 days.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <h2>Point 2 — the "Your turn" card, in its four states</h2>
+  <p class="sub">The top of her page always holds exactly one card. Only the card changes.</p>
+  <div class="row">
+
+    <div class="fr">
+      <div class="tb">State A · she must act</div>
+      <div class="bd">
+        <div class="turn">
+          <div class="k">Your turn — 1 thing</div>
+          <div class="v">Set your password</div>
+          <div class="d">Your Gamuda email is live: nurul.aina@gamuda.com.my. Two minutes.</div>
+          <div class="btn">Open Google and set it</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fr">
+      <div class="tb">State B · nothing to do</div>
+      <div class="bd">
+        <div class="calm">
+          <div class="k" style="font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted-foreground)">Nothing for you today</div>
+          <div class="v" style="font-size:15px;font-weight:600;margin:5px 0 4px">Bitbucket is with IT</div>
+          <div class="d" style="font-size:11.5px;color:var(--muted-foreground)">Ticket #41882, open since Monday. Usually 3 days.</div>
+          <div class="btn q">Meanwhile: read Odin concepts →</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fr">
+      <div class="tb">State C · a person is the blocker</div>
+      <div class="bd">
+        <div class="calm">
+          <div class="k" style="font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted-foreground)">Waiting on a person</div>
+          <div class="v" style="font-size:15px;font-weight:600;margin:5px 0 4px">Zal must add you to gt-odin</div>
+          <div class="d" style="font-size:11.5px;color:var(--muted-foreground)">Repo admin. Asked 2 days ago.</div>
+          <div class="btn">Nudge Zal</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fr">
+      <div class="tb">State D · finished</div>
+      <div class="bd">
+        <div class="turn">
+          <div class="k">Done</div>
+          <div class="v">You have everything</div>
+          <div class="d">8 of 8 ready, in 4 days. Your repo, your Slack, your team are below.</div>
+          <div class="btn">Open gt-odin</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <p class="note">Below the card sits the quiet list of all steps, exactly as in the earlier mockup. She can look, but she never has to.</p>
+</div>
+
+<div class="sec">
+  <h2>Point 5 — the product card, now with GTech docs</h2>
+  <p class="sub">Two designs. The docs come from the gtech-docs sidebars, so the list is always current.</p>
+  <div class="row">
+
+    <div class="card">
+      <div style="font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:5px">Design 1 · compact<span class="pick">faster</span></div>
+      <h4>Odin</h4>
+      <div class="ol">The agent harness other GT products build on.</div>
+      <span class="chip">internal preview</span><span class="chip">FastAPI</span><span class="chip">MCP</span>
+      <div style="margin-top:7px"><div class="dl">Concepts →</div><div class="dl">Integration guide →</div><div class="dl">Architecture →</div></div>
+      <div class="btn" style="margin-top:9px">Request access</div>
+    </div>
+
+    <div class="card" style="width:300px">
+      <div style="font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:5px">Design 2 · full<span class="pick">richer</span></div>
+      <h4>Odin</h4>
+      <div class="ol">The agent harness other GT products build on.</div>
+      <div class="kv"><b>Status</b><span>Internal preview</span></div>
+      <div class="kv"><b>Used by</b><span>SpatialQ</span></div>
+      <div class="kv"><b>Owner</b><span>TBC</span></div>
+      <div class="kv"><b>Ask in</b><span>#odin</span></div>
+      <div class="kv"><b>Try in 5</b><span>Run make up, open :3000, create a session.</span></div>
+      <div style="margin-top:7px;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground)">Docs · 6 pages</div>
+      <div><div class="dl">Concepts →</div><div class="dl">Integration guide →</div><div class="dl">API reference →</div><div class="dl" style="color:var(--muted-foreground)">+3 more</div></div>
+      <div class="btn" style="margin-top:9px">Request access</div>
+    </div>
+
+    <div class="fr w">
+      <div class="tb">The idea worth stealing</div>
+      <div class="bd">
+        <b>Reading tied to the wait.</b>
+        <div class="note" style="margin-top:5px">She is blocked on Bitbucket for 3 days. So the page does not show a generic library. It shows the pages she can read <i>without</i> Bitbucket, for <i>her</i> project:<br><br>
+        · Odin — Concepts<br>· Odin — Architecture<br>· GTech — how PR review works<br><br>
+        The wait chooses the content. Nobody curates it.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

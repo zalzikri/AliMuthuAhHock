@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  .wrap { display:flex; flex-direction:column; gap:22px; }
+  .row { display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap; }
+  h3 { margin:0 0 2px; font-size:13px; letter-spacing:.05em; text-transform:uppercase; }
+  .sub { margin:0 0 9px; font-size:12px; color:var(--muted-foreground); }
+  .frame { border:1px solid var(--border); border-radius:6px; overflow:hidden; width:880px; max-width:100%; }
+  .bar { display:flex; align-items:center; gap:8px; padding:8px 11px; border-bottom:1px solid var(--border); font-size:11px; color:var(--muted-foreground); }
+  .dot { width:8px;height:8px;border-radius:50%;border:1px solid var(--border); }
+  .cols { display:flex; }
+  .pane { padding:12px 13px; font-size:12px; line-height:1.45; }
+  .l { width:42%; border-right:1px solid var(--border); }
+  .r { width:58%; }
+  .lbl { font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted-foreground); margin-bottom:9px; }
+  .fld { margin-bottom:9px; }
+  .fld span { display:block; font-size:10.5px; color:var(--muted-foreground); margin-bottom:3px; }
+  .inp { border:1px solid var(--border); border-radius:4px; padding:5px 8px; font-size:11.5px; }
+  .seg { display:flex; border:1px solid var(--border); border-radius:4px; overflow:hidden; width:fit-content; }
+  .seg div { padding:4px 11px; font-size:11px; border-right:1px solid var(--border); color:var(--muted-foreground); }
+  .seg div:last-child { border-right:0; }
+  .seg div.on { background:var(--accent); color:var(--foreground); font-weight:600; }
+  .btn { border:1px solid var(--foreground); border-radius:4px; padding:6px 14px; font-size:11.5px; font-weight:600; width:fit-content; margin-top:4px; }
+  .step { display:flex; gap:9px; padding:6px 0; border-bottom:1px solid var(--border); font-size:11.5px; align-items:flex-start; }
+  .step:last-child { border-bottom:0; }
+  .ico { width:15px;height:15px;border:1px solid var(--border);border-radius:3px;flex:none;margin-top:1px;font-size:9px;display:flex;align-items:center;justify-content:center;color:var(--muted-foreground); }
+  .ico.ok { background:var(--accent); border-color:var(--accent); color:var(--foreground); }
+  .ico.run { border-color:var(--foreground); border-width:2px; }
+  .nm { flex:1; }
+  .nm b { font-weight:600; }
+  .meta { display:block; font-size:10.5px; color:var(--muted-foreground); margin-top:1px; }
+  .tag { border:1px solid var(--border); border-radius:3px; padding:0 5px; font-size:9.5px; color:var(--muted-foreground); white-space:nowrap; height:fit-content; margin-top:1px; }
+  .tag.auto { border-color:var(--foreground); color:var(--foreground); }
+  .you { border:1px solid var(--foreground); border-radius:5px; padding:9px 11px; margin-bottom:11px; }
+  .you .k { font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted-foreground); }
+  .you .v { font-size:13px; font-weight:600; margin:3px 0 2px; }
+  .cards { display:flex; gap:8px; flex-wrap:wrap; margin-top:5px; }
+  .card { border:1px solid var(--border); border-radius:5px; padding:8px 9px; width:calc(33.33% - 6px); font-size:10.5px; }
+  .card b { font-size:11.5px; display:block; margin-bottom:2px; }
+  .card .poc { color:var(--muted-foreground); margin-top:3px; display:block; }
+  .hdr { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px; }
+  .hdr .big { font-size:15px; font-weight:600; }
+  .hdr .small { font-size:11px; color:var(--muted-foreground); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div>
+    <h3>View 1 — Buddy / supervisor. Used once.</h3>
+    <p class="sub">The only form anyone fills in. Right side previews what the platform will do.</p>
+    <div class="frame">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp; Start a new hire</div>
+      <div class="cols">
+        <div class="pane l">
+          <div class="lbl">New hire</div>
+          <div class="fld"><span>Full name</span><div class="inp">Nurul Aina binti Rahim</div></div>
+          <div class="fld"><span>Personal email (for the invite link)</span><div class="inp">nurul.aina@gmail.com</div></div>
+          <div class="fld"><span>Type</span><div class="seg"><div class="on">Staff</div><div>Intern</div></div></div>
+          <div class="fld"><span>Project</span><div class="inp">Odin &nbsp;▾</div></div>
+          <div class="fld"><span>Role</span><div class="inp">Backend developer &nbsp;▾</div></div>
+          <div class="fld"><span>Start date</span><div class="inp">17-11-2026</div></div>
+          <div class="btn">Start onboarding</div>
+        </div>
+        <div class="pane r">
+          <div class="lbl">What will happen — 8 requests, in order</div>
+          <div class="step"><span class="ico">1</span><span class="nm"><b>Google Workspace email</b><span class="meta">GSD ticket · raised now</span></span><span class="tag auto">auto</span></div>
+          <div class="step"><span class="ico">2</span><span class="nm"><b>Password reset</b><span class="meta">Nurul does this · we send the link</span></span><span class="tag">her</span></div>
+          <div class="step"><span class="ico">3</span><span class="nm"><b>GEMS (SuccessFactors)</b><span class="meta">waits for step 1</span></span><span class="tag auto">auto</span></div>
+          <div class="step"><span class="ico">4</span><span class="nm"><b>GES</b><span class="meta">waits for step 1 · needs employee ID</span></span><span class="tag auto">auto</span></div>
+          <div class="step"><span class="ico">5</span><span class="nm"><b>GSD portal access</b><span class="meta">staff only · skipped for interns</span></span><span class="tag auto">auto</span></div>
+          <div class="step"><span class="ico">6</span><span class="nm"><b>Bitbucket · Slack · Atlassian</b><span class="meta">3 tickets, fired together</span></span><span class="tag auto">auto</span></div>
+          <div class="step"><span class="ico">7</span><span class="nm"><b>Add to repo gt-odin</b><span class="meta">we notify the repo admin</span></span><span class="tag auto">auto</span></div>
+          <div class="step"><span class="ico">8</span><span class="nm"><b>Claude Code seat</b><span class="meta">optional</span></span><span class="tag">ask</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3>View 2 — New hire. No login, no checklist.</h3>
+    <p class="sub">One page. It moves by itself, because status is read from the service desk.</p>
+    <div class="frame">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp; Welcome, Nurul &nbsp; · &nbsp; Odin · Backend developer</div>
+      <div class="cols">
+        <div class="pane l">
+          <div class="hdr"><span class="big">Day 2</span><span class="small">3 of 8 ready</span></div>
+          <div class="you">
+            <div class="k">Your turn — 1 thing</div>
+            <div class="v">Reset your password</div>
+            <div class="meta">Your email is live. Open the link we sent and set a password. Takes 2 minutes.</div>
+          </div>
+          <div class="step"><span class="ico ok">✓</span><span class="nm"><b>Google Workspace email</b><span class="meta">ready · nurul.aina@gamuda.com.my</span></span></div>
+          <div class="step"><span class="ico run"></span><span class="nm"><b>Password reset</b><span class="meta">waiting for you</span></span></div>
+          <div class="step"><span class="ico">·</span><span class="nm"><b>GEMS</b><span class="meta">queued · fires when password is set</span></span></div>
+          <div class="step"><span class="ico">·</span><span class="nm"><b>GES</b><span class="meta">queued</span></span></div>
+          <div class="step"><span class="ico ok">✓</span><span class="nm"><b>GSD portal</b><span class="meta">ready</span></span></div>
+          <div class="step"><span class="ico run"></span><span class="nm"><b>Bitbucket</b><span class="meta">with IT · ticket #41882 · 2 days left</span></span></div>
+          <div class="step"><span class="ico ok">✓</span><span class="nm"><b>Slack</b><span class="meta">ready</span></span></div>
+          <div class="step"><span class="ico">·</span><span class="nm"><b>Add to repo gt-odin</b><span class="meta">blocked by Bitbucket · admin: Zal</span></span></div>
+        </div>
+        <div class="pane r">
+          <div class="lbl">While you wait — what GTech builds</div>
+          <div class="cards">
+            <div class="card"><b>Odin</b>Agent harness other GT products build on.<span class="poc">POC: —<br>odin.gamuda.app</span></div>
+            <div class="card"><b>Trudax</b>AI answers from Power BI dashboards.<span class="poc">POC: —<br>trudax.gamuda.app</span></div>
+            <div class="card"><b>SpatialQ</b>No-code geospatial analysis by chat.<span class="poc">POC: —<br>spatialq.gamuda.app</span></div>
+            <div class="card"><b>Agentlinc</b>Company knowledge agent.<span class="poc">POC: —<br>agentlinc.gamuda.app</span></div>
+            <div class="card"><b>GT-Console</b>—<span class="poc">POC: —</span></div>
+          </div>
+          <div class="lbl" style="margin-top:14px">Ask anything <span class="tag">Odin · stretch</span></div>
+          <div class="step"><span class="nm" style="color:var(--muted-foreground)">"Who do I ask about Trudax?" · "How do I run Odin locally?"</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

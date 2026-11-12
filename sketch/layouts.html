@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  .wrap { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; }
+  .col { width: 430px; }
+  h3 { margin: 0 0 2px 0; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+  .sub { margin: 0 0 10px 0; font-size: 12px; color: var(--muted-foreground); }
+  .frame { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .bar { display: flex; gap: 6px; align-items: center; padding: 7px 10px; border-bottom: 1px solid var(--border); font-size: 11px; color: var(--muted-foreground); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--border); }
+  .body { display: flex; min-height: 330px; }
+  .pane { padding: 10px 11px; font-size: 12px; line-height: 1.45; }
+  .left { width: 46%; border-right: 1px solid var(--border); }
+  .right { width: 54%; }
+  .full { width: 100%; }
+  .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted-foreground); margin-bottom: 7px; }
+  .day { margin-bottom: 9px; }
+  .dayh { font-weight: 600; font-size: 11.5px; margin-bottom: 3px; }
+  .task { display: flex; gap: 6px; margin: 2px 0; font-size: 11.5px; color: var(--muted-foreground); }
+  .box { width: 11px; height: 11px; border: 1px solid var(--border); border-radius: 2px; flex: none; margin-top: 2px; }
+  .box.done { background: var(--accent); border-color: var(--accent); }
+  .box.now { border-width: 2px; border-color: var(--foreground); }
+  .task.now { color: var(--foreground); font-weight: 600; }
+  .msg { border: 1px solid var(--border); border-radius: 5px; padding: 7px 9px; margin-bottom: 7px; font-size: 11.5px; }
+  .msg.agent { background: var(--card); }
+  .msg.user { margin-left: 34px; }
+  .who { font-size: 9.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted-foreground); margin-bottom: 3px; }
+  code { font-size: 11px; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
+  .tab { padding: 5px 9px; font-size: 11px; border-right: 1px solid var(--border); color: var(--muted-foreground); }
+  .tab.on { color: var(--foreground); font-weight: 600; }
+  .prog { height: 4px; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; margin: 4px 0 11px 0; }
+  .prog i { display: block; height: 100%; width: 22%; background: var(--accent); }
+  .note { font-size: 11.5px; color: var(--muted-foreground); margin-top: 8px; line-height: 1.5; }
+  .pill { display: inline-block; border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; font-size: 10px; color: var(--muted-foreground); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="col">
+    <h3>Variant A — Plan led</h3>
+    <p class="sub">A normal web app. The plan is the main thing. Chat sits beside it.</p>
+    <div class="frame">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp; bifrost.gamuda.tech &nbsp;<span class="pill">gt-odin</span></div>
+      <div class="body">
+        <div class="pane left">
+          <div class="lbl">Your first 14 days</div>
+          <div class="prog"><i></i></div>
+          <div class="day">
+            <div class="dayh">Day 1 · Get it running</div>
+            <div class="task"><span class="box done"></span><span>Clone gt-odin</span></div>
+            <div class="task now"><span class="box now"></span><span>Run <code>make up</code></span></div>
+            <div class="task"><span class="box"></span><span>Open localhost:3000</span></div>
+          </div>
+          <div class="day">
+            <div class="dayh">Day 2 · Learn the model</div>
+            <div class="task"><span class="box"></span><span>Read concepts.md</span></div>
+            <div class="task"><span class="box"></span><span>Create a session via API</span></div>
+          </div>
+          <div class="day">
+            <div class="dayh">Day 3 · What GTech builds</div>
+            <div class="task"><span class="box"></span><span>Product map: 9 products</span></div>
+            <div class="task"><span class="box"></span><span>Who consumes Odin?</span></div>
+          </div>
+          <div class="day">
+            <div class="dayh">Day 4-14 · First PR</div>
+            <div class="task"><span class="box"></span><span>Pick a good-first-issue</span></div>
+          </div>
+        </div>
+        <div class="pane right">
+          <div class="lbl">Guide</div>
+          <div class="msg agent"><div class="who">Bifrost · 09:02</div>Good morning Zal. You are on <b>gt-odin</b>. Start with task 2: run <code>make up</code>. Docker must be running first.</div>
+          <div class="msg user"><div class="who">Zal</div>make up failed, port 5434 in use</div>
+          <div class="msg agent"><div class="who">Bifrost</div>Another Postgres holds 5434. Run <code>make down</code>, then <code>make up</code>.<br><br>⚠ This is not in the runbook. I drafted a fix for <code>docs/getting-started.md</code>. <span class="pill">Review</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="note"><b>Feels like:</b> a checklist app with a helper.<br><b>Build cost:</b> higher — you write a frontend.<br><b>Odin role:</b> backend only, called by your app.</p>
+  </div>
+
+  <div class="col">
+    <h3>Variant B — Chat led</h3>
+    <p class="sub">Odin's own chat UI. The plan is a living document beside it.</p>
+    <div class="frame">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp; localhost:3000 &nbsp;<span class="pill">Odin</span></div>
+      <div class="body">
+        <div class="pane left">
+          <div class="lbl">Conversation</div>
+          <div class="msg agent"><div class="who">Bifrost · 09:02</div>Welcome. I read the gt-odin repo and built your 14-day plan. →<br><br>Today: 3 tasks. Start with the clone.</div>
+          <div class="msg user"><div class="who">Zal</div>done, what next</div>
+          <div class="msg agent"><div class="who">Bifrost</div>Run <code>make up</code>. I updated the plan to v2.</div>
+        </div>
+        <div class="pane right">
+          <div class="tabs"><div class="tab on">plan.md</div><div class="tab">v2 ▾</div></div>
+          <div style="padding-top:9px">
+            <div class="dayh">Day 1 · Get it running</div>
+            <div class="task"><span class="box done"></span><span>Clone gt-odin</span></div>
+            <div class="task now"><span class="box now"></span><span>Run <code>make up</code></span></div>
+            <div class="task"><span class="box"></span><span>Open localhost:3000</span></div>
+            <div class="dayh" style="margin-top:9px">Day 2 · Learn the model</div>
+            <div class="task"><span class="box"></span><span>Read concepts.md</span></div>
+            <div class="dayh" style="margin-top:9px">Day 3 · What GTech builds</div>
+            <div class="task"><span class="box"></span><span>Product map</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="note"><b>Feels like:</b> a mentor in chat who keeps a plan.<br><b>Build cost:</b> low — the UI already exists in Odin.<br><b>Odin role:</b> it <i>is</i> the product. Canvas shows the plan.</p>
+  </div>
+
+</div>
+</body>
+</html>

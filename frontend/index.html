@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Day One</title>
+<style>
+:root{--ink:#14171a;--mute:#6b7280;--line:#e3e6ea;--bg:#fbfcfd;--card:#fff;--red:#e4002b;--ok:#eef3ee}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1020px;margin:0 auto;padding:26px 22px 60px}
+header{display:flex;align-items:baseline;gap:9px;margin-bottom:22px}
+header b{font-size:21px;letter-spacing:-.02em}
+header span{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+header .dot{width:7px;height:7px;background:var(--red);border-radius:50%;align-self:center}
+h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);margin:0 0 9px;font-weight:600}
+.cols{display:flex;gap:22px;align-items:flex-start}
+.cols>.main{flex:1 1 56%;min-width:0}
+.cols>.side{flex:1 1 44%;min-width:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px}
+label{display:block;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 0 4px}
+input,select{width:100%;border:1px solid var(--line);border-radius:5px;padding:7px 9px;font:inherit;font-size:13px;background:#fff;color:var(--ink)}
+input:focus,select:focus{outline:none;border-color:var(--ink)}
+.field{margin-bottom:11px}
+.seg{display:flex;border:1px solid var(--line);border-radius:5px;overflow:hidden;width:fit-content}
+.seg button{border:0;background:#fff;padding:6px 13px;font:inherit;font-size:12.5px;color:var(--mute);cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--ink);color:#fff;font-weight:600}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:5px;padding:8px 17px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--ink)}
+.btn.sm{padding:5px 11px;font-size:12px;font-weight:500}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.plan{font-size:12.5px}
+.plan div{display:flex;gap:7px;padding:4px 0;border-bottom:1px solid var(--line)}
+.plan div:last-child{border-bottom:0}
+.plan .why{color:var(--mute);font-size:11px;margin-left:auto;text-align:right}
+.plan s{color:#b6bcc4}
+.turn{border:2px solid var(--ink);border-radius:8px;padding:16px;background:#fff;margin-bottom:16px}
+.turn.calm{border:1px solid var(--line);background:var(--ok)}
+.turn .k{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--mute)}
+.turn .v{font-size:19px;font-weight:650;margin:6px 0 5px;letter-spacing:-.01em}
+.turn .d{font-size:13px;color:#4a5159}
+.acts{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.pre{border:1px solid var(--line);border-radius:6px;background:#fafbfc;padding:10px 11px;margin-top:11px;font-size:12.5px;line-height:1.55}
+.howto{margin:12px 0 0;padding-left:20px;font-size:13px;line-height:1.6}
+.howto li{margin-bottom:5px}
+.howto li::marker{color:var(--mute);font-weight:600}
+.pre table{width:100%;border-collapse:collapse}
+.pre td{padding:3px 0;vertical-align:top}
+.pre td:first-child{color:var(--mute);width:40%;padding-right:10px;font-size:11.5px}
+.steps{font-size:13px}
+.steps .row{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--line)}
+.steps .row:last-child{border-bottom:0}
+.ico{width:15px;height:15px;border:1px solid var(--line);border-radius:4px;flex:none;margin-top:2px;font-size:9px;display:flex;align-items:center;justify-content:center;color:#fff;background:#fff}
+.ico.done{background:#2f7d4f;border-color:#2f7d4f}
+.ico.now{border:2px solid var(--ink)}
+.ico.open{border-color:var(--mute);background:repeating-linear-gradient(45deg,#fff,#fff 2px,#eceff2 2px,#eceff2 4px)}
+.steps em{font-style:normal;color:var(--mute);font-size:11.5px;display:block}
+.card{border:1px solid var(--line);border-radius:7px;padding:11px 12px;margin-bottom:8px;background:#fff}
+.card b{font-size:13.5px}
+.card p{margin:3px 0 7px;font-size:12px;color:var(--mute)}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:10px;color:var(--mute);margin:0 4px 4px 0}
+.chip.red{border-color:var(--red);color:var(--red)}
+a{color:inherit}
+.doc{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.doc:last-child{border-bottom:0}
+.new{border:1px solid var(--ink);border-radius:4px;padding:0 5px;font-size:9.5px;height:fit-content}
+.link{border:1px solid var(--line);border-radius:6px;padding:9px 11px;background:#fafbfc;font-size:12.5px;word-break:break-all;margin:10px 0}
+.muted{color:var(--mute);font-size:12px}
+.warn{margin:10px 0 0;font-size:12.5px;color:var(--red);font-weight:600}
+.hide{display:none}
+</style></head>
+<body><div class="wrap">
+<header><b>Day One</b><span class="dot"></span><span>Ali Muthu Ah Hock</span></header>
+<div id="app"></div>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const api = (p, o) => fetch("/api" + p, o).then(r => r.json());
+let F = {employment:"staff", job_family:"developer", project:"odin", want_claude:true};
+let PROJECTS = {}, TIMER = null;
+
+const esc = s => (s||"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+async function boot(){
+  PROJECTS = await api("/projects");
+  const m = location.pathname.match(/^\/n\/(.+)$/);
+  if (m) { watch(m[1]); } else { renderForm(); }
+}
+
+/* ---------- the form ---------- */
+function renderForm(){
+  const opts = Object.keys(PROJECTS).sort().map(k =>
+    `<option value="${k}" ${k===F.project?"selected":""}>${k}</option>`).join("");
+  $("#app").innerHTML = `
+  <div class="cols">
+    <div class="main panel">
+      <h2>Start someone</h2>
+      <div class="field"><label>Full name</label><input id="name" placeholder="Nurul Aina binti Rahim"></div>
+      <div class="field"><label>Your Gamuda email — the request is raised in your name</label>
+        <input id="starter" placeholder="you@gamuda.com.my"></div>
+      <div class="field"><label>Employment</label>
+        <div class="seg" id="seg-emp">
+          <button data-v="staff">Staff</button><button data-v="intern">Intern</button></div></div>
+      <div class="field"><label>Job</label>
+        <div class="seg" id="seg-job">
+          <button data-v="developer">Developer</button><button data-v="other">Non-developer</button></div></div>
+      <div class="field"><label>Project — optional</label>
+        <select id="project"><option value="">no project yet</option>${opts}</select></div>
+      <div class="field"><label>Start date — optional</label><input id="start" placeholder="17-11-2026"></div>
+      <button class="btn" id="go">Start onboarding</button>
+      <div id="err" class="muted" style="margin-top:9px"></div>
+    </div>
+    <div class="side panel">
+      <h2>What we will ask for</h2>
+      <div id="plan" class="plan"></div>
+    </div>
+  </div>`;
+  bindSeg("#seg-emp", "employment"); bindSeg("#seg-job", "job_family");
+  $("#project").onchange = e => { F.project = e.target.value; preview(); };
+  $("#go").onclick = submit;
+  preview();
+}
+function bindSeg(sel, key){
+  const box = $(sel);
+  [...box.children].forEach(b => {
+    b.classList.toggle("on", b.dataset.v === F[key]);
+    b.onclick = () => { F[key] = b.dataset.v;
+      [...box.children].forEach(x => x.classList.toggle("on", x === b)); preview(); };
+  });
+}
+async function preview(){
+  const q = new URLSearchParams({employment:F.employment, job_family:F.job_family,
+                                 want_claude:F.want_claude});
+  if (F.project) q.set("project", F.project);
+  const p = await api("/preview?" + q);
+  const chan = {gsd_auto:"GSD", slack_guided:"Slack", self:"you", person:"a person"};
+  $("#plan").innerHTML =
+    p.steps.map(s => `<div><span>${esc(s.title)}</span><span class="why">${chan[s.channel]}</span></div>`).join("")
+    + p.skipped.map(s => `<div><s>${esc(s.title)}</s><span class="why">${esc(s.why)}</span></div>`).join("")
+    + `<div style="border:0;padding-top:9px"><b>${p.steps.length} requests</b>
+       <span class="why">${p.skipped.length} skipped</span></div>`;
+}
+async function submit(){
+  const name = $("#name").value.trim(), starter = $("#starter").value.trim();
+  if (!name || !starter) { $("#err").textContent = "Name and your email are both needed."; return; }
+  $("#go").disabled = true;
+  const v = await api("/onboardings", {method:"POST", headers:{"content-type":"application/json"},
+    body: JSON.stringify({name, starter_email:starter, employment:F.employment,
+      job_family:F.job_family, project:F.project||null, start_date:$("#start").value.trim()})});
+  const url = location.origin + "/n/" + v.token;
+  $("#app").innerHTML = `<div class="panel" style="max-width:560px">
+    <h2>Started</h2>
+    <div class="turn"><div class="k">Raised now</div>
+      <div class="v">1 request is open</div>
+      <div class="d">${v.progress.total - 1} more are queued behind it. They go out by themselves.</div></div>
+    <p class="muted">Send ${esc(name.split(" ")[0])} this link. There is no password.</p>
+    <div class="link">${url}</div>
+    <div class="acts"><button class="btn" onclick="location.href='/n/${v.token}'">Open her page</button>
+    <button class="btn ghost sm" onclick="navigator.clipboard.writeText('${url}')">Copy link</button></div>
+  </div>`;
+}
+
+/* ---------- her page ---------- */
+function watch(token){
+  const tick = async () => { try { render(await api("/n/" + token), token); } catch(e){} };
+  tick(); clearInterval(TIMER); TIMER = setInterval(tick, 1500);
+}
+const CH = {
+  self:   {k:"Your turn — 1 thing", act:"I have done it"},
+  slack_guided:{k:"Your turn — this one is not GSD", act:"I have sent it"},
+  person: {k:"Nothing for you today — waiting on a person", act:"He has added me"},
+};
+function card(v, token){
+  const t = v.your_turn;
+  if (!t) {
+    const w = v.waiting_on;
+    if (!w) return `<div class="turn"><div class="k">Done</div>
+      <div class="v">You have everything</div>
+      <div class="d">${v.progress.done} of ${v.progress.total} ready.</div></div>`;
+    return `<div class="turn calm"><div class="k">Nothing for you today</div>
+      <div class="v">${esc(w.title)} is with IT</div>
+      <div class="d">GSD #${w.ticket_id} &middot; usually ${w.eta_days} days. We will tell you when it lands.</div></div>`;
+  }
+  const c = (t.then_self && t.state === "waiting_user")
+    ? {k:"Your turn — IT has granted it", act:"I am in"}
+    : (CH[t.channel] || CH.self);
+  const fields = (t.fields||[]).length ? `<div class="pre"><table>${
+      t.fields.map(f => `<tr><td>${esc(f.label)}</td><td>${esc(f.value)}</td></tr>`).join("")}</table></div>` : "";
+  const howto = (t.howto||[]).length ? `<ol class="howto">${
+      t.howto.map(h => `<li>${esc(h)}</li>`).join("")}</ol>` : "";
+  const ask = t.ask ? `<div class="pre">${esc(t.ask)}</div>` : "";
+  const emailAsk = t.ask_email ? `<div class="pre">
+      <label>Which address did you sign in with?</label>
+      <input id="we" value="${esc(v.guess_email)}">
+      <span class="muted">We guessed it from your name. Correct it if it differs.</span>
+    </div>` : "";
+  const copy = (t.fields||[]).length ? t.fields.map(f => f.label + ": " + f.value).join("\n") : t.ask;
+  return `<div class="turn ${t.channel==="person"?"calm":""}">
+    <div class="k">${c.k}</div>
+    <div class="v">${esc(t.title)}</div>
+    <div class="d">${esc(t.hint || "")}</div>
+    ${howto}${fields}${ask}${emailAsk}
+    ${t.id==="password_reset" && v.link_expires_in_hours !== null ?
+      (v.link_expires_in_hours > 0
+        ? `<p class="warn">Google's sign-in link expires in ${Math.floor(v.link_expires_in_hours)} hours.</p>`
+        : `<p class="warn">That link has expired. IT must reset the account - raise a GSD ticket.</p>`) : ""}
+    ${t.id==="password_reset" ? '<p class="muted" style="margin-top:9px">Day One never sees or stores your password.</p>' : ""}
+    <div class="acts">
+      ${copy ? `<button class="btn ghost sm" onclick='navigator.clipboard.writeText(${JSON.stringify(copy)})'>Copy</button>`:""}
+      ${t.channel==="person" && v.poc_email ? `<a class="btn ghost sm" href="mailto:${v.poc_email}">Email ${esc(v.poc_name)}</a>`:""}
+      <button class="btn sm" onclick="confirmStep('${token}','${t.id}')">${c.act}</button>
+    </div></div>`;
+}
+async function confirmStep(token, step){
+  const el = document.querySelector("#we");
+  render(await api(`/n/${token}/steps/${step}/confirm`, {method:"POST",
+    headers:{"content-type":"application/json"},
+    body: JSON.stringify({work_email: el ? el.value.trim() : ""})}), token);
+}
+function render(v, token){
+  const icon = s => s.state==="done" ? '<span class="ico done">&#10003;</span>'
+    : s.state==="open" ? '<span class="ico open"></span>'
+    : s.state.startsWith("waiting") ? '<span class="ico now"></span>' : '<span class="ico"></span>';
+  const sub = s => s.state==="done" ? "ready"
+    : s.state==="open" ? `with IT &middot; GSD #${s.ticket_id} &middot; usually ${s.eta_days} days`
+    : s.state==="waiting_user" ? "your turn"
+    : s.state==="waiting_person" ? `${esc(v.poc_name)} does this` 
+    : "queued &middot; needs " + s.blocked_by.join(", ");
+  $("#app").innerHTML = `<div class="cols">
+    <div class="main">
+      ${card(v, token)}
+      <div class="panel"><h2>Everything else — ${v.progress.done} of ${v.progress.total} ready</h2>
+      <div class="steps">${v.steps.map(s => `<div class="row">${icon(s)}
+        <span>${esc(s.title)}<em>${sub(s)}</em></span></div>`).join("")}</div>
+      ${v.work_email ? `<p class="muted" style="margin-top:11px">Your address: <b>${esc(v.work_email)}</b></p>` : ""}
+      </div>
+    </div>
+    <div class="side panel" id="side"></div>
+  </div>`;
+  side(v);
+}
+async function side(v){
+  const d = await api("/directory");
+  const mine = d.find(x => x.key === (v.project||"").toLowerCase());
+  const reading = (mine?.pages||[]).slice(0,4);
+  $("#side").innerHTML = `
+    ${reading.length ? `<h2>Read this while you wait</h2>
+      ${reading.map(p => `<a class="doc" href="${p.url}" target="_blank"><span>${esc(mine.name)} &middot; ${esc(p.title)}</span></a>`).join("")}
+      <div style="height:18px"></div>` : ""}
+    <h2>GTech builds ${d.length} things</h2>
+    ${d.filter(x=>x.curated).map(x => `<div class="card"><b>${esc(x.name)}</b>
+       <p>${esc(x.one_line||"")}</p>
+       ${x.status?`<span class="chip">${esc(x.status)}</span>`:""}
+       ${x.poc_name&&x.poc_name!=="TBC"?`<span class="chip">ask ${esc(x.poc_name)}</span>`:""}
+       ${x.page_count?`<span class="chip red">${x.page_count} doc pages</span>`:""}
+       ${x.docs_url?`<div style="margin-top:6px"><a class="muted" href="${x.docs_url}" target="_blank">Open docs &rarr;</a></div>`:""}
+       </div>`).join("")}
+    <div class="card"><b>${d.filter(x=>!x.curated).length} more, from GTech Docs</b>
+      <p>${d.filter(x=>!x.curated).slice(0,8).map(x=>esc(x.key)).join(" &middot; ")} &hellip;</p>
+      <a class="muted" href="https://docs-internal.gamuda.tech" target="_blank">Browse GTech Docs &rarr;</a></div>`;
+}
+boot();
+</script></body></html>

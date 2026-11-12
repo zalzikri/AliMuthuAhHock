@@ -1,0 +1,42 @@
+{
+  "odin": {
+    "name": "Odin",
+    "poc_name": "Jeremy",
+    "poc_email": "jeremy@gamuda.tech",
+    "repo": "get-rnd/gt-odin",
+    "gcp_project": "gtech-odin-dev",
+    "docs_url": "https://docs-internal.gamuda.tech/apps/odin"
+  },
+  "trudax": {
+    "name": "Trudax",
+    "poc_name": "Ian",
+    "poc_email": "ian@gamuda.tech",
+    "repo": "get-rnd/trudax",
+    "gcp_project": "gtech-trudax-dev",
+    "docs_url": ""
+  },
+  "spatialq": {
+    "name": "SpatialQ",
+    "poc_name": "Carter",
+    "poc_email": "carter@gamuda.tech",
+    "repo": "get-rnd/spatialq",
+    "gcp_project": "gtech-spatialq-dev",
+    "docs_url": "https://docs-internal.gamuda.tech/apps/spatialq"
+  },
+  "agentlinc": {
+    "name": "Agentlinc",
+    "poc_name": "Hakim",
+    "poc_email": "hakim@gamuda.tech",
+    "repo": "get-rnd/agentlinc",
+    "gcp_project": "gtech-agentlinc-dev",
+    "docs_url": ""
+  },
+  "gt-console": {
+    "name": "GT-Console",
+    "poc_name": "Iqhwan",
+    "poc_email": "iqhwan@gamuda.tech",
+    "repo": "get-rnd/gt-console",
+    "gcp_project": "gtech-console-dev",
+    "docs_url": "https://docs-internal.gamuda.tech/apps/gt-console"
+  }
+}
