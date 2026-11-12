@@ -345,8 +345,8 @@ async function side(v){
   $("#side").innerHTML = `
     ${idle ? `<h2>While you wait</h2>
       <div class="card"><b>Test what you know</b>
-        <p>A short quiz on GTech. Two minutes, no access needed.</p>
-        <button class="btn sm" onclick="alert('Quiz drops in here')">Start the quiz</button></div>` : ""}
+        <p>Puncak, a mini game about Gamuda. Seven questions, and every right answer takes you further up the mountain. Two minutes, no access needed.</p>
+        <a class="btn sm" href="/puncak/?name=${encodeURIComponent((v.name||"").split(" ")[0])}" target="_blank" rel="noopener">Start the climb</a></div>` : ""}
     ${mine ? `<h2>Your project</h2>
       <div class="card"><b>${esc(mine.name)}</b><p>${esc(mine.one_line)}</p>
         <span class="chip">ask ${esc(mine.poc_name)}</span>

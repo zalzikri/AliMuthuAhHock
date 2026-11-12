@@ -4,3 +4,4 @@ __pycache__/
 *.db
 .env
 sketch/.DS_Store
+puncak-state.json

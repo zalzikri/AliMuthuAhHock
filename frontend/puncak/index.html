@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Puncak · the daily climb</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="importmap">
+      { "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/" } }
+    </script>
+  </head>
+  <body>
+    <div class="stars" aria-hidden="true"></div>
+    <div class="dawn" aria-hidden="true"></div>
+
+    <!-- The mountain: a tall scene the view climbs through as the score rises -->
+    <div class="world" aria-hidden="true">
+      <svg id="world-svg" viewBox="0 0 600 2400">
+        <defs>
+          <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#9aa3bf" />
+            <stop offset="0.22" stop-color="#5b6587" />
+            <stop offset="0.5" stop-color="#2f4a44" />
+            <stop offset="1" stop-color="#12301f" />
+          </linearGradient>
+          <linearGradient id="shade" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#000" stop-opacity="0" />
+            <stop offset="1" stop-color="#000" stop-opacity="0.38" />
+          </linearGradient>
+        </defs>
+        <polygon id="massif" class="massif" points="0,2400 0,2150 40,2000 90,1820 130,1640 165,1450 195,1260 220,1080 240,900 255,740 268,600 280,480 292,380 300,300 312,340 322,250 330,140 340,230 352,190 362,300 376,250 388,360 402,330 418,470 440,640 468,860 500,1100 530,1380 560,1680 585,1980 600,2200 600,2400" />
+        <polygon class="massif-shade" points="330,140 340,230 352,190 362,300 376,250 388,360 402,330 418,470 440,640 468,860 500,1100 530,1380 560,1680 585,1980 600,2200 600,2400 360,2400 380,1900 372,1400 356,900 340,500" />
+        <g id="ridges" class="ridges"></g>
+        <g id="trees" class="trees"></g>
+        <path id="trail" class="trail" d="M150 2330 C 260 2300, 380 2260, 420 2180 S 200 2060, 190 1960 S 420 1840, 430 1740 S 240 1620, 250 1520 S 420 1400, 410 1300 S 280 1180, 290 1080 S 400 960, 390 860 S 300 740, 310 640 S 370 540, 360 450 S 320 330, 330 160" />
+        <path id="climbed" class="climbed" pathLength="1" d="M150 2330 C 260 2300, 380 2260, 420 2180 S 200 2060, 190 1960 S 420 1840, 430 1740 S 240 1620, 250 1520 S 420 1400, 410 1300 S 280 1180, 290 1080 S 400 960, 390 860 S 300 740, 310 640 S 370 540, 360 450 S 320 330, 330 160" />
+        <g id="checkpoints"></g>
+        <g class="clouds">
+          <ellipse class="cloud c1" cx="120" cy="1210" rx="190" ry="26" />
+          <ellipse class="cloud c2" cx="430" cy="1330" rx="230" ry="30" />
+          <ellipse class="cloud c3" cx="260" cy="1450" rx="170" ry="22" />
+          <ellipse class="cloud c2" cx="80" cy="980" rx="150" ry="18" />
+        </g>
+        <g id="others"></g>
+        <g id="climber" class="climber">
+          <circle class="pulse" r="16" />
+          <circle class="dot" r="11" />
+          <text class="you" x="20" y="6">YOU</text>
+        </g>
+      </svg>
+    </div>
+
+    <p class="world-loading" id="world-loading" hidden>LOADING THE MOUNTAIN</p>
+
+    <div class="altbar" aria-label="Your altitude">
+      <span class="altbar-level" id="level">TIMPOHON GATE</span>
+      <strong><span id="altitude">1,866</span> m</strong>
+      <span class="altbar-others" id="others-count"></span>
+    </div>
+    <div class="toast" id="toast" role="status" hidden></div>
+    <div class="sunburst" id="sunburst" aria-hidden="true"></div>
+    <div class="summit" id="summit" role="status" hidden>
+      <p class="summit-kicker" id="summit-kicker"></p>
+      <p class="summit-title" id="summit-title"></p>
+      <p class="summit-sub" id="summit-sub"></p>
+    </div>
+
+    <main class="stage">
+      <!-- Landing -->
+      <section id="landing" class="screen" hidden>
+        <h1 class="logo">PUNCAK</h1>
+        <p class="byline"><i>a mini game by</i><span class="name n1">Ali</span><span class="name n2">Muthu</span><span class="name n3">Ah&nbsp;Hock</span></p>
+        <p class="sub">THE DAILY CLIMB</p>
+        <p class="pitch">7 questions · 30 seconds each · score 80% to reach the summit</p>
+
+        <form id="join-form" class="join">
+          <label for="player">YOUR NAME</label>
+          <input id="player" maxlength="24" autocomplete="nickname" required />
+          <button type="submit" class="cta" id="begin">START THE CLIMB</button>
+        </form>
+        <div class="links">
+          <button type="button" class="link" id="open-how">How to play</button>
+          <button type="button" class="link" id="open-works">How it works</button>
+        </div>
+        <p class="foot" id="foot"></p>
+      </section>
+
+      <!-- Play -->
+      <section id="play" class="screen" hidden>
+        <div class="hud">
+          <ol id="dots" class="dots" aria-label="Progress"></ol>
+          <p class="hud-score"><span id="score">0</span><small> / <span id="max-score">700</span></small></p>
+        </div>
+
+        <p class="order" id="order"></p>
+        <h2 class="prompt" id="prompt"></h2>
+        <p class="kind" id="kind"></p>
+        <p class="blurb" id="blurb"></p>
+
+        <div class="clock" id="clock">
+          <div class="clock-bar"><i id="clock-fill"></i></div>
+          <span id="clock-text">30</span>
+        </div>
+
+        <form id="answer-form" class="answer">
+          <label for="answer" class="sr">Your answer</label>
+          <input id="answer" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type one answer, press enter" />
+          <button type="submit" id="submit">ANSWER</button>
+        </form>
+        <p class="miss" id="miss" role="status"></p>
+
+        <div class="result" id="result" hidden>
+          <p class="result-points" id="result-points"></p>
+          <p class="result-tier" id="result-tier"></p>
+          <p class="result-detail" id="result-detail"></p>
+          <div class="fact" id="fact" hidden>
+            <p class="fact-label">DID YOU KNOW</p>
+            <p id="fact-yours"></p>
+            <p id="fact-rarest"></p>
+          </div>
+          <button type="button" class="cta" id="next">KEEP CLIMBING</button>
+        </div>
+      </section>
+
+      <!-- Done -->
+      <section id="done" class="screen" hidden>
+        <p class="sub">TODAY'S CLIMB</p>
+        <h2 class="final-level" id="final-level"></h2>
+        <p class="final-score"><span id="final-altitude"></span><small> · <span id="final-score"></span> / <span id="final-max"></span> pts</small></p>
+        <p class="grid" id="grid" aria-hidden="true"></p>
+        <button type="button" class="cta" id="share">COPY RESULT TO SHARE</button>
+
+        <div class="panel">
+          <h3>LEADERBOARD</h3>
+          <ol id="leaderboard" class="leaderboard"></ol>
+        </div>
+        <div class="panel">
+          <h3>ALL THE ANSWERS</h3>
+          <p class="hint">Every valid answer, what it is worth right now, and what it is.</p>
+          <div id="breakdown"></div>
+        </div>
+        <p class="foot">A new climb opens tomorrow.</p>
+      </section>
+
+      <p id="error" class="error" role="alert" hidden></p>
+    </main>
+
+    <dialog id="how">
+      <form method="dialog"><button class="close" aria-label="Close">CLOSE</button></form>
+      <h3>HOW TO PLAY</h3>
+      <ul class="rules">
+        <li>Seven questions about your own company. Same for everyone, every day.</li>
+        <li>Any correct answer counts. Name one thing before the 30 seconds run out.</li>
+        <li>Five questions are simply right or wrong: any correct answer scores 100.</li>
+        <li>Two are rarity questions: a common answer scores 40, a rare one 70 and a very rare one 100.</li>
+        <li>Close counts: type a first name or make a typo and the game asks "Did you mean ...?"</li>
+        <li>You start at Timpohon Gate, 1,866 m. Score 80% (560 of 700 points) and you are on Low's Peak, 4,095 m, at sunrise.</li>
+        <li>The dots on the mountain are your colleagues, wherever they have climbed to today.</li>
+      </ul>
+      <p class="hint credit">3D models: "Mountain #1" by Helindu and "Stylized Coffee Shop" by ottobite, both on Sketchfab, licensed CC BY 4.0.</p>
+    </dialog>
+
+    <dialog id="works">
+      <form method="dialog"><button class="close" aria-label="Close">CLOSE</button></form>
+      <h3>HOW IT WORKS</h3>
+      <p class="hint">Every night, AI reads what the company has been talking about and building, and turns it into tomorrow's seven questions. For this hackathon the company Slack is off limits, so today's questions were written by hand; the examples below show the automatic pipeline on a public Slack and mock data.</p>
+
+      <h4>1 · FROM A REAL SLACK CHANNEL</h4>
+      <div class="flow">
+        <figure class="shot photo">
+          <img src="assets/slack-announcements.png" alt="Screenshot of the #1-announcements channel in the LangChain Community Slack, listing eleven upcoming meetup cities" />
+          <figcaption><b>Real screenshot</b><span>#1-announcements · LangChain Community Slack</span></figcaption>
+        </figure>
+        <p class="flow-arrow">AI spots a list of things people could name<span aria-hidden="true">↓</span></p>
+        <figure class="shot card" aria-label="The question it becomes">
+          <figcaption><b>RARITY QUESTION</b><span>rarer answers score more</span></figcaption>
+          <p class="card-prompt">Name a city hosting an upcoming LangChain meetup.</p>
+          <ul class="card-answers">
+            <li><span>San Francisco</span><em>common · 40</em></li>
+            <li><span>London</span><em>common · 40</em></li>
+            <li><span>Munich</span><em>rare · 70</em></li>
+            <li><span>Dubai</span><em>very rare · 100</em></li>
+            <li><span>Hamburg</span><em>very rare · 100</em></li>
+            <li><span>and 6 more</span></li>
+          </ul>
+        </figure>
+      </div>
+      <p class="hint">The AI sorts the answers into three levels, common, rare and very rare, when it writes the question. An answer only counts if it appears word for word in the messages, so the AI cannot make one up.</p>
+
+      <h4>2 · FROM OFFICE CHATTER</h4>
+      <div class="flow">
+        <figure class="shot slack" aria-label="Made-up Slack channel">
+          <figcaption><b># pantry</b><span>made-up channel, for the demo</span></figcaption>
+          <div class="msg">
+            <i class="avatar" style="background: #5fd39a">M</i>
+            <p><b>Melissa</b> <time>Tue 3:20 PM</time><br />LOST: <mark>Daniel Lim</mark> left his brown leather wallet on the pantry counter next to the coffee machine. Finder gets a teh tarik.</p>
+          </div>
+          <div class="msg">
+            <i class="avatar" style="background: #ffb454">I</i>
+            <p><b>Imran</b> <time>Tue 4:02 PM</time><br />More pantry losses this week: <mark>Priya Menon</mark> lost her blue umbrella, <mark>Kenji Ooi</mark> his access card, <mark>Hannah Chew</mark> her AirPods case and <mark>Farid Hakim</mark> his Stanley tumbler.</p>
+          </div>
+          <div class="msg">
+            <i class="avatar" style="background: #8fa4ff">M</i>
+            <p><b>Melissa</b> <time>Wed 9:10 AM</time><br />Update: the wallet was found inside the fridge, in the egg tray. Nobody knows why.</p>
+          </div>
+        </figure>
+        <p class="flow-arrow">AI turns the gossip into a question<span aria-hidden="true">↓</span></p>
+        <figure class="shot card" aria-label="The question it becomes">
+          <figcaption><b>RIGHT OR WRONG</b><span>any correct answer scores 100</span></figcaption>
+          <p class="card-prompt">Name someone who lost something at the pantry this week.</p>
+          <ul class="card-answers">
+            <li><span>Daniel Lim</span><em>100</em></li>
+            <li><span>Kenji Ooi</span><em>100</em></li>
+            <li><span>Priya Menon</span><em>100</em></li>
+            <li><span>Hannah Chew</span><em>100</em></li>
+            <li><span>Farid Hakim</span><em>100</em></li>
+          </ul>
+        </figure>
+      </div>
+      <p class="hint">Most questions are this kind: name any one of them and you score the full 100. Typing just "Daniel" works, and "Danial" gets a "Did you mean Daniel Lim?"</p>
+
+      <h4>3 · FROM BITBUCKET</h4>
+      <div class="flow">
+        <figure class="shot bitbucket" aria-label="Mock Bitbucket pull request list">
+          <figcaption><b>Pull requests</b><span>merged this week · mock-up</span></figcaption>
+          <table>
+            <tr><td><mark>platform-infra</mark></td><td>Move staging to the new cluster</td><td class="merged">MERGED</td></tr>
+            <tr><td><mark>platform-infra</mark></td><td>Alert on certificate expiry</td><td class="merged">MERGED</td></tr>
+            <tr><td><mark>site-diary-api</mark></td><td>Photo upload retries</td><td class="merged">MERGED</td></tr>
+            <tr><td><mark>design-system</mark></td><td>Dark mode tokens</td><td class="merged">MERGED</td></tr>
+            <tr><td><mark>bim-viewer</mark></td><td>Measure tool snapping</td><td class="merged">MERGED</td></tr>
+          </table>
+        </figure>
+        <p class="flow-arrow">Counts who and what shipped, no AI needed<span aria-hidden="true">↓</span></p>
+        <figure class="shot card" aria-label="The question it becomes">
+          <figcaption><b>RIGHT OR WRONG</b><span>any correct answer scores 100</span></figcaption>
+          <p class="card-prompt">Name a repository that merged a pull request this week.</p>
+          <ul class="card-answers">
+            <li><span>platform-infra</span><em>100</em></li>
+            <li><span>site-diary-api</span><em>100</em></li>
+            <li><span>design-system</span><em>100</em></li>
+            <li><span>bim-viewer</span><em>100</em></li>
+          </ul>
+        </figure>
+      </div>
+      <p class="hint">Questions from Bitbucket are counted straight from the data: which repositories shipped, who merged, what is being built.</p>
+
+      <h4>4 · AFTER YOU ANSWER</h4>
+      <p class="hint">You get a "did you know" line about your answer and about one you did not give. That is where the learning happens. Reach 80% of the points and you are on the summit.</p>
+      <p class="hint credit">The first screen is a real screenshot of the public LangChain Community Slack. The #pantry channel and the Bitbucket list are mock-ups, and the points shown are examples.</p>
+    </dialog>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
