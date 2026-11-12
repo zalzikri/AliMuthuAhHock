@@ -28,35 +28,40 @@ MODEL_PREFERENCE = (
 # the ColorSync Generic CMYK profile: blue 100/75/0/0, red 0/95/100/0, yellow 0/9/100/0.
 BLUE, RED, YELLOW = "#024B8F", "#DA332B", "#FEDD1B"
 
-STYLE = (
-    "Flat vector editorial poster illustration, in the style of contemporary "
-    "silkscreen and risograph gig posters. Hard geometric edges, bold flat colour "
-    "blocks, subtle paper grain, no gradients, no gloss, no 3D rendering, no "
-    "photorealism. Strong asymmetric composition with generous negative space. "
-    f"Palette strictly limited to Malaysian flag colours: blue {BLUE}, red {RED}, "
-    f"yellow {YELLOW}, and white. Clean white background. No text, no lettering, "
-    "no watermark."
+POSTER = (
+    "Contemporary editorial gig-poster illustration, like risograph and screen-print "
+    "posters: large flat cut-paper colour shapes with hard angular edges, soft airbrushed "
+    "spray shading only on skin, visible paper grain, bold asymmetric composition with "
+    "the main mass on one side and generous white space. "
+    f"Palette strictly: navy blue {BLUE}, red {RED}, golden yellow {YELLOW}, white, "
+    "and a warm peach for skin. White background. No text, no letters, no watermark."
+)
+CUBE = (
+    "Surreal 3D design study: realistic human faces mapped onto clean geometric blocks, "
+    "studio lighting, crisp edges, playful but respectful, no caricature. "
+    f"Solid background in navy blue {BLUE}. Accents only in red {RED} and golden "
+    f"yellow {YELLOW}. No text, no letters, no watermark."
 )
 
 VARIANTS = {
-    1: ("three-heads-overlap",
-        "A logo mark of three human heads in profile, overlapping, seen from the "
-        "side. One head is solid blue, one solid red, one solid yellow. They "
-        "interlock like cut paper shapes. The composition is deliberately "
-        "off-centre. Simple, iconic, readable at small size."),
-    2: ("three-heads-stripes",
-        "A logo mark of three simplified human heads arranged in a tight cluster, "
-        "each head built from horizontal stripes like a flag, in blue, red and "
-        "yellow. A crescent and a star shape are hidden in the negative space "
-        "between them. Bold, flat, poster-like."),
-    3: ("doorway",
-        "A logo mark of an open doorway cut as a geometric shape, with three "
-        "simplified human figures in blue, red and yellow stepping through it "
-        "together. Flat shapes, asymmetric, high contrast."),
-    4: ("badge",
-        "A square badge mark: a bold geometric letter shape suggesting a sunrise "
-        "over fourteen horizontal stripes, with three small circular heads in "
-        "blue, red and yellow sitting on the horizon. Flat, iconic, poster style."),
+    1: ("three-heads-overlap", POSTER,
+        "A logo mark: three human heads in side profile, overlapping like cut paper. "
+        "One head is navy, one red, one golden yellow. Faces are simple and friendly. "
+        "Off-centre composition. Iconic and readable at small size."),
+    2: ("three-heads-stripes", POSTER,
+        "A logo mark: three simplified heads clustered tightly, each head built from "
+        "horizontal flag stripes in navy, red and yellow. A crescent and a fourteen-point "
+        "star are hidden in the negative space between them."),
+    3: ("three-faces-cubes", CUBE,
+        "A logo: three friendly young adults of different backgrounds, each face mapped "
+        "onto its own cube, the three cubes stacked asymmetrically like building blocks. "
+        "Warm, confident expressions. Reads as one team."),
+    4: ("hero-figure", POSTER,
+        "A tall poster figure seen from the side, wearing an oversized angular navy jacket "
+        "that fills the left half of the image and bleeds off the bottom edge. The airbrushed "
+        "peach face looks up, eyes closed, calm. Two airbrushed hands hold out a golden "
+        "yellow keycard. A white zig-zag cut runs through the navy jacket. A small red "
+        "geometric block sits at the lower right."),
 }
 
 
@@ -96,7 +101,7 @@ def pick_model(key: str) -> str:
 
 def generate(key: str, model: str, name: str, prompt: str) -> Path | None:
     body = json.dumps({
-        "contents": [{"parts": [{"text": f"{prompt}\n\n{STYLE}"}]}],
+        "contents": [{"parts": [{"text": prompt}]}],
     }).encode()
     req = urllib.request.Request(
         f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
@@ -135,9 +140,9 @@ def main() -> None:
     print(f"key loaded ({len(key)} chars), using model: {model}")
     wanted = [int(a) for a in sys.argv[1:]] or sorted(VARIANTS)
     for n in wanted:
-        name, prompt = VARIANTS[n]
+        name, style, prompt = VARIANTS[n]
         print(f"variant {n} - {name}")
-        generate(key, model, name, prompt)
+        generate(key, model, name, f"{prompt}\n\n{style}")
 
 
 if __name__ == "__main__":
