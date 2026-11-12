@@ -60,14 +60,14 @@ STEPS: tuple[Step, ...] = (
     # requester, so the starter holds it - not the new hire. She cannot do this alone.
     Step("password_reset", "Sign in and set your password", "Google Workspace", SELF, 0,
          deps=("email",),
-         hint="Your account exists. Three steps, about two minutes.",
+         hint="IT made your account. Do these 3 steps. They take about 2 minutes.",
          howto=(
-             "Open the welcome mail from Google. It went to {starter}, because they "
-             "raised the request, so ask them to forward it.",
-             "Click the sign-in link in that mail and set your own password. "
-             "You sign in as {work_email}.",
-             "The link expires 48 hours after IT sent it. If it has expired, IT must "
-             "reset the account and you wait again.",
+             "Ask {starter} to send you the welcome email from Google. Google sent it "
+             "to them, because they started your onboarding.",
+             "Click the sign-in link in that email. Set your own password. "
+             "Your sign-in name is {work_email}.",
+             "The link works for 48 hours only. If it stops working, IT must reset "
+             "your account.",
          )),
 
     Step("gems", "GEMS", "SAP SuccessFactors", GSD_AUTO, 3,
@@ -82,12 +82,12 @@ STEPS: tuple[Step, ...] = (
          subject="GES access for {name}",
          body="Grant GES access for {name}. Login is the employee ID.",
          then_self=True, self_after=("password_reset",),
-         hint="GES holds your role, employee details, KPI and leave.",
+         hint="GES shows your role, employee details, KPI and leave.",
          howto=(
-             "GES mails {work_email} with your user ID and a temporary password. "
-             "Check that inbox, not your personal one.",
-             "Your user ID is the employee ID printed on your employee card.",
-             "Sign in, then set your own password when GES asks.",
+             "GES sends your user ID and a temporary password to {work_email}. "
+             "Look in that inbox, not in your personal email.",
+             "Your user ID is the employee ID on your employee card.",
+             "Sign in. When GES asks, set your own password.",
          )),
 
     Step("gsd", "GSD portal access", "Freshservice", GSD_AUTO, 3,
@@ -116,8 +116,8 @@ STEPS: tuple[Step, ...] = (
     # gtech-docs/apps/docs/platform/requests/gcp-access.md.
     Step("gcp", "GCP project access", "GCP", SLACK_GUIDED, 2,
          deps=TOOLS_STAGE, developer_only=True,
-         hint="GCP is the one access that does not go through GSD. "
-              "Run /gcp-request in Slack; it opens a form.",
+         hint="You request GCP access in Slack, not in GSD. Type /gcp-request in Slack. "
+              "A form opens. Copy these values into it.",
          fields=(
              ("What do you need?",
               "Grant roles/viewer to {work_email} on {gcp_project}"),
@@ -135,9 +135,10 @@ STEPS: tuple[Step, ...] = (
     # The repo admin adds you directly. There is no ticket for this.
     Step("repo_access", "Added to the repo", "Bitbucket", PERSON, 1,
          deps=TOOLS_STAGE, developer_only=True, needs_project=True,
-         hint="{poc_name} does this directly in Bitbucket. No ticket exists for it.",
-         ask="Hi {poc_first} - could you add {work_email} to {repo}? "
-             "I joined {project} on {start_date}. Thanks."),
+         hint="{poc_name} adds you to the repo in Bitbucket. There is no GSD ticket for this. "
+              "Send this message to {poc_name}.",
+         ask="Hi {poc_first}, please add {work_email} to {repo}. "
+             "I joined {project} on {start_date}. Thank you."),
 
     Step("claude_seat", "Claude Code seat", "Freshservice", GSD_AUTO, 3,
          deps=HR_STAGE, deps_intern=("password_reset",), optional=True,
@@ -179,9 +180,9 @@ def skipped(employment: str, job_family: str, project: str | None) -> list[tuple
     out = []
     for s in STEPS:
         if s.staff_only and intern:
-            out.append((s.title, "interns do not get this"))
+            out.append((s.title, "not for interns"))
         elif s.developer_only and not developer:
-            out.append((s.title, "not a developer"))
+            out.append((s.title, "for developers only"))
         elif s.needs_project and not project:
-            out.append((s.title, "no project chosen"))
+            out.append((s.title, "needs a project"))
     return out

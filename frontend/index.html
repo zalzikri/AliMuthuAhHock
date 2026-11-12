@@ -164,7 +164,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .muted{color:var(--mute);font-size:12.5px}
 .hide{display:none}
 
-/* ---------- her page: the journey ---------- */
+/* ---------- the new hire's page: the journey ---------- */
 .row{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
 .row em{font-style:normal;color:var(--mute);font-size:12px;display:block}
 .tk{font:500 11.5px/1 var(--mono)}
@@ -176,7 +176,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .flat{max-width:720px}
 .flat h2{margin:4px 0 4px}
 
-/* her steps: collapsed by default, highlighted so she sees them */
+/* the new hire's steps: collapsed by default, highlighted so they are easy to see */
 .mine{margin:6px 0;background:var(--sun);border:1px solid rgba(254,221,27,.9);border-radius:22px 22px 22px 6px}
 .rh{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:11px;align-items:center;width:100%;padding:11px 14px;font-size:13.5px}
 .rh:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:22px}
@@ -312,25 +312,25 @@ function renderForm(){
   $("#app").innerHTML = `
   <div class="cols">
     <div class="main panel">
-      <div class="hello"><div class="k">New hire</div><h1>Start someone</h1>
-        <p>One form. Day One raises every request in the right order.</p></div>
-      <div class="field"><label>Full name</label><input id="name" placeholder="Nurul Aina binti Rahim"></div>
-      <div class="field"><label>Your Gamuda email — the request is raised in your name</label>
+      <div class="hello"><div class="k">Start onboarding</div><h1>Add a new hire</h1>
+        <p>Fill in this form one time. Day One sends each access request to IT in the correct order.</p></div>
+      <div class="field"><label>Full name of the new hire</label><input id="name" placeholder="Nurul Aina binti Rahim"></div>
+      <div class="field"><label>Your work email. IT gets the requests from you.</label>
         <input id="starter" placeholder="you@gamuda.com.my"></div>
-      <div class="field"><label>Employment</label>
+      <div class="field"><label>Type of hire</label>
         <div class="seg" id="seg-emp">
           <button data-v="staff">Staff</button><button data-v="intern">Intern</button></div></div>
-      <div class="field"><label>Job</label>
+      <div class="field"><label>Role</label>
         <div class="seg" id="seg-job">
           <button data-v="developer">Developer</button><button data-v="other">Non-developer</button></div></div>
-      <div class="field"><label>Project — optional</label>
-        <select id="project"><option value="">no project yet</option>${opts}</select></div>
-      <div class="field"><label>Start date — optional</label><input id="start" placeholder="17-11-2026"></div>
+      <div class="field"><label>Project (optional)</label>
+        <select id="project"><option value="">No project yet</option>${opts}</select></div>
+      <div class="field"><label>Start date (optional)</label><input id="start" placeholder="17-11-2026"></div>
       <button class="btn" id="go">Start onboarding</button>
       <div id="err" class="muted" style="margin-top:9px"></div>
     </div>
     <div class="side panel">
-      <h2>What we will ask for</h2>
+      <h2>Steps for this new hire</h2>
       <div id="plan" class="plan"></div>
     </div>
   </div>`;
@@ -352,35 +352,35 @@ async function preview(){
                                  want_claude:F.want_claude});
   if (F.project) q.set("project", F.project);
   const p = await api("/preview?" + q);
-  const chan = {gsd_auto:"GSD", slack_guided:"Slack", self:"you", person:"a person"};
+  const chan = {gsd_auto:"GSD ticket", slack_guided:"Slack form", self:"new hire", person:"team contact"};
   $("#plan").innerHTML =
     p.steps.map(s => `<div><span>${esc(s.title)}</span><span class="why">${chan[s.channel]}</span></div>`).join("")
     + p.skipped.map(s => `<div><s>${esc(s.title)}</s><span class="why">${esc(s.why)}</span></div>`).join("")
-    + `<div style="border:0;padding-top:9px"><b>${p.steps.length} requests</b>
-       <span class="why">${p.skipped.length} skipped</span></div>`;
+    + `<div style="border:0;padding-top:9px"><b>${p.steps.length} steps</b>
+       <span class="why">${p.skipped.length} not needed</span></div>`;
 }
 async function submit(){
   const name = $("#name").value.trim(), starter = $("#starter").value.trim();
-  if (!name || !starter) { $("#err").textContent = "Name and your email are both needed."; return; }
+  if (!name || !starter) { $("#err").textContent = "Type the name of the new hire and your work email."; return; }
   $("#go").disabled = true;
   const v = await api("/onboardings", {method:"POST", headers:{"content-type":"application/json"},
     body: JSON.stringify({name, starter_email:starter, employment:F.employment,
       job_family:F.job_family, project:F.project||null, start_date:$("#start").value.trim()})});
   const url = location.origin + "/n/" + v.token;
   $("#app").innerHTML = `<div class="panel" style="max-width:560px">
-    <h2>Started</h2>
-    <div class="turn"><div class="k">Raised now</div>
-      <div class="v">1 request is open</div>
-      <div class="d">${v.progress.total - 1} more are queued behind it. They go out by themselves.</div></div>
-    <p class="muted">Send ${esc(callName(name))} this link. There is no password.</p>
+    <h2>Onboarding started</h2>
+    <div class="turn"><div class="k">Sent to IT</div>
+      <div class="v">The first request is with IT</div>
+      <div class="d">${v.progress.total - 1} more steps wait for it. Day One sends each step when the step before it is done.</div></div>
+    <p class="muted">Send this link to ${esc(callName(name))}. It opens the page of the new hire. No password is necessary.</p>
     <div class="link">${url}</div>
-    <div class="acts"><button class="btn" onclick="location.href='/n/${v.token}'">Open her page</button>
+    <div class="acts"><button class="btn" onclick="location.href='/n/${v.token}'">Open the new hire's page</button>
     <button class="btn ghost sm" onclick="navigator.clipboard.writeText('${url}')">Copy link</button></div>
   </div>`;
 }
 
-/* ---------- her page ---------- */
-/* Four stages. The step she must act on opens INSIDE its stage, so the action sits in the process. */
+/* ---------- the new hire's page ---------- */
+/* Four stages, shown in the stepper. The steps are one flat list. */
 const STAGES = [
   {key:"account", name:"Account",          blurb:"Your Gamuda email and your own password", ids:["email","password_reset"]},
   {key:"hr",      name:"HR and help desk", blurb:"GEMS, GES and the GSD portal",            ids:["gems","ges","gsd"]},
@@ -388,9 +388,9 @@ const STAGES = [
   {key:"project", name:"Your project",     blurb:"GCP access and the repo",                 ids:["gcp","repo_access"]},
 ];
 const NEXT_TIP = {
-  account: "IT has it from here. Meet your project below while you wait.",
-  hr:      "Your GSD portal works now: you can raise your own IT tickets.",
-  tools:   "Slack is ready. Say hello to your team, then try the GTech quiz.",
+  account: "IT does the next steps. While you wait, read about your project below.",
+  hr:      "You can now raise your own GSD tickets.",
+  tools:   "Slack is ready. Say hello to your team. Then try the GTech quiz.",
   project: "You can open the repo now.",
 };
 let TOKEN = "", V = null, TOGGLE = {}, EXP = new Set(), FIRST = true;
@@ -419,31 +419,31 @@ function stagesOf(v){
   return list;
 }
 const CH = {
-  self:   {k:"Your turn", act:"I have done it"},
-  slack_guided:{k:"Your turn &middot; this one is in Slack, not GSD", act:"I have sent it"},
-  person: {k:"Waiting on a person", act:"He has added me"},
+  self:   {k:"Your turn", act:"I have done this"},
+  slack_guided:{k:"Your turn &middot; in Slack, not GSD", act:"I have sent the form"},
+  person: {k:"Your turn &middot; ask your team contact", act:"I have access now"},
 };
 function act(v, t, inRow){
-  const c = (t.then_self && t.state === "waiting_user") ? {k:"Your turn &middot; IT has granted it", act:"I am in"} : (CH[t.channel] || CH.self);
+  const c = (t.then_self && t.state === "waiting_user") ? {k:"Your turn &middot; IT gave you access", act:"I have signed in"} : (CH[t.channel] || CH.self);
   const n = v.your_turn_count || 1;
   const fields = (t.fields||[]).length ? `<div class="pre"><table>${
       t.fields.map(f => `<tr><td>${esc(f.label)}</td><td>${esc(f.value)}</td></tr>`).join("")}</table></div>` : "";
   const howto = (t.howto||[]).length ? `<ol class="howto">${t.howto.map(h => `<li>${esc(h)}</li>`).join("")}</ol>` : "";
   const ask = t.ask ? `<div class="pre">${esc(t.ask)}</div>` : "";
   const emailAsk = t.ask_email ? `<div class="pre">
-      <label>Which address did you sign in with?</label>
+      <label>Which email address did you use to sign in?</label>
       <input id="we" value="${esc(v.guess_email)}">
-      <span class="muted">We guessed it from your name. Correct it if it differs.</span></div>` : "";
+      <span class="muted">We made this from your name. Change it if it is not correct.</span></div>` : "";
   const copy = (t.fields||[]).length ? t.fields.map(f => f.label + ": " + f.value).join("\n") : t.ask;
   const exp = t.id === "password_reset" && v.link_expires_in_hours !== null
     ? (v.link_expires_in_hours > 0
-        ? `<p class="warn">Google's sign-in link expires in ${Math.floor(v.link_expires_in_hours)} hours.</p>`
-        : `<p class="warn">That link has expired. IT must reset the account: raise a GSD ticket.</p>`) : "";
+        ? `<p class="warn">The sign-in link stops working in ${Math.floor(v.link_expires_in_hours)} hours.</p>`
+        : `<p class="warn">The sign-in link does not work now. Ask the person who started your onboarding to raise a GSD ticket. IT then resets your account.</p>`) : "";
   return `<div class="act ${t.channel==="person"?"calm":""}">
     ${inRow ? "" : `<div class="k">${c.k}${n > 1 ? ` &middot; 1 of ${n}` : ""}</div><div class="v">${esc(t.title)}</div>`}
     <div class="d">${esc(t.hint || "")}</div>
     ${howto}${fields}${ask}${emailAsk}${exp}
-    ${t.id==="password_reset" ? '<p class="muted" style="margin-top:9px">Day One never sees or stores your password.</p>' : ""}
+    ${t.id==="password_reset" ? '<p class="muted" style="margin-top:9px">Day One does not see or keep your password.</p>' : ""}
     <div class="acts">
       <button class="btn sm" onclick="confirmStep('${TOKEN}','${t.id}')">${c.act}</button>
       ${copy ? `<button class="btn ghost sm" data-copy="${esc(copy)}" onclick="navigator.clipboard.writeText(this.dataset.copy)">Copy</button>`:""}
@@ -456,27 +456,27 @@ function row(v, s){
   const ico = s.state==="done" ? '<span class="ico done">&#10003;</span>'
     : s.state==="open" || held ? '<span class="ico open"></span>'
     : mine ? '<span class="ico now"></span>' : '<span class="ico"></span>';
-  const sub = s.state==="done" ? "ready"
-    : s.state==="open" ? `with IT &middot; <span class="tk">GSD #${s.ticket_id}</span> &middot; usually ${s.eta_days} days`
-    : held ? `IT granted it &middot; yours after ${esc(s.held_by.join(", "))}`
-    : s.state==="waiting_user" ? "IT has done its part. Open this to see what to do."
-    : s.state==="waiting_person" ? `${esc(v.poc_name)} does this. Open this for the message to send.`
-    : "queued &middot; goes out after " + esc(s.blocked_by.join(", "));
+  const sub = s.state==="done" ? "Done"
+    : s.state==="open" ? `With IT &middot; <span class="tk">GSD #${s.ticket_id}</span> &middot; about ${s.eta_days} days`
+    : held ? `IT gave access &middot; you can start after: ${esc(s.held_by.join(", "))}`
+    : s.state==="waiting_user" ? "Open this step to see what to do."
+    : s.state==="waiting_person" ? `${esc(v.poc_name)} adds you. Open this step to get the message to send.`
+    : "Starts after: " + esc(s.blocked_by.join(", "));
   if (!mine) return `<div class="row">${ico}<span>${esc(s.title)}<em>${sub}</em></span></div>`;
-  /* her steps start collapsed: a highlighted row she opens herself */
+  /* the new hire's steps start collapsed: a highlighted row that the new hire opens */
   const open = EXP.has(s.id);
   return `<div class="mine ${open ? "open" : ""}">
     <button class="rh" data-step="${s.id}">${ico}<span class="t">${esc(s.title)}<em>${sub}</em></span>
-      <span class="pill">${s.state === "waiting_person" ? "Waiting on " + esc(v.poc_name) : "Your turn"}</span><span class="chev"></span></button>
+      <span class="pill">Your turn</span><span class="chev"></span></button>
     ${open ? act(v, s, true) : ""}
   </div>`;
 }
 function journey(v, list){
   const n = v.your_turn_count || 0;
   const withIT = v.steps.filter(x => x.state === "open").length;
-  const h1 = n ? (n > 1 ? `${n} things for you` : "1 thing for you")
+  const h1 = n ? (n > 1 ? `You have ${n} steps to do` : "You have 1 step to do")
     : withIT ? `IT is working on ${withIT} request${withIT>1?"s":""}` : "Almost there";
-  const p = n ? "Find the highlighted step in the list below and open it." : "Nothing for you right now. It shows up here when IT finishes.";
+  const p = n ? "Open the yellow step in the list below." : "You have nothing to do now. When IT is done, your next step shows here.";
   return `<section class="journey panel">
     <div class="hello"><div class="k">Welcome, ${esc(callName(v.name))}</div><h1>${h1}</h1><p>${p}</p></div>
     ${stepper(list)}
@@ -488,27 +488,27 @@ function stepper(list){
     <li class="${g.complete ? "done" : g.here ? "here" : ""}" data-key="${g.key}">
       <span class="node">${g.complete ? "&#10003;" : i + 1}</span>
       <span class="lab">${esc(g.name)}</span>
-      <span class="sub">${g.complete ? "Done" : g.here ? '<span class="you">You are here</span>' : `${g.done} of ${g.steps.length}`}</span>
+      <span class="sub">${g.complete ? "Done" : g.here ? '<span class="you">You are here</span>' : `${g.done} of ${g.steps.length} done`}</span>
     </li>`).join("")}</ol>`;
 }
 function flatList(v){
   return `<div class="flat">
-    <h2>All steps &middot; ${v.progress.done} of ${v.progress.total} ready</h2>
+    <h2>All steps &middot; ${v.progress.done} of ${v.progress.total} done</h2>
     ${v.steps.map(x => row(v, x)).join("")}
-    ${v.work_email ? `<p class="muted" style="margin:12px 0 0">Your address: <b>${esc(v.work_email)}</b></p>` : ""}
+    ${v.work_email ? `<p class="muted" style="margin:12px 0 0">Your work email: <b>${esc(v.work_email)}</b></p>` : ""}
   </div>`;
 }
 function finish(v, list, d){
   const mine = d.find(x => x.key === (v.project||"").toLowerCase());
   return `<section class="finish panel">
-    <div class="k">Day One &middot; complete</div>
-    <h1>You are set, ${esc(callName(v.name))}.</h1>
-    <p class="muted">${v.progress.total} of ${v.progress.total} ready. Every account works. Here is where to go next.</p>
+    <div class="k">Onboarding complete</div>
+    <h1>You are ready, ${esc(callName(v.name))}.</h1>
+    <p class="muted">All ${v.progress.total} steps are done. You have access to all your tools. Start here:</p>
     ${stepper(list)}
     <div class="next">
       ${mine ? `<a class="nx" href="${mine.docs_url || mine.url}" target="_blank"><small>Your project</small><b>Start on ${esc(mine.name)}</b><span>Ask ${esc(mine.poc_name)} for your first task.</span></a>` : ""}
-      <button class="nx" data-quiz="1"><small>Two minutes</small><b>Take the GTech quiz</b><span>See how much you picked up.</span></button>
-      <button class="nx" data-explore="${(d.find(x => !mine || x.key !== mine.key) || d[0]).key}"><small>Explore</small><b>Meet the other products</b><span>${d.length} products, below.</span></button>
+      <button class="nx" data-quiz="1"><small>Two minutes</small><b>Take the GTech quiz</b><span>See how much you know.</span></button>
+      <button class="nx" data-explore="${(d.find(x => !mine || x.key !== mine.key) || d[0]).key}"><small>Read</small><b>Learn about the other products</b><span>${d.length} products, below.</span></button>
     </div>
     <button class="more" data-stage="__all">${TOGGLE.__all ? "Hide" : "See"} all ${v.progress.total} steps</button>
     ${TOGGLE.__all ? flatList(v) : ""}
@@ -521,8 +521,8 @@ function explore(v, d){
   const list = mine ? [mine, ...d.filter(x => x !== mine)] : d;
   const ready = v.progress.done === v.progress.total;
   const hook = !ready && open.length
-    ? `${open.length === 1 ? esc(open[0].title) + " is" : open.length + " requests are"} with IT, about ${eta}&nbsp;day${eta>1?"s":""}. Meanwhile, meet what GTech builds.`
-    : "Meet what GTech builds.";
+    ? `${open.length === 1 ? esc(open[0].title) + " is" : open.length + " requests are"} with IT for about ${eta}&nbsp;day${eta>1?"s":""}. While you wait, learn about the GTech products.`
+    : "Learn about the GTech products.";
   return `<section class="panel explore" id="explore">
     <div class="ex-head">
       <div><h2>${ready ? "Next for you" : "While you wait"}</h2><p class="hook">${hook}</p></div>
@@ -541,7 +541,7 @@ function explore(v, d){
     </div>
     <div class="quizcard">
       <span class="qi">?</span>
-      <span class="t"><b>GTech quiz</b><em>Two minutes on what GTech builds. Best after you read the cards above.</em></span>
+      <span class="t"><b>GTech quiz</b><em>Two minutes. Questions about the GTech products. Read the cards above first.</em></span>
       <button class="btn sm" data-quiz="1">Start the quiz &rarr;</button>
     </div>
   </section>`;
@@ -553,7 +553,7 @@ async function confirmStep(token, step){
     body: JSON.stringify({work_email: el ? el.value.trim() : ""})}), token);
 }
 /* Polling runs every 1.5 s. Build the whole screen as one string and touch the DOM only when that
-   string changes: no empty column between polls, no lost hover, no reset of what she types. */
+   string changes: no empty column between polls, no lost hover, no reset of typed text. */
 async function render(v, token){
   if (!DIR) DIR = await api("/directory");
   V = v;
@@ -590,7 +590,7 @@ function celebrate(list, done){
   const g = fresh[fresh.length - 1], i = list.indexOf(g), next = list[i + 1];
   const num = document.querySelector(`.stepper li[data-key="${g.key}"] .node`);
   if (num) { num.classList.add("pop"); const r = num.getBoundingClientRect(); confetti(r.left + r.width/2, r.top + r.height/2, 110); }
-  toast(`<span class="badge">&#10003;</span><span><b>${esc(g.name)} done.</b> ${next ? `Next: ${esc(next.name)}. ` : ""}${NEXT_TIP[g.key] || ""}</span>`);
+  toast(`<span class="badge">&#10003;</span><span><b>${esc(g.name)} is done.</b> ${next ? `Next: ${esc(next.name)}. ` : ""}${NEXT_TIP[g.key] || ""}</span>`);
   FIRST = false;
 }
 function toast(html){
@@ -632,7 +632,7 @@ document.addEventListener("click", e => {
     const car = $("#car"), card = car && car.querySelector(`[data-card="${x.dataset.explore}"]`);
     if (car && card) car.scrollTo({left: card.offsetLeft - car.offsetLeft, behavior: "smooth"}); return; }
   if (e.target.closest("[data-quiz]"))
-    toast(`<span class="badge">?</span><span><b>The GTech quiz opens here.</b> Our teammate's quiz plugs into this button.</span>`);
+    toast(`<span class="badge">?</span><span><b>The GTech quiz starts here.</b> Our quiz connects to this button.</span>`);
 });
 boot();
 </script></body></html>
