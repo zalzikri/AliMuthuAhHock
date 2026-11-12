@@ -9,7 +9,7 @@ services:
       - key: SERVICEDESK
         value: mock
       - key: DEMO_SECONDS
-        value: "6"
+        value: "3"
       - key: DB_PATH
         value: /tmp/dayone.db
       - key: PYTHON_VERSION

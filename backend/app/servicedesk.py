@@ -112,4 +112,4 @@ def build(conn) -> ServiceDesk:
     if kind == "freshservice":
         return FreshserviceClient(os.environ["FRESHSERVICE_DOMAIN"],
                                   os.environ["FRESHSERVICE_API_KEY"])
-    return MockServiceDesk(conn, int(os.getenv("DEMO_SECONDS", "8")))
+    return MockServiceDesk(conn, int(os.getenv("DEMO_SECONDS", "3")))

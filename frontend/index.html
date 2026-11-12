@@ -600,8 +600,10 @@ function explore(v, d){
     </div>
   </section>`;
 }
+let BY_YOU = false;     // true only for the render that follows YOUR confirmation
 async function confirmStep(token, step){
   const el = document.querySelector("#we");
+  BY_YOU = true;
   await render(await api(`/n/${token}/steps/${step}/confirm`, {method:"POST",
     headers:{"content-type":"application/json"},
     body: JSON.stringify({work_email: el ? el.value.trim() : ""})}), token);
@@ -627,6 +629,7 @@ async function render(v, token){
     if (we2 && typed !== null) { we2.value = typed; if (focused) we2.focus(); }
   }
   celebrate(list, done);
+  BY_YOU = false;
   events(v, list, done);
   place();
 }
@@ -646,7 +649,9 @@ function celebrate(list, done){
   const g = fresh[fresh.length - 1], i = list.indexOf(g), next = list[i + 1];
   const num = document.querySelector(`.stepper li[data-key="${g.key}"] .node`);
   if (num) num.classList.add("pop");
-  confetti(innerWidth/2, innerHeight/2, 130);
+  /* confetti only when YOUR confirmation finished the stage. A stage that IT finished in the
+     background only pops its number, so confetti never seems to come from an unrelated click. */
+  if (BY_YOU) confetti(innerWidth/2, innerHeight/2, 130);
 
   FIRST = false;
 }
