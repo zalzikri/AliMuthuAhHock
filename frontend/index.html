@@ -99,13 +99,13 @@ h2{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text
 .turn,.act{background:var(--sun);border:1px solid rgba(254,221,27,.75);border-radius:var(--r-hero);
   padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
 .turn.calm,.act.calm{background:var(--white);border:1px solid var(--line)}
-.turn .k,.act .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.turn .k,.act .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .turn.calm .k,.act.calm .k{color:var(--mute)}
 .turn .v,.act .v{font:800 22px/1.15 var(--display);font-stretch:104%;margin:8px 0 6px;letter-spacing:-.02em;color:var(--blue)}
 .turn .d,.act .d{font-size:13.5px;color:var(--mute)}
 .howto{margin:14px 0 0;padding-left:20px;font-size:13.5px;line-height:1.65}
 .howto li{margin-bottom:6px}
-.howto li::marker{color:var(--red);font-weight:700}
+.howto li::marker{color:var(--blue);font-weight:800}
 .pre{background:var(--white);border:1px solid var(--line);border-radius:16px 16px 16px 5px;
   padding:12px 14px;margin-top:12px;font-size:12.5px;line-height:1.6}
 .pre table{width:100%;border-collapse:collapse}
@@ -150,8 +150,8 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .ico{width:16px;height:16px;border-radius:50%;flex:none;margin-top:2px;border:1.5px solid var(--line);
   background:var(--white);display:flex;align-items:center;justify-content:center;color:var(--white);font-size:9px}
 .ico.done{background:var(--blue);border-color:var(--blue)}
-.ico.now{border:2px solid var(--red);box-shadow:0 0 0 3px rgba(218,51,43,.14)}
-.ico.open{background:var(--yellow);border-color:var(--yellow)}
+.ico.now{border:2.5px solid var(--blue)}
+.ico.open{background:rgba(2,75,143,.16);border-color:transparent}
 
 /* small things */
 .chip{display:inline-block;background:var(--wash);border-radius:var(--r-pill);padding:2px 10px;
@@ -171,14 +171,13 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .row em{font-style:normal;color:var(--mute);font-size:12px;display:block}
 .tk{font:500 11.5px/1 var(--mono)}
 .journey{padding:24px 24px 8px}
-.hello .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.hello .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .hello h1{font:900 32px/1.02 var(--display);font-stretch:108%;letter-spacing:-.035em;margin:9px 0 6px;text-wrap:balance}
 .hello p{margin:0 0 14px;color:var(--mute)}
 .track{display:flex;gap:6px;margin:0 0 16px}
 .track span{flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden;position:relative}
 .track span i{position:absolute;inset:0 auto 0 0;width:calc(var(--p) * 100%);background:var(--blue);border-radius:inherit}
-.track span.here{background:rgba(218,51,43,.13)}
-.track span.here i{background:var(--red)}
+.track span.here{background:rgba(2,75,143,.14)}
 .stages{list-style:none;margin:0;padding:0}
 .stage{border-top:1px solid var(--line)}
 .sh{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;padding:14px 2px}
@@ -186,57 +185,49 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .num{width:30px;height:30px;flex:none;border-radius:11px 11px 11px 4px;display:grid;place-items:center;
   font:800 13px/1 var(--display);border:1.5px solid rgba(2,75,143,.2);color:var(--mute);background:var(--white)}
 .stage.complete .num{background:var(--blue);border-color:var(--blue);color:var(--white)}
-.stage.here .num{border:2px solid var(--red);color:var(--red);background:rgba(218,51,43,.06)}
+.stage.here .num{border:2px solid var(--blue);color:var(--blue)}
 .sn{flex:1;min-width:0}
 .sn b{display:block;font:800 15.5px/1.2 var(--display);font-stretch:104%;letter-spacing:-.01em}
 .sn em{font-style:normal;font-size:12.5px;color:var(--mute)}
 .stage.complete .sn b{color:var(--mute)}
 .sc{font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
-.stage.here .sc{color:var(--red)}
+.stage.here .sc{color:var(--blue)}
 .chev{width:8px;height:8px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(45deg);margin:0 4px 4px 2px;flex:none}
 .stage.open .chev{transform:rotate(-135deg);margin:4px 4px 0 2px}
-.sb{padding:0 0 14px 42px}
+.sb{padding:0 0 14px 42px;max-width:720px}
 .act{padding:18px 20px;margin:4px 0 10px;border-radius:30px 10px 30px 10px}
 @keyframes pop{0%{transform:scale(.55)}55%{transform:scale(1.28)}100%{transform:scale(1)}}
 .num.pop{animation:pop .6s cubic-bezier(.2,.9,.25,1.3)}
 
-/* ---------- while you wait ---------- */
-.side>*+*{margin-top:14px}
-.wait{position:relative;background:var(--blue);color:var(--white);border-radius:34px 34px 34px 8px;padding:22px 22px 20px;box-shadow:var(--shadow)}
-.wait .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow)}
-.wait .hook{font:850 21px/1.15 var(--display);font-stretch:104%;letter-spacing:-.02em;margin:9px 0 7px;text-wrap:balance}
-.wait p{color:rgba(255,255,255,.86);font-size:13.5px;margin:0 0 15px}
-.wait b{color:var(--yellow)}
-.ping{position:absolute;top:22px;right:22px;width:10px;height:10px;border-radius:50%;background:var(--red)}
-.ping::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--red);animation:ping 1.8s ease-out infinite}
-@keyframes ping{0%{transform:scale(1);opacity:1}100%{transform:scale(3.2);opacity:0}}
-.meter{display:flex;justify-content:space-between;align-items:center;font:700 10px/1 var(--display);font-stretch:112%;
-  letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:15px}
-.meter .dots{display:flex;gap:5px}
-.meter i{width:18px;height:6px;border-radius:999px;background:rgba(255,255,255,.22)}
-.meter i.on{background:var(--yellow)}
-.btn.yellow{background:var(--yellow);border-color:var(--yellow);color:var(--blue)}
-.prods{padding:18px 18px 8px}
+/* ---------- while you wait: one container, calm ---------- */
+.stack>*+*{margin-top:16px}
+.explore{padding:22px 24px 10px}
+.ex-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:6px}
+.ex-head h2{margin:0 0 6px}
+.hook{margin:0;font-size:14px;color:var(--ink);max-width:560px}
+.meter{display:flex;flex-direction:column;align-items:flex-end;gap:7px;font:700 10px/1 var(--display);font-stretch:112%;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--mute);white-space:nowrap;padding-top:2px}
+.meter .dots{display:flex;gap:4px}
+.meter i{width:16px;height:5px;border-radius:999px;background:var(--line)}
+.meter i.on{background:var(--blue)}
 .prod{border-top:1px solid var(--line)}
-.prods h2+.prod{border-top:0}
-.ph,.quiz{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:11px;align-items:center;width:100%;padding:10px 0}
-.ini{width:32px;height:32px;flex:none;border-radius:11px 11px 11px 4px;display:grid;place-items:center;
-  font:800 14px/1 var(--display);color:var(--white);background:var(--blue)}
-.ini.r{background:var(--red)} .ini.y{background:var(--yellow);color:var(--blue)}
-.ph .t,.quiz .t{flex:1;min-width:0}
-.ph b,.quiz b{font:800 14px/1.25 var(--display);font-stretch:104%}
-.ph .chip{margin:0 0 0 7px;padding:1px 8px;font:700 9.5px/1.5 var(--display);letter-spacing:.06em;text-transform:uppercase;vertical-align:1px}
-.ph em,.quiz em{display:block;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:12px;align-items:center;width:100%;padding:11px 0}
+.ph:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;border-radius:12px}
+.ini{width:30px;height:30px;flex:none;border-radius:10px 10px 10px 4px;display:grid;place-items:center;
+  font:800 13px/1 var(--display);color:var(--blue);background:var(--wash);border:1px solid var(--line)}
+.prod.seen .ini{background:var(--white)}
+.ph .t{flex:1;min-width:0}
+.ph b{font:800 14px/1.25 var(--display);font-stretch:104%}
+.ph .chip{margin:0 0 0 8px;padding:1px 8px;font:700 9.5px/1.5 var(--display);letter-spacing:.06em;text-transform:uppercase;vertical-align:1px;
+  background:transparent;border:1px solid rgba(2,75,143,.25);color:var(--blue)}
+.ph em{display:block;font-style:normal;font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tick{font:800 13px/1 var(--display);color:var(--faint);width:14px;text-align:center}
 .prod.seen .tick{color:var(--blue)}
 .prod.open .ph em{display:none}
-.pb{padding:0 0 14px 43px;font-size:13px}
+.pb{padding:0 0 14px 42px;font-size:13.5px;max-width:700px}
 .pb p{margin:0 0 8px}
-.links{display:flex;gap:14px;margin-top:6px;font:700 12.5px/1 var(--display)}
-.links a{text-decoration:none;border-bottom:2px solid var(--yellow);padding-bottom:2px}
-.quiz{padding:13px 16px;background:var(--white);border:1px dashed rgba(2,75,143,.3);border-radius:22px 22px 22px 6px}
-.quiz.ready{border:1.5px solid var(--red);box-shadow:var(--shadow)}
-.quiz.ready .tick{color:var(--red)}
+.links{display:flex;gap:16px;margin-top:6px;font:700 12.5px/1 var(--display)}
+.links a{text-decoration:none;border-bottom:1.5px solid var(--blue);padding-bottom:2px}
 
 /* ---------- achievements ---------- */
 .toast{position:fixed;left:50%;bottom:28px;z-index:60;transform:translate(-50%,28px) scale(.96);opacity:0;
@@ -251,7 +242,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .finish{padding:24px 26px 20px}
 .finish .heads{width:240px;display:block;margin:-8px 0 4px -10px;animation:rise .9s cubic-bezier(.2,.9,.25,1.25) both}
 @keyframes rise{0%{transform:translateY(26px) scale(.85);opacity:0}100%{transform:none;opacity:1}}
-.finish .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.finish .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .finish h1{font:900 38px/1 var(--display);font-stretch:108%;letter-spacing:-.035em;margin:9px 0 8px}
 .next{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 8px}
 .nx{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-start;padding:15px 14px 14px;border-radius:24px 24px 24px 6px;
@@ -261,11 +252,10 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .nx small{display:block;font:700 9.5px/1 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;opacity:.8;margin-bottom:9px}
 .nx b{display:block;font:850 15.5px/1.15 var(--display);letter-spacing:-.01em;margin-bottom:6px}
 .nx span{display:block;font-size:12px;line-height:1.4;opacity:.85}
-.nx.a{background:var(--blue);color:var(--white)}
-.nx.b{background:var(--yellow);color:var(--blue)}
-.nx.c{background:var(--white);color:var(--blue);border:1px solid var(--line)}
-.more{all:unset;cursor:pointer;font:700 12.5px/1 var(--display);border-bottom:2px solid var(--yellow);padding-bottom:2px;margin-top:6px}
-@media (prefers-reduced-motion: reduce){.ping::after,.finish .heads,.nx,.num.pop{animation:none}}
+.nx{background:var(--white);color:var(--blue);border:1px solid rgba(2,75,143,.18)}
+.nx:first-child{border-color:var(--blue)}
+.more{all:unset;cursor:pointer;font:700 12.5px/1 var(--display);border-bottom:1.5px solid var(--blue);padding-bottom:2px;margin-top:6px}
+@media (prefers-reduced-motion: reduce){.finish .heads,.nx,.num.pop{animation:none}}
 </style></head>
 <body>
 <div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=6" alt=""><img class="accent" src="/brand/accent.png?v=6" alt=""></div>
@@ -496,60 +486,53 @@ function finish(v, list, d){
     <h1>You are set, ${esc(callName(v.name))}.</h1>
     <p class="muted">${v.progress.total} of ${v.progress.total} ready. Every account works. Here is where to go next.</p>
     <div class="next">
-      ${mine ? `<a class="nx a" href="${mine.docs_url || mine.url}" target="_blank"><small>Your project</small><b>Start on ${esc(mine.name)}</b><span>Ask ${esc(mine.poc_name)} for your first task.</span></a>` : ""}
-      <button class="nx b" data-quiz="1"><small>Two minutes</small><b>Take the GTech quiz</b><span>See how much you picked up.</span></button>
-      <button class="nx c" data-explore="${(d.find(x => !mine || x.key !== mine.key) || d[0]).key}"><small>Explore</small><b>Meet the other products</b><span>${d.length} products, one line each.</span></button>
+      ${mine ? `<a class="nx" href="${mine.docs_url || mine.url}" target="_blank"><small>Your project</small><b>Start on ${esc(mine.name)}</b><span>Ask ${esc(mine.poc_name)} for your first task.</span></a>` : ""}
+      <button class="nx" data-quiz="1"><small>Two minutes</small><b>Take the GTech quiz</b><span>See how much you picked up.</span></button>
+      <button class="nx" data-explore="${(d.find(x => !mine || x.key !== mine.key) || d[0]).key}"><small>Explore</small><b>Meet the other products</b><span>${d.length} products, one line each.</span></button>
     </div>
     <button class="more" data-stage="__all">${TOGGLE.__all ? "Hide" : "See"} all ${v.progress.total} steps</button>
   </section>
   ${TOGGLE.__all ? `<section class="journey panel" style="margin-top:14px">${stageList(v, list)}</section>` : ""}`;
 }
-function side(v, d){
+function explore(v, d){
   const seen = new Set(mem.get("explored") || []);
-  const open = v.steps.filter(s => s.state === "open");
-  const eta = Math.max(0, ...open.map(s => s.eta_days || 0));
+  const open = v.steps.filter(x => x.state === "open");
+  const eta = Math.max(0, ...open.map(x => x.eta_days || 0));
   const mine = d.find(x => x.key === (v.project||"").toLowerCase());
-  const pick = (mine && !seen.has(mine.key)) ? mine : (d.find(x => !seen.has(x.key)) || mine || d[0]);
-  const hook = open.length
-    ? `${open.length === 1 ? esc(open[0].title) + " is" : open.length + " requests are"} with IT, about ${eta}&nbsp;day${eta>1?"s":""}.`
-    : v.your_turn ? "Do your step. Then IT takes a few days." : "Now meet what GTech builds.";
-  const all = seen.size >= d.length, ready = v.progress.done === v.progress.total;
-  const colours = ["", "r", "y"];
-  return `<div class="wait">
-      <span class="ping"></span>
-      <div class="k">${ready ? "Next for you" : "While you wait"}</div>
-      <div class="hook">${hook}</div>
-      <p>${all ? "You have met every product. Test yourself with the quiz." : ready
-        ? `${d.length} products, one minute each${mine ? `. Start with <b>${esc(mine.name)}</b>, your project` : ""}.`
-        : `Use the time to meet what GTech builds${mine ? `, starting with <b>${esc(mine.name)}</b>, your project` : ""}.`}</p>
+  const list = mine ? [mine, ...d.filter(x => x !== mine)] : d;
+  const ready = v.progress.done === v.progress.total;
+  const hook = ready ? "Meet what GTech builds."
+    : open.length ? `${open.length === 1 ? esc(open[0].title) + " is" : open.length + " requests are"} with IT, about ${eta}&nbsp;day${eta>1?"s":""}. Meanwhile, meet what GTech builds.`
+    : "Meet what GTech builds.";
+  return `<section class="panel explore" id="explore">
+    <div class="ex-head">
+      <div><h2>${ready ? "Next for you" : "While you wait"}</h2><p class="hook">${hook}</p></div>
       <div class="meter"><span>${seen.size} of ${d.length} explored</span>
         <span class="dots">${d.map(x => `<i class="${seen.has(x.key)?"on":""}"></i>`).join("")}</span></div>
-      ${all ? `<button class="btn yellow" data-quiz="1">Take the quiz &rarr;</button>`
-            : `<button class="btn yellow" data-explore="${pick.key}">${seen.size ? "Next" : "Start with"}: ${esc(pick.name)} &rarr;</button>`}
     </div>
-    <div class="panel prods">
-      <h2>GTech products</h2>
-      ${d.map((x, i) => `<div class="prod ${PROD===x.key?"open":""} ${seen.has(x.key)?"seen":""}">
-        <button class="ph" data-explore="${x.key}">
-          <span class="ini ${colours[i % 3]}">${esc(x.name[0])}</span>
-          <span class="t"><b>${esc(x.name)}</b>${mine && x.key===mine.key ? '<span class="chip red">your project</span>' : ""}<em>${esc(x.one_line||"")}</em></span>
-          <span class="tick">${seen.has(x.key) ? "&#10003;" : "&rarr;"}</span>
-        </button>
-        ${PROD===x.key ? `<div class="pb">
-          <p>${esc(x.one_line||"")}</p>
-          ${x.try_in_5 ? `<p><b>Try in 5 minutes:</b> ${esc(x.try_in_5)}</p>` : ""}
-          <div>${(x.stack||[]).map(s => `<span class="chip">${esc(s)}</span>`).join("")}<span class="chip">ask ${esc(x.poc_name)}</span></div>
-          <div class="links"><a href="${x.url}" target="_blank">Open it &rarr;</a>
-            ${x.docs_url ? `<a href="${x.docs_url}" target="_blank">Docs &rarr;</a>` : ""}
-            ${x.poc_email ? `<a href="mailto:${x.poc_email}">Email ${esc(x.poc_name)}</a>` : ""}</div>
-        </div>` : ""}
-      </div>`).join("")}
+    ${list.map(x => `<div class="prod ${PROD===x.key?"open":""} ${seen.has(x.key)?"seen":""}">
+      <button class="ph" data-explore="${x.key}">
+        <span class="ini">${esc(x.name[0])}</span>
+        <span class="t"><b>${esc(x.name)}</b>${mine && x.key===mine.key ? '<span class="chip">your project</span>' : ""}<em>${esc(x.one_line||"")}</em></span>
+        <span class="tick">${seen.has(x.key) ? "&#10003;" : "&rarr;"}</span>
+      </button>
+      ${PROD===x.key ? `<div class="pb">
+        <p>${esc(x.one_line||"")}</p>
+        ${x.try_in_5 ? `<p><b>Try in 5 minutes:</b> ${esc(x.try_in_5)}</p>` : ""}
+        <div>${(x.stack||[]).map(t => `<span class="chip">${esc(t)}</span>`).join("")}<span class="chip">ask ${esc(x.poc_name)}</span></div>
+        <div class="links"><a href="${x.url}" target="_blank">Open it &rarr;</a>
+          ${x.docs_url ? `<a href="${x.docs_url}" target="_blank">Docs &rarr;</a>` : ""}
+          ${x.poc_email ? `<a href="mailto:${x.poc_email}">Email ${esc(x.poc_name)}</a>` : ""}</div>
+      </div>` : ""}
+    </div>`).join("")}
+    <div class="prod quizrow">
+      <button class="ph" data-quiz="1">
+        <span class="ini">?</span>
+        <span class="t"><b>GTech quiz</b><em>${seen.size >= 3 ? "You have explored enough. Ready?" : "Two minutes. Best after 3 products."}</em></span>
+        <span class="tick">&rarr;</span>
+      </button>
     </div>
-    <button class="quiz ${seen.size >= 3 ? "ready" : ""}" data-quiz="1">
-      <span class="ini y">?</span>
-      <span class="t"><b>GTech quiz</b><em>${seen.size >= 3 ? "You have explored enough. Ready?" : "Two minutes. Better after 3 products."}</em></span>
-      <span class="tick">&rarr;</span>
-    </button>`;
+  </section>`;
 }
 async function confirmStep(token, step){
   const el = document.querySelector("#we");
@@ -564,9 +547,9 @@ async function render(v, token){
   V = v;
   const list = stagesOf(v);
   const done = v.progress.done === v.progress.total;
-  const html = `<div class="cols">
-    <div class="main">${done ? finish(v, list, DIR) : journey(v, list)}</div>
-    <div class="side">${side(v, DIR)}</div>
+  const html = `<div class="stack">
+    ${done ? finish(v, list, DIR) : journey(v, list)}
+    ${explore(v, DIR)}
   </div>`;
   if (html !== LAST) {
     const we = $("#we"), typed = we ? we.value : null, focused = we && document.activeElement === we;
