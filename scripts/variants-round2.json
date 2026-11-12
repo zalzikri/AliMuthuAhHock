@@ -1,0 +1,38 @@
+[
+  {
+    "name": "bg-sprayed-shapes",
+    "aspect": "16:9",
+    "prompt": "Abstract editorial poster background for a web page. NO people, no faces, no figures, no hands, no text, no letters. Large irregular cut-paper shapes that are NOT flat solid fills: every shape is sprayed with an airbrush, dense colour along one edge fading into soft speckled spray along the other, with heavy risograph paper grain over everything. A dominant navy blue mass enters from the left edge and bleeds off the bottom. A warm red sprayed shape glows in the lower right corner, cut off by the edge. A golden yellow shape is cut off by the top edge. A jagged white zig-zag cut runs through the navy mass. Strongly asymmetric: all the mass sits on the left and along the bottom; the upper-right two thirds stay mostly open warm cream paper, quiet enough to put content on.",
+    "style": "Palette strictly the Malaysian flag: navy blue #024B8F, red #DA332B, golden yellow #FEDD1B, white, on warm cream paper. Warm, tropical, optimistic, like a Merdeka gig poster. No crescent, no star, no flag drawn literally."
+  },
+  {
+    "name": "bg-bunga-raya",
+    "aspect": "16:9",
+    "prompt": "Abstract editorial poster background for a web page. NO people, no faces, no figures, no text. A very large abstract hibiscus flower, the bunga raya, built from five broad sprayed red petals with airbrushed gradients and grain, enters from the left edge and is partly cut off by it. Its stamen is a sprayed golden yellow stroke. Behind the flower, a navy blue cut-paper mass bleeds off the bottom-left. A small golden yellow sprayed disc near the top. Shapes are textured and sprayed, never flat solid fills, with heavy risograph grain. Strongly asymmetric: the mass on the left, the upper-right two thirds mostly open warm cream paper for content.",
+    "style": "Palette strictly the Malaysian flag: navy blue #024B8F, red #DA332B, golden yellow #FEDD1B, white, on warm cream paper. Warm, tropical, unmistakably Malaysian. No crescent, no star."
+  },
+  {
+    "name": "bg-warped-stripes",
+    "aspect": "16:9",
+    "prompt": "Abstract editorial poster background for a web page. NO people, no faces, no text. Broad red and white stripes, like the stripes of a flag, bend and warp as they sweep in from the left edge like fabric caught in the wind, then fade out in sprayed, speckled airbrush texture before the middle of the canvas. A navy blue sprayed block sits behind them at the lower left. A soft golden yellow airbrushed sun glows at the top-left. Everything carries heavy risograph grain; nothing is a flat solid fill. Strongly asymmetric: the right two thirds stay mostly open warm cream paper for content.",
+    "style": "Palette strictly the Malaysian flag: navy blue #024B8F, red #DA332B, golden yellow #FEDD1B, white, on warm cream paper. Warm, celebratory, Merdeka energy. Absolutely no crescent and no star."
+  },
+  {
+    "name": "logo-cubes-navy",
+    "aspect": "1:1",
+    "prompt": "Three human heads, each sculpted into a rounded cube with the face mapped onto its front, hyper-realistic skin and hair texture, a surreal 3D face-morphing design study. One Malay man, one Chinese man, one Indian man, all young adults, natural and dignified features, warm genuine smiles, short neat hair. The three cube heads sit side by side at slightly different heights, touching like building blocks, asymmetric. Only the heads, no necks, no clothing, no accessories, no costume.",
+    "style": "Solid background in navy blue #024B8F. Soft studio light, crisp edges. Respectful, warm, friendly, no caricature. No text, no symbols, no crescent, no star."
+  },
+  {
+    "name": "logo-cubes-gold-cursors",
+    "aspect": "1:1",
+    "prompt": "Three human heads, each sculpted into a rounded cube with the face mapped onto its front, hyper-realistic skin texture, a surreal 3D face-morphing design study. One Malay man, one Chinese man, one Indian man, young adults, natural dignified features, warm genuine smiles. The cubes are clustered asymmetrically, one slightly forward. A few small white computer mouse-cursor arrows point at their features, with tiny blank coloured label tags in red #DA332B and navy #024B8F, like a designer's annotation layer. Only the heads, no clothing, no costume.",
+    "style": "Solid background in golden yellow #FEDD1B. Soft studio light, crisp edges. Respectful, warm, playful, no caricature. The label tags are blank, with no readable text. No crescent, no star."
+  },
+  {
+    "name": "logo-cubes-red",
+    "aspect": "1:1",
+    "prompt": "Three human heads, each sculpted into a rounded cube with the face mapped onto its front, hyper-realistic skin and hair texture, a surreal 3D face-morphing design study. One Malay man, one Chinese man, one Indian man, young adults, natural dignified features, warm genuine smiles. Stacked like a small pyramid: two cubes at the bottom, one on top, slightly off-centre. Only the heads, no clothing, no accessories, no costume.",
+    "style": "Solid background in warm red #DA332B. Soft studio light, crisp edges. Respectful, warm, proud, no caricature. No text, no symbols, no crescent, no star."
+  }
+]
