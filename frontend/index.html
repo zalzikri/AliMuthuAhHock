@@ -163,6 +163,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .link{background:var(--wash);border-radius:16px 16px 16px 5px;padding:11px 14px;font-size:12.5px;word-break:break-all;margin:12px 0}
 .muted{color:var(--mute);font-size:12.5px}
 .hide{display:none}
+.fn{font-size:11.5px;color:var(--mute);font-weight:400;margin-left:6px}
 
 /* ---------- the new hire's page: the journey ---------- */
 .row{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
@@ -297,6 +298,9 @@ header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing
 .tour-card p small{display:block;margin-top:6px;font-size:11.5px;color:var(--mute)}
 .tour-ctl{display:flex;align-items:center;gap:8px;margin-top:14px}
 .tour-ctl .count{font:500 11.5px/1 var(--mono);color:var(--mute);margin-right:auto}
+.tour-ctl .dots{display:flex;gap:5px;margin-right:auto}
+.tour-ctl .dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.tour-ctl .dots i.on{background:var(--blue)}
 .tour-ctl .yours{font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.09em;text-transform:uppercase;color:var(--red)}
 .gx{all:unset;cursor:pointer;position:absolute;top:10px;right:14px;font:400 20px/1 var(--font);color:var(--faint)}
 .gx:hover{color:var(--ink)}
@@ -331,6 +335,11 @@ header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing
 </div>
 <script>
 const $ = s => document.querySelector(s);
+/* Short forms, with what they are. GSD's long form is confirmed in GT repos; GEMS and GES are
+   described by what they do until the official names are confirmed. */
+const FULL = {gems:"SAP SuccessFactors", ges:"HR information system", gsd:"Gamuda Service Desk",
+              atlassian:"Jira and Confluence", gcp:"Google Cloud", claude_seat:"AI coding assistant"};
+const fullName = (id, title) => FULL[id] ? `${esc(title)} <span class="fn">${FULL[id]}</span>` : esc(title);
 const GAMUDA = /^[^@\s]+@(gamuda\.com\.my|gamuda\.tech)$/i;   // only Gamuda staff start onboarding
 const api = (p, o) => fetch("/api" + p, o).then(r => r.json());
 let F = {employment:"staff", job_family:"developer", project:"odin", want_claude:true};
@@ -354,10 +363,10 @@ function renderForm(){
   $("#app").innerHTML = `
   <div class="cols">
     <div class="main panel">
-      <div class="hello"><div class="k">For new hires at Gamuda Technologies</div><h1>Add a new hire</h1>
-        <p>Only Gamuda staff can start onboarding. Fill in this form one time. Day One sends each access request to IT in the correct order.</p></div>
-      <div class="field"><label>Full name of the new hire</label><input id="name" placeholder="Nurul Aina binti Rahim"></div>
-      <div class="field"><label>Your Gamuda work email. IT gets the requests from you.</label>
+      <div class="hello"><div class="k">For Gamuda staff</div><h1>Add a new hire</h1>
+        <p>Day One sends each access request to IT, in order.</p></div>
+      <div class="field"><label>New hire's full name</label><input id="name" placeholder="Nurul Aina binti Rahim"></div>
+      <div class="field"><label>Your Gamuda email</label>
         <input id="starter" placeholder="you@gamuda.com.my"></div>
       <div class="field"><label>Type of hire</label>
         <div class="seg" id="seg-emp">
@@ -396,7 +405,7 @@ async function preview(){
   const p = await api("/preview?" + q);
   const chan = {gsd_auto:"GSD ticket", slack_guided:"Slack form", self:"new hire", person:"team contact"};
   $("#plan").innerHTML =
-    p.steps.map(s => `<div><span>${esc(s.title)}</span><span class="why">${chan[s.channel]}</span></div>`).join("")
+    p.steps.map(s => `<div><span>${fullName(s.id, s.title)}</span><span class="why">${chan[s.channel]}</span></div>`).join("")
     + p.skipped.map(s => `<div><s>${esc(s.title)}</s><span class="why">${esc(s.why)}</span></div>`).join("")
     + `<div style="border:0;padding-top:9px"><b>${p.steps.length} steps</b>
        <span class="why">${p.skipped.length} not needed</span></div>`;
@@ -414,9 +423,9 @@ async function submit(){
   $("#app").innerHTML = `<div class="panel" style="max-width:560px">
     <h2>Onboarding started</h2>
     <div class="turn"><div class="k">Sent to IT</div>
-      <div class="v">The first request is with IT</div>
-      <div class="d">${v.progress.total - 1} more steps wait for it. Day One sends each step when the step before it is done.</div></div>
-    <p class="muted">Send this link to ${esc(callName(name))}. It opens the page of the new hire. No password is necessary.</p>
+      <div class="v">First request sent</div>
+      <div class="d">${v.progress.total - 1} more steps follow, one by one.</div></div>
+    <p class="muted">Send this link to ${esc(callName(name))}. No password is necessary.</p>
     <div class="link">${url}</div>
     <div class="acts"><button class="btn" onclick="openHire('${v.token}')">Open the new hire's page</button>
     <button class="btn ghost sm" onclick="navigator.clipboard.writeText('${url}')">Copy link</button></div>
@@ -433,10 +442,10 @@ const STAGES = [
   {key:"project", name:"Your project",     blurb:"GCP access and the repo",                 ids:["gcp","repo_access"]},
 ];
 const NEXT_TIP = {
-  account: "IT does the next steps. While you wait, read about your project below.",
-  hr:      "You can now raise your own GSD tickets.",
-  tools:   "Slack is ready. Say hello to your team. Then try the GTech quiz.",
-  project: "You can open the repo now.",
+  account: "Day One now asks IT for GEMS (SAP SuccessFactors), GES (the HR information system) and GSD (Gamuda Service Desk) access.",
+  hr:      "The new hire can now raise their own GSD tickets. Day One asks for Slack, Atlassian (Jira and Confluence) and Bitbucket.",
+  tools:   "Slack and Bitbucket are ready. Last stage: GCP (Google Cloud) access and the repo.",
+  project: "All access is ready.",
 };
 let TOKEN = "", V = null, TOGGLE = {}, EXP = new Set(), FIRST = true;
 const mem = {
@@ -478,9 +487,9 @@ function act(v, t, inRow){
   const howto = (t.howto||[]).length ? `<ol class="howto">${t.howto.map(h => `<li>${esc(h)}</li>`).join("")}</ol>` : "";
   const ask = t.ask ? `<div class="pre">${esc(t.ask)}</div>` : "";
   const emailAsk = t.ask_email ? `<div class="pre">
-      <label>Which email address did you use to sign in?</label>
+      <label>Your sign-in email</label>
       <input id="we" value="${esc(v.guess_email)}">
-      <span class="muted">We made this from your name. Change it if it is not correct.</span></div>` : "";
+      <span class="muted">Made from your name. Change it if it is wrong.</span></div>` : "";
   const copy = (t.fields||[]).length ? t.fields.map(f => f.label + ": " + f.value).join("\n") : t.ask;
   const exp = t.id === "password_reset" && v.link_expires_in_hours !== null
     ? (v.link_expires_in_hours > 0
@@ -505,15 +514,15 @@ function row(v, s){
     : mine ? '<span class="ico now"></span>' : '<span class="ico"></span>';
   const sub = s.state==="done" ? "Done"
     : s.state==="open" ? `With IT &middot; <span class="tk">GSD #${s.ticket_id}</span> &middot; about ${s.eta_days} days`
-    : held ? `IT gave access &middot; you can start after: ${esc(s.held_by.join(", "))}`
-    : s.state==="waiting_user" ? "Open this step to see what to do."
-    : s.state==="waiting_person" ? `${esc(v.poc_name)} adds you. Open this step to get the message to send.`
+    : held ? `IT gave access &middot; starts after: ${esc(s.held_by.join(", "))}`
+    : s.state==="waiting_user" ? "Open to see what to do"
+    : s.state==="waiting_person" ? `${esc(v.poc_name)} adds you. Open for the message.`
     : "Starts after: " + esc(s.blocked_by.join(", "));
-  if (!mine) return `<div class="row" data-state="${s.state}">${ico}<span>${esc(s.title)}<em>${sub}</em></span></div>`;
+  if (!mine) return `<div class="row" data-state="${s.state}">${ico}<span>${fullName(s.id, s.title)}<em>${sub}</em></span></div>`;
   /* the new hire's steps start collapsed: a highlighted row that the new hire opens */
   const open = EXP.has(s.id);
   return `<div class="mine ${open ? "open" : ""}" data-id="${s.id}">
-    <button class="rh" data-step="${s.id}">${ico}<span class="t">${esc(s.title)}<em>${sub}</em></span>
+    <button class="rh" data-step="${s.id}">${ico}<span class="t">${fullName(s.id, s.title)}<em>${sub}</em></span>
       <span class="pill">Your turn</span><span class="chev"></span></button>
     ${open ? act(v, s, true) : ""}
   </div>`;
@@ -523,7 +532,7 @@ function journey(v, list){
   const withIT = v.steps.filter(x => x.state === "open").length;
   const h1 = n ? (n > 1 ? `You have ${n} steps to do` : "You have 1 step to do")
     : withIT ? `IT is working on ${withIT} request${withIT>1?"s":""}` : "Almost there";
-  const p = n ? "Open the yellow step in the list below." : "You have nothing to do now. When IT is done, your next step shows here.";
+  const p = n ? "Open the yellow step below." : "Nothing to do now. IT is working on it.";
   return `<section class="journey panel">
     <div class="hello"><div class="k">Welcome to Gamuda Technologies, ${esc(callName(v.name))}</div><h1>${h1}</h1><p>${p}</p></div>
     ${stepper(list)}
@@ -550,7 +559,7 @@ function finish(v, list, d){
   return `<section class="finish panel">
     <div class="k">Onboarding complete</div>
     <h1>You are ready, ${esc(callName(v.name))}.</h1>
-    <p class="muted">All ${v.progress.total} steps are done. You have access to all your tools. Start here:</p>
+    <p class="muted">All ${v.progress.total} steps are done. Start here:</p>
     ${stepper(list)}
     <div class="next">
       ${mine ? `<a class="nx" href="${mine.docs_url || mine.url}" target="_blank"><small>Your project</small><b>Start on ${esc(mine.name)}</b><span>Ask ${esc(mine.poc_name)} for your first task.</span></a>` : ""}
@@ -568,8 +577,8 @@ function explore(v, d){
   const list = mine ? [mine, ...d.filter(x => x !== mine)] : d;
   const ready = v.progress.done === v.progress.total;
   const hook = !ready && open.length
-    ? `${open.length === 1 ? esc(open[0].title) + " is" : open.length + " requests are"} with IT for about ${eta}&nbsp;day${eta>1?"s":""}. While you wait, learn about the GTech products.`
-    : "Learn about the GTech products.";
+    ? `IT is working on ${open.length} request${open.length>1?"s":""}. Meanwhile, learn about GTech products.`
+    : "Learn about GTech products.";
   return `<section class="panel explore" id="explore">
     <div class="ex-head">
       <div><h2>${ready ? "Next for you" : "While you wait"}</h2><p class="hook">${hook}</p></div>
@@ -588,7 +597,7 @@ function explore(v, d){
     </div>
     <div class="quizcard">
       <span class="qi">?</span>
-      <span class="t"><b>GTech quiz</b><em>Two minutes. Questions about the GTech products. Read the cards above first.</em></span>
+      <span class="t"><b>GTech quiz</b><em>Two minutes. Test what you know about GTech.</em></span>
       <button class="btn sm" data-quiz="1">Start the quiz &rarr;</button>
     </div>
   </section>`;
@@ -638,7 +647,7 @@ function celebrate(list, done){
   const g = fresh[fresh.length - 1], i = list.indexOf(g), next = list[i + 1];
   const num = document.querySelector(`.stepper li[data-key="${g.key}"] .node`);
   if (num) { num.classList.add("pop"); const r = num.getBoundingClientRect(); confetti(r.left + r.width/2, r.top + r.height/2, 110); }
-  say("stage:" + g.key, `<b>${esc(g.name)} is done.</b> ${next ? `Next: ${esc(next.name)}. ` : ""}${NEXT_TIP[g.key] || ""}`);
+  say("stage:" + g.key, [`<b>${esc(g.name)} is done.</b>${next ? ` Next stage: ${esc(next.name)}.` : ""}`, NEXT_TIP[g.key] || ""].filter(Boolean));
   FIRST = false;
 }
 function toast(html){
@@ -676,32 +685,54 @@ const WHO = {
   muthu:  {name:"Muthu",   role:"How Day One helps", img:"/brand/av-muthu.png"},
   ahhock: {name:"Ah Hock", role:"How it works",      img:"/brand/av-ahhock.png"},
 };
+/* Each message can have several pages. The presenter (or the new hire) moves with Next or the arrow keys.
+   Content from docs/PRD.md, written in ASD-STE100. */
 const STEP_TXT = {
-  password_reset: "IT created your account. <b>Your turn: open the yellow step</b> and set your password.",
-  ges:            "IT gave you GES access. <b>Open the yellow step</b> to see how to sign in.",
-  gcp:            "You request GCP access in Slack, not in GSD. <b>Open the yellow step.</b> Day One filled in the form values for you.",
-  repo_access:    "Your team contact adds you to the repo. <b>Open the yellow step.</b> Day One wrote the message for you.",
+  password_reset: ["IT created the account. Now the new hire must do one thing: <b>open the yellow step</b> and set a password.",
+                   "Google sends the sign-in link to the person who started the onboarding, not to the new hire. The link works for <b>48 hours</b> only, so Day One shows a countdown."],
+  ges:            ["IT gave access to <b>GES</b>, the HR information system: role, employee details, KPI and leave. <b>Open the yellow step.</b>",
+                   "GES sends a user ID and a temporary password to the work email. The user ID is the employee ID on the employee card."],
+  gcp:            ["<b>GCP</b> (Google Cloud) access goes through Slack, not GSD. Many new hires do not know this. <b>Open the yellow step.</b>",
+                   "In Slack, <b>/gcp-request</b> opens a form. Day One fills in the values of that form for you. Copy them, send the form, then confirm."],
+  repo_access:    ["Bitbucket has no way to request repo access. A team contact must add the new hire. <b>Open the yellow step.</b>",
+                   "Day One shows the contact for this project and writes the message. Send it. Confirm when you have access."],
 };
 const MSG = {
-  start:   {who:"ali", t:".side.panel", text:"Hello. We are Ali, Muthu and Ah Hock. A new hire at GTech needs up to 11 accesses, and each request waits for the one before it: <b>12 to 20 working days</b> before the new hire has all access. Nobody can see where they are stuck.<small>Estimate from GT staff.</small>"},
-  type:    {who:"muthu", t:".side.panel", text:"I am Muthu. The steps change with the hire. A staff developer gets 11 steps. An intern gets 8."},
-  started: {who:"muthu", t:".link", text:"Day One sent only the first request to IT. The other requests wait for it. <b>Send this link to the new hire.</b>"},
-  page:    {who:"muthu", t:".stepper", text:"This is your page. The stepper shows your stage. <b>The red dot shows where you are now.</b>"},
-  finish:  {who:"ahhock", t:".finish .stepper", text:"I am Ah Hock. Each step knows which steps must come first. Day One sends each request through the <b>Freshservice API</b>, the same API that GSD uses. Here it uses a local copy; one setting connects it to the real GSD.<br><b>From day one, every new hire knows the next step.</b>"},
+  start: {who:"ali", t:".side.panel", pages:[
+    "Hello. We are Ali, Muthu and Ah Hock. This is <b>Day One</b>, the onboarding app for new hires at GTech. I am Ali. I explain the problem.",
+    "Before a new hire can work, they need up to <b>11 accesses</b>: a Google Workspace email, the HR systems, GSD (Gamuda Service Desk), Slack, Atlassian, Bitbucket and more. Each access is a separate request.",
+    "The requests must go in order. Each one waits for the one before it, and each one takes 3 to 5 days. <b>4 hand-offs &times; 3&ndash;5 days = 12 to 20 working days</b> before a new hire has all access.<small>Estimate from GT staff.</small>",
+    "Today, a person must remember to raise each next request, in the correct channel. Nobody can see where the new hire is stuck. And the new hire does not know what GTech builds, or whom to ask."]},
+  type: {who:"muthu", t:".side.panel", pages:[
+    "I am Muthu. I show how Day One helps. The access depends on two things: the <b>type of hire</b> (staff or intern) and the <b>role</b> (developer or not).",
+    "Interns do not get GEMS, GES or GSD, so they get 8 steps, not 11. Non-developers do not get Bitbucket, GCP or the repo. Day One knows these rules, so the buddy does not have to."]},
+  started: {who:"muthu", t:".link", pages:[
+    "Day One sent only the first request to IT: the Google Workspace email. The other requests wait in a queue. Day One sends each one when the step before it is done.",
+    "The new hire gets one link to their own page. <b>No password is necessary</b>, because the new hire has no company account yet."]},
+  page: {who:"muthu", t:".stepper", pages:[
+    "This is the page of the new hire. The stepper shows the 4 stages: Account, HR and help desk, Work tools, Your project. <b>The red dot shows the stage now.</b>",
+    "Day One checks each GSD ticket by itself, so nobody types status updates. When IT finishes a ticket, Day One sends the next request at once."]},
+  finish: {who:"ahhock", t:".finish .stepper", pages:[
+    "I am Ah Hock. I explain how Day One works. All access steps are in <b>one map</b>. Each step knows which steps must come first. The same map covers staff, interns, developers and non-developers.",
+    "Each step has a channel: a GSD ticket, a Slack form, a task for the new hire, or a team contact. Day One sends each request through the correct channel.",
+    "Day One creates each GSD ticket through the <b>Freshservice API</b>, the system behind GSD. This demo uses a local copy of that API, because a GSD user account cannot get an API key. One setting connects Day One to the real GSD.",
+    {team:true, text:"Next: connect Day One to the real GSD, and add the GTech quiz. <b>From day one, every new hire knows the next step.</b> Thank you."}]},
 };
 const seen = () => new Set(JSON.parse(localStorage.getItem("dayone:seen") || "[]"));
 const markSeen = id => { const x = seen(); x.add(id); localStorage.setItem("dayone:seen", JSON.stringify([...x])); };
 let SHOWN = null, STARTED = "";
 const isMine = x => x.state === "waiting_person" || (x.state === "waiting_user" && !(x.held_by||[]).length);
 
-/* say(id): show message `id` if it was never shown. Stage and step messages pass their own text. */
-function say(id, text){
+/* say(id): show message `id` if it was never shown. Stage and step messages pass their own pages. */
+let PAGE = 0;
+function say(id, pages){
   if (seen().has(id)) return;
   const base = MSG[id] || (id.startsWith("stage:") ? {who:"muthu", t:".stepper"}
     : id.startsWith("yellow:") ? {who:"muthu", t:`.mine[data-id="${id.slice(7)}"]`} : null);
   if (!base) return;
   markSeen(id);
-  show({...base, id, text: text || base.text || STEP_TXT[id.slice(7)] || "Your turn. <b>Open the yellow step.</b>"});
+  const p = pages || base.pages || STEP_TXT[id.slice(7)] || ["Your turn. <b>Open the yellow step.</b>"];
+  show({...base, id, pages: Array.isArray(p) ? p : [p]});
 }
 /* the new hire's page: which events happened in this render? Show the most important new one. */
 function events(v, list, done){
@@ -710,17 +741,30 @@ function events(v, list, done){
   if (yellow.length) { markSeen("page"); return say(yellow[0]); }
   say("page");
 }
-function show(m){
+function show(m){ SHOWN = m; PAGE = 0; drawMsg(true); }
+function drawMsg(scroll){
+  const m = SHOWN; if (!m) return;
   if (!$("#guide")) document.body.insertAdjacentHTML("beforeend", `<div class="tour-card" id="guide"></div>`);
-  const w = WHO[m.who], card = $("#guide");
-  card.innerHTML = `<img class="face" src="${w.img}" alt="">
+  const w = WHO[m.who], card = $("#guide"), pg = m.pages[PAGE], team = typeof pg === "object" && pg.team;
+  const text = typeof pg === "object" ? pg.text : pg, last = PAGE === m.pages.length - 1;
+  const face = team
+    ? `<span class="faces"><img src="/brand/av-ali.png" alt=""><img src="/brand/av-muthu.png" alt=""><img src="/brand/av-ahhock.png" alt=""></span>`
+    : `<img class="face" src="${w.img}" alt="">`;
+  card.innerHTML = `${face}
     <button class="gx" data-guide="off" aria-label="Close">&times;</button>
-    <div class="who"><b>${w.name}</b><span>${w.role}</span></div><p>${m.text}</p>`;
-  SHOWN = m; card.classList.add("on"); card.classList.remove("in"); void card.offsetWidth; card.classList.add("in");
-  const el = m.t && document.querySelector(m.t);
-  if (el) { const r = el.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) el.scrollIntoView({block:"center"}); }
+    <div class="who"><b>${team ? "Ali, Muthu and Ah Hock" : w.name}</b><span>${team ? "Day One" : w.role}</span></div>
+    <p>${text}</p>
+    ${m.pages.length > 1 ? `<div class="tour-ctl">
+      <span class="dots">${m.pages.map((_, i) => `<i class="${i === PAGE ? "on" : ""}"></i>`).join("")}</span>
+      ${PAGE > 0 ? '<button class="tb ghost" data-guide="back">Back</button>' : ""}
+      <button class="tb" data-guide="${last ? "off" : "next"}">${last ? "Done" : "Next"}</button></div>` : ""}`;
+  card.classList.add("on"); card.classList.remove("in"); void card.offsetWidth; card.classList.add("in");
+  if (scroll) { const el = m.t && document.querySelector(m.t);
+    if (el) { const r = el.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) el.scrollIntoView({block:"center"}); } }
   place();
 }
+function turn(d){ const m = SHOWN; if (!m) return; const i = PAGE + d;
+  if (i < 0) return; if (i >= m.pages.length) return hideMsg(); PAGE = i; drawMsg(false); }
 function hideMsg(){ SHOWN = null; const c = $("#guide"); if (c) c.classList.remove("on"); }
 /* next to the target: below it if there is room, else above it, else beside it */
 function place(){
@@ -748,9 +792,16 @@ addEventListener("resize", place);
 /* your next action closes the message. Capture phase: it runs BEFORE the app's own click handler,
    so a click that causes a new event closes the old message first and then shows the new one. */
 document.addEventListener("click", e => {
-  if (e.target.closest("#guide")) { if (e.target.closest("[data-guide]")) hideMsg(); return; }
+  if (e.target.closest("#guide")) { const g = e.target.closest("[data-guide]");
+    if (g) { g.dataset.guide === "next" ? turn(1) : g.dataset.guide === "back" ? turn(-1) : hideMsg(); } return; }
   if (SHOWN) hideMsg();
 }, true);
+document.addEventListener("keydown", e => {
+  if (!SHOWN || e.target.closest("input, select, textarea")) return;
+  if (e.key === "ArrowRight") { e.preventDefault(); turn(1); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); turn(-1); }
+  else if (e.key === "Escape") hideMsg();
+});
 document.addEventListener("input", () => { if (SHOWN) hideMsg(); }, true);
 /* ---------- clicks ---------- */
 document.addEventListener("click", e => {
