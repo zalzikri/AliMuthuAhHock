@@ -390,7 +390,7 @@ function renderForm(){
   bindSeg("#seg-emp", "employment"); bindSeg("#seg-job", "job_family");
   $("#project").onchange = e => { F.project = e.target.value; preview(); };
   $("#go").onclick = submit;
-  preview().then(() => say("start"));
+  preview().then(() => { say("start"); place(); });
 }
 function bindSeg(sel, key){
   const box = $(sel);
@@ -627,6 +627,7 @@ async function render(v, token){
   }
   celebrate(list, done);
   events(v, list, done);
+  place();
 }
 /* ---------- achievements ---------- */
 function celebrate(list, done){
@@ -675,7 +676,7 @@ function confetti(x, y, n){
 }
 /* ---------- the guide: part of the app ----------
    An event in the app shows ONE message from one avatar, next to the part of the screen it is about.
-   The message goes away when you do something, or when the next event replaces it.
+   The message stays until Done, x or Esc, or until the next event replaces it.
    Each event shows one time per tab (sessionStorage). Nothing talks DURING the cascade: Muthu explains it
    before it starts, when the page opens, and Ah Hock explains after it ends. */
 const WHO = {
@@ -767,6 +768,7 @@ function hideMsg(){ SHOWN = null; const c = $("#guide"); if (c) c.classList.remo
 function place(){
   const m = SHOWN, card = $("#guide"); if (!m || !card) return;
   const el = m.t && document.querySelector(m.t);
+  if (m.t && !el) return hideMsg();            // its part of the screen is gone: you moved on
   const cw = card.offsetWidth, ch = card.offsetHeight, gap = 18;
   let x = innerWidth - cw - 24, y = innerHeight - ch - 24, tail = "none";
   const wrap = $(".wrap").getBoundingClientRect();
@@ -786,20 +788,18 @@ function place(){
 }
 addEventListener("scroll", place, {passive:true});
 addEventListener("resize", place);
-/* your next action closes the message. Capture phase: it runs BEFORE the app's own click handler,
-   so a click that causes a new event closes the old message first and then shows the new one. */
+/* a message stays when you click or type elsewhere. It goes away only with Done, x, Esc,
+   or when the next event replaces it. */
 document.addEventListener("click", e => {
-  if (e.target.closest("#guide")) { const g = e.target.closest("[data-guide]");
-    if (g) { g.dataset.guide === "next" ? turn(1) : g.dataset.guide === "back" ? turn(-1) : hideMsg(); } return; }
-  if (SHOWN) hideMsg();
-}, true);
+  const g = e.target.closest("#guide [data-guide]");
+  if (g) g.dataset.guide === "next" ? turn(1) : g.dataset.guide === "back" ? turn(-1) : hideMsg();
+});
 document.addEventListener("keydown", e => {
   if (!SHOWN || e.target.closest("input, select, textarea")) return;
   if (e.key === "ArrowRight") { e.preventDefault(); turn(1); }
   else if (e.key === "ArrowLeft") { e.preventDefault(); turn(-1); }
   else if (e.key === "Escape") hideMsg();
 });
-document.addEventListener("input", () => { if (SHOWN) hideMsg(); }, true);
 /* ---------- clicks ---------- */
 document.addEventListener("click", e => {
   const st = e.target.closest("[data-step]");
