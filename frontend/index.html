@@ -165,69 +165,79 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .hide{display:none}
 
 /* ---------- her page: the journey ---------- */
-.steps,.sb{font-size:13.5px}
-.row{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line)}
-.row:last-child{border-bottom:0}
+.row{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
 .row em{font-style:normal;color:var(--mute);font-size:12px;display:block}
 .tk{font:500 11.5px/1 var(--mono)}
-.journey{padding:24px 24px 8px}
+.journey{padding:24px 26px 18px}
 .hello .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .hello h1{font:900 32px/1.02 var(--display);font-stretch:108%;letter-spacing:-.035em;margin:9px 0 6px;text-wrap:balance}
-.hello p{margin:0 0 14px;color:var(--mute)}
-.track{display:flex;gap:6px;margin:0 0 16px}
-.track span{flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden;position:relative}
-.track span i{position:absolute;inset:0 auto 0 0;width:calc(var(--p) * 100%);background:var(--blue);border-radius:inherit}
-.track span.here{background:rgba(2,75,143,.14)}
-.stages{list-style:none;margin:0;padding:0}
-.stage{border-top:1px solid var(--line)}
-.sh{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;padding:14px 2px}
-.sh:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;border-radius:12px}
-.num{width:30px;height:30px;flex:none;border-radius:11px 11px 11px 4px;display:grid;place-items:center;
-  font:800 13px/1 var(--display);border:1.5px solid rgba(2,75,143,.2);color:var(--mute);background:var(--white)}
-.stage.complete .num{background:var(--blue);border-color:var(--blue);color:var(--white)}
-.stage.here .num{border:2px solid var(--blue);color:var(--blue)}
-.sn{flex:1;min-width:0}
-.sn b{display:block;font:800 15.5px/1.2 var(--display);font-stretch:104%;letter-spacing:-.01em}
-.sn em{font-style:normal;font-size:12.5px;color:var(--mute)}
-.stage.complete .sn b{color:var(--mute)}
-.sc{font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
-.stage.here .sc{color:var(--blue)}
-.chev{width:8px;height:8px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(45deg);margin:0 4px 4px 2px;flex:none}
-.stage.open .chev{transform:rotate(-135deg);margin:4px 4px 0 2px}
-.sb{padding:0 0 14px 42px;max-width:720px}
-.act{padding:18px 20px;margin:4px 0 10px;border-radius:30px 10px 30px 10px}
-@keyframes pop{0%{transform:scale(.55)}55%{transform:scale(1.28)}100%{transform:scale(1)}}
-.num.pop{animation:pop .6s cubic-bezier(.2,.9,.25,1.3)}
+.hello p{margin:0;color:var(--mute)}
+.act{padding:18px 20px;margin:8px 0 10px;border-radius:30px 10px 30px 10px}
+.flat{max-width:720px}
+.flat h2{margin:4px 0 4px}
 
-/* ---------- while you wait: one container, calm ---------- */
+/* stepper: the one place with colour. Done = navy check, here = red node + "You are here". */
+.stepper{list-style:none;margin:22px 0 22px;padding:0;display:grid;grid-template-columns:repeat(var(--n),1fr)}
+.stepper li{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.stepper li+li::before{content:"";position:absolute;top:17px;right:calc(50% + 24px);left:calc(-50% + 24px);height:3px;
+  border-radius:999px;background:var(--line)}
+.stepper li.done+li::before{background:var(--blue)}
+.node{position:relative;z-index:1;width:36px;height:36px;display:grid;place-items:center;border-radius:13px 13px 13px 4px;
+  font:800 14px/1 var(--display);color:var(--faint);background:var(--white);border:1.5px solid rgba(2,75,143,.2)}
+.stepper li.done .node{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.stepper li.here .node{background:var(--red);border-color:var(--red);color:var(--white);box-shadow:0 0 0 6px rgba(218,51,43,.14)}
+.lab{font:800 13.5px/1.2 var(--display);font-stretch:104%;color:var(--mute)}
+.stepper li.done .lab,.stepper li.here .lab{color:var(--blue)}
+.sub{font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.stepper li.done .sub{color:var(--mute)}
+.you{display:inline-block;background:var(--red);color:var(--white);padding:4px 9px 4px;border-radius:999px 999px 999px 4px}
+@keyframes pop{0%{transform:scale(.55)}55%{transform:scale(1.28)}100%{transform:scale(1)}}
+.node.pop{animation:pop .6s cubic-bezier(.2,.9,.25,1.3)}
+
+/* ---------- while you wait: one container ---------- */
 .stack>*+*{margin-top:16px}
-.explore{padding:22px 24px 10px}
-.ex-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:6px}
+.explore{padding:22px 24px 18px}
+.ex-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
 .ex-head h2{margin:0 0 6px}
-.hook{margin:0;font-size:14px;color:var(--ink);max-width:560px}
+.hook{margin:0;font-size:14px;max-width:520px}
+.ex-ctl{display:flex;align-items:center;gap:16px}
 .meter{display:flex;flex-direction:column;align-items:flex-end;gap:7px;font:700 10px/1 var(--display);font-stretch:112%;
-  letter-spacing:.09em;text-transform:uppercase;color:var(--mute);white-space:nowrap;padding-top:2px}
+  letter-spacing:.09em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
 .meter .dots{display:flex;gap:4px}
 .meter i{width:16px;height:5px;border-radius:999px;background:var(--line)}
 .meter i.on{background:var(--blue)}
-.prod{border-top:1px solid var(--line)}
-.ph{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:12px;align-items:center;width:100%;padding:11px 0}
-.ph:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;border-radius:12px}
+.arrows{display:flex;gap:6px}
+.arrows button{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;
+  border:1px solid rgba(2,75,143,.25);font:800 14px/1 var(--display);color:var(--blue)}
+.arrows button:hover{border-color:var(--blue)}
+.car{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,calc((100% - 24px) / 2.6));gap:12px;
+  overflow-x:auto;scroll-snap-type:x mandatory;margin:16px -24px 0;padding:2px 24px 14px;scroll-padding:0 24px;scrollbar-width:none}
+.car::-webkit-scrollbar{display:none}
+.pc{scroll-snap-align:start;display:flex;flex-direction:column;gap:9px;padding:16px 16px 14px;cursor:pointer;
+  background:var(--white);border:1px solid rgba(2,75,143,.16);border-radius:24px 24px 24px 6px;transition:border-color .15s,transform .15s}
+.pc:hover{border-color:var(--blue);transform:translateY(-2px)}
+.pc-top{display:flex;align-items:center;gap:8px;min-height:30px}
 .ini{width:30px;height:30px;flex:none;border-radius:10px 10px 10px 4px;display:grid;place-items:center;
   font:800 13px/1 var(--display);color:var(--blue);background:var(--wash);border:1px solid var(--line)}
-.prod.seen .ini{background:var(--white)}
-.ph .t{flex:1;min-width:0}
-.ph b{font:800 14px/1.25 var(--display);font-stretch:104%}
-.ph .chip{margin:0 0 0 8px;padding:1px 8px;font:700 9.5px/1.5 var(--display);letter-spacing:.06em;text-transform:uppercase;vertical-align:1px;
+.pc .chip{margin:0;padding:1px 8px;font:700 9.5px/1.6 var(--display);letter-spacing:.06em;text-transform:uppercase;
   background:transparent;border:1px solid rgba(2,75,143,.25);color:var(--blue)}
-.ph em{display:block;font-style:normal;font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tick{font:800 13px/1 var(--display);color:var(--faint);width:14px;text-align:center}
-.prod.seen .tick{color:var(--blue)}
-.prod.open .ph em{display:none}
-.pb{padding:0 0 14px 42px;font-size:13.5px;max-width:700px}
-.pb p{margin:0 0 8px}
-.links{display:flex;gap:16px;margin-top:6px;font:700 12.5px/1 var(--display)}
+.pc div .chip{margin:0 4px 4px 0;text-transform:none;letter-spacing:0;font:500 11px/1.6 var(--font);border-color:var(--line);color:var(--mute)}
+.ok{margin-left:auto;font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.pc-name{font:850 19px/1.1 var(--display);font-stretch:104%;letter-spacing:-.015em}
+.pc p{margin:0;font-size:13px;line-height:1.5}
+.pc .try{color:var(--mute)}
+.pc-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:11px;border-top:1px solid var(--line)}
+.poc{font-size:12px;color:var(--mute)}
+.links{display:flex;gap:12px;font:700 12.5px/1 var(--display)}
 .links a{text-decoration:none;border-bottom:1.5px solid var(--blue);padding-bottom:2px}
+/* the quiz is not a product: tinted, dashed, mirrored corners */
+.quizcard{display:flex;align-items:center;gap:14px;margin-top:6px;padding:15px 18px;background:var(--wash);
+  border:1.5px dashed rgba(2,75,143,.32);border-radius:10px 28px 10px 28px}
+.qi{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:14px 14px 14px 4px;
+  background:var(--blue);color:var(--white);font:900 20px/1 var(--display)}
+.quizcard .t{flex:1;min-width:0}
+.quizcard b{display:block;font:850 16px/1.2 var(--display);font-stretch:104%}
+.quizcard em{font-style:normal;font-size:12.5px;color:var(--mute)}
 
 /* ---------- achievements ---------- */
 .toast{position:fixed;left:50%;bottom:28px;z-index:60;transform:translate(-50%,28px) scale(.96);opacity:0;
@@ -240,7 +250,6 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
   display:grid;place-items:center;font:900 16px/1 var(--display)}
 .confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:70}
 .finish{padding:24px 26px 20px}
-.finish .heads{width:240px;display:block;margin:-8px 0 4px -10px;animation:rise .9s cubic-bezier(.2,.9,.25,1.25) both}
 @keyframes rise{0%{transform:translateY(26px) scale(.85);opacity:0}100%{transform:none;opacity:1}}
 .finish .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .finish h1{font:900 38px/1 var(--display);font-stretch:108%;letter-spacing:-.035em;margin:9px 0 8px}
@@ -255,7 +264,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .nx{background:var(--white);color:var(--blue);border:1px solid rgba(2,75,143,.18)}
 .nx:first-child{border-color:var(--blue)}
 .more{all:unset;cursor:pointer;font:700 12.5px/1 var(--display);border-bottom:1.5px solid var(--blue);padding-bottom:2px;margin-top:6px}
-@media (prefers-reduced-motion: reduce){.finish .heads,.nx,.num.pop{animation:none}}
+@media (prefers-reduced-motion: reduce){.nx,.node.pop{animation:none}}
 </style></head>
 <body>
 <div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=6" alt=""><img class="accent" src="/brand/accent.png?v=6" alt=""></div>
@@ -373,7 +382,7 @@ const STAGES = [
   {key:"project", name:"Your project",     blurb:"GCP access and the repo",                 ids:["gcp","repo_access"]},
 ];
 const NEXT_TIP = {
-  account: "IT has it from here. Meet your project on the right while you wait.",
+  account: "IT has it from here. Meet your project below while you wait.",
   hr:      "Your GSD portal works now: you can raise your own IT tickets.",
   tools:   "Slack is ready. Say hello to your team, then try the GTech quiz.",
   project: "You can open the repo now.",
@@ -450,49 +459,47 @@ function row(v, s){
   return `<div class="row">${ico}<span>${esc(s.title)}<em>${sub}</em></span></div>`;
 }
 function journey(v, list){
-  const here = list.find(g => g.here), idx = list.indexOf(here) + 1;
-  const first = esc(callName(v.name));
-  const withIT = v.steps.filter(s => s.state === "open").length;
   const n = v.your_turn_count || 0;
-  const line = n ? (n > 1 ? `${n} things for you. The first is open below.` : "1 thing for you. It is open below.")
-    : withIT ? `Nothing for you right now. IT is working on ${withIT} request${withIT>1?"s":""}.` : "";
+  const withIT = v.steps.filter(x => x.state === "open").length;
+  const h1 = n ? (n > 1 ? `${n} things for you` : "1 thing for you")
+    : withIT ? `IT is working on ${withIT} request${withIT>1?"s":""}` : "Almost there";
+  const p = n ? "It is open in the list below." : "Nothing for you right now. It shows up here when IT finishes.";
   return `<section class="journey panel">
-    <div class="hello">
-      <div class="k">Welcome, ${first} &middot; stage ${idx} of ${list.length}</div>
-      <h1>${esc(here.name)}</h1>
-      <p>${line}</p>
-      <div class="track">${list.map(g => `<span class="${g.complete?"done":g.here?"here":""}" style="--p:${g.done/g.steps.length}"><i></i></span>`).join("")}</div>
-    </div>
-    ${stageList(v, list)}
+    <div class="hello"><div class="k">Welcome, ${esc(callName(v.name))}</div><h1>${h1}</h1><p>${p}</p></div>
+    ${stepper(list)}
+    ${flatList(v)}
   </section>`;
 }
-function stageList(v, list){
-  return `<ol class="stages">${list.map((g, i) => {
-    const status = g.complete ? "Done" : g.here ? "You are here" : g.mine ? "Your turn" : g.withIT ? `${g.withIT} with IT` : "Later";
-    const body = g.open ? `<div class="sb">${g.steps.map(s => v.your_turn && s.id === v.your_turn.id ? act(v, s) : row(v, s)).join("")}
-      ${g.key==="account" && v.work_email ? `<p class="muted" style="margin:10px 0 0">Your address: <b>${esc(v.work_email)}</b></p>` : ""}</div>` : "";
-    return `<li class="stage ${g.complete?"complete":""} ${g.here?"here":""} ${g.open?"open":""}" data-key="${g.key}">
-      <button class="sh" data-stage="${g.key}">
-        <span class="num">${g.complete ? "&#10003;" : i + 1}</span>
-        <span class="sn"><b>${esc(g.name)}</b><em>${esc(g.blurb)}</em></span>
-        <span class="sc">${status} &middot; ${g.done}/${g.steps.length}</span><span class="chev"></span>
-      </button>${body}</li>`; }).join("")}</ol>`;
+function stepper(list){
+  return `<ol class="stepper" style="--n:${list.length}">${list.map((g, i) => `
+    <li class="${g.complete ? "done" : g.here ? "here" : ""}" data-key="${g.key}">
+      <span class="node">${g.complete ? "&#10003;" : i + 1}</span>
+      <span class="lab">${esc(g.name)}</span>
+      <span class="sub">${g.complete ? "Done" : g.here ? '<span class="you">You are here</span>' : `${g.done} of ${g.steps.length}`}</span>
+    </li>`).join("")}</ol>`;
+}
+function flatList(v){
+  return `<div class="flat">
+    <h2>All steps &middot; ${v.progress.done} of ${v.progress.total} ready</h2>
+    ${v.steps.map(x => v.your_turn && x.id === v.your_turn.id ? act(v, x) : row(v, x)).join("")}
+    ${v.work_email ? `<p class="muted" style="margin:12px 0 0">Your address: <b>${esc(v.work_email)}</b></p>` : ""}
+  </div>`;
 }
 function finish(v, list, d){
   const mine = d.find(x => x.key === (v.project||"").toLowerCase());
   return `<section class="finish panel">
-    <img class="heads" src="/brand/logo-420.png?v=6" alt="">
     <div class="k">Day One &middot; complete</div>
     <h1>You are set, ${esc(callName(v.name))}.</h1>
     <p class="muted">${v.progress.total} of ${v.progress.total} ready. Every account works. Here is where to go next.</p>
+    ${stepper(list)}
     <div class="next">
       ${mine ? `<a class="nx" href="${mine.docs_url || mine.url}" target="_blank"><small>Your project</small><b>Start on ${esc(mine.name)}</b><span>Ask ${esc(mine.poc_name)} for your first task.</span></a>` : ""}
       <button class="nx" data-quiz="1"><small>Two minutes</small><b>Take the GTech quiz</b><span>See how much you picked up.</span></button>
-      <button class="nx" data-explore="${(d.find(x => !mine || x.key !== mine.key) || d[0]).key}"><small>Explore</small><b>Meet the other products</b><span>${d.length} products, one line each.</span></button>
+      <button class="nx" data-explore="${(d.find(x => !mine || x.key !== mine.key) || d[0]).key}"><small>Explore</small><b>Meet the other products</b><span>${d.length} products, below.</span></button>
     </div>
     <button class="more" data-stage="__all">${TOGGLE.__all ? "Hide" : "See"} all ${v.progress.total} steps</button>
-  </section>
-  ${TOGGLE.__all ? `<section class="journey panel" style="margin-top:14px">${stageList(v, list)}</section>` : ""}`;
+    ${TOGGLE.__all ? flatList(v) : ""}
+  </section>`;
 }
 function explore(v, d){
   const seen = new Set(mem.get("explored") || []);
@@ -501,36 +508,35 @@ function explore(v, d){
   const mine = d.find(x => x.key === (v.project||"").toLowerCase());
   const list = mine ? [mine, ...d.filter(x => x !== mine)] : d;
   const ready = v.progress.done === v.progress.total;
-  const hook = ready ? "Meet what GTech builds."
-    : open.length ? `${open.length === 1 ? esc(open[0].title) + " is" : open.length + " requests are"} with IT, about ${eta}&nbsp;day${eta>1?"s":""}. Meanwhile, meet what GTech builds.`
+  const hook = !ready && open.length
+    ? `${open.length === 1 ? esc(open[0].title) + " is" : open.length + " requests are"} with IT, about ${eta}&nbsp;day${eta>1?"s":""}. Meanwhile, meet what GTech builds.`
     : "Meet what GTech builds.";
   return `<section class="panel explore" id="explore">
     <div class="ex-head">
       <div><h2>${ready ? "Next for you" : "While you wait"}</h2><p class="hook">${hook}</p></div>
-      <div class="meter"><span>${seen.size} of ${d.length} explored</span>
-        <span class="dots">${d.map(x => `<i class="${seen.has(x.key)?"on":""}"></i>`).join("")}</span></div>
+      <div class="ex-ctl">
+        <div class="meter"><span>${seen.size} of ${d.length} explored</span>
+          <span class="dots">${list.map(x => `<i class="${seen.has(x.key)?"on":""}"></i>`).join("")}</span></div>
+        <div class="arrows"><button data-car="-1" aria-label="Previous">&larr;</button><button data-car="1" aria-label="Next">&rarr;</button></div>
+      </div>
     </div>
-    ${list.map(x => `<div class="prod ${PROD===x.key?"open":""} ${seen.has(x.key)?"seen":""}">
-      <button class="ph" data-explore="${x.key}">
-        <span class="ini">${esc(x.name[0])}</span>
-        <span class="t"><b>${esc(x.name)}</b>${mine && x.key===mine.key ? '<span class="chip">your project</span>' : ""}<em>${esc(x.one_line||"")}</em></span>
-        <span class="tick">${seen.has(x.key) ? "&#10003;" : "&rarr;"}</span>
-      </button>
-      ${PROD===x.key ? `<div class="pb">
+    <div class="car" id="car">${list.map(x => `
+      <article class="pc ${seen.has(x.key)?"seen":""}" data-card="${x.key}">
+        <div class="pc-top"><span class="ini">${esc(x.name[0])}</span>
+          ${mine && x.key===mine.key ? '<span class="chip">your project</span>' : ""}
+          ${seen.has(x.key) ? '<span class="ok">&#10003; explored</span>' : ""}</div>
+        <b class="pc-name">${esc(x.name)}</b>
         <p>${esc(x.one_line||"")}</p>
-        ${x.try_in_5 ? `<p><b>Try in 5 minutes:</b> ${esc(x.try_in_5)}</p>` : ""}
-        <div>${(x.stack||[]).map(t => `<span class="chip">${esc(t)}</span>`).join("")}<span class="chip">ask ${esc(x.poc_name)}</span></div>
-        <div class="links"><a href="${x.url}" target="_blank">Open it &rarr;</a>
-          ${x.docs_url ? `<a href="${x.docs_url}" target="_blank">Docs &rarr;</a>` : ""}
-          ${x.poc_email ? `<a href="mailto:${x.poc_email}">Email ${esc(x.poc_name)}</a>` : ""}</div>
-      </div>` : ""}
-    </div>`).join("")}
-    <div class="prod quizrow">
-      <button class="ph" data-quiz="1">
-        <span class="ini">?</span>
-        <span class="t"><b>GTech quiz</b><em>${seen.size >= 3 ? "You have explored enough. Ready?" : "Two minutes. Best after 3 products."}</em></span>
-        <span class="tick">&rarr;</span>
-      </button>
+        ${x.try_in_5 ? `<p class="try"><b>Try in 5 minutes:</b> ${esc(x.try_in_5)}</p>` : ""}
+        ${(x.stack||[]).length ? `<div>${x.stack.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>` : ""}
+        <div class="pc-foot"><span class="poc">Ask ${esc(x.poc_name)}</span>
+          <span class="links"><a href="${x.url}" target="_blank">Open &rarr;</a>${x.docs_url ? `<a href="${x.docs_url}" target="_blank">Docs &rarr;</a>` : ""}</span></div>
+      </article>`).join("")}
+    </div>
+    <div class="quizcard">
+      <span class="qi">?</span>
+      <span class="t"><b>GTech quiz</b><em>${seen.size >= 3 ? "You have explored enough. Ready to test yourself?" : "Two minutes on what GTech builds. Best after 3 products."}</em></span>
+      <button class="btn sm" data-quiz="1">Start the quiz &rarr;</button>
     </div>
   </section>`;
 }
@@ -553,8 +559,10 @@ async function render(v, token){
   </div>`;
   if (html !== LAST) {
     const we = $("#we"), typed = we ? we.value : null, focused = we && document.activeElement === we;
+    const car = $("#car"), carX = car ? car.scrollLeft : 0;
     LAST = html;
     $("#app").innerHTML = html;
+    if ($("#car")) $("#car").scrollLeft = carX;
     const we2 = $("#we");
     if (we2 && typed !== null) { we2.value = typed; if (focused) we2.focus(); }
   }
@@ -569,12 +577,12 @@ function celebrate(list, done){
   fresh.forEach(g => seen.add(g.key)); if (done) seen.add("__all");
   mem.set("celebrated", [...seen]);
   if (allFresh) {
-    const h = document.querySelector(".finish .heads"), r = h ? h.getBoundingClientRect() : {left:innerWidth/2, top:200, width:0};
-    confetti(r.left + r.width/2, r.top + 60, 180); setTimeout(() => confetti(innerWidth*0.75, innerHeight*0.35, 120), 350);
+    const h = document.querySelector(".finish h1"), r = h ? h.getBoundingClientRect() : {left:innerWidth/2, top:200, width:0};
+    confetti(r.left + 160, r.top + 20, 180); setTimeout(() => confetti(innerWidth*0.75, innerHeight*0.35, 120), 350);
     FIRST = false; return;
   }
   const g = fresh[fresh.length - 1], i = list.indexOf(g), next = list[i + 1];
-  const num = document.querySelector(`.stage[data-key="${g.key}"] .num`);
+  const num = document.querySelector(`.stepper li[data-key="${g.key}"] .node`);
   if (num) { num.classList.add("pop"); const r = num.getBoundingClientRect(); confetti(r.left + r.width/2, r.top + r.height/2, 110); }
   toast(`<span class="badge">&#10003;</span><span><b>${esc(g.name)} done.</b> ${next ? `Next: ${esc(next.name)}. ` : ""}${NEXT_TIP[g.key] || ""}</span>`);
   FIRST = false;
@@ -606,21 +614,30 @@ function confetti(x, y, n){
   })(t0);
 }
 /* ---------- clicks ---------- */
+function markSeen(k){
+  const seen = new Set(mem.get("explored") || []), before = seen.size;
+  if (seen.has(k)) return;
+  seen.add(k); mem.set("explored", [...seen]); rerender();
+  if (DIR && before < DIR.length && seen.size === DIR.length) {
+    const c = document.querySelector(`[data-card="${k}"]`), r = c ? c.getBoundingClientRect() : {left:innerWidth/2, top:innerHeight/2, width:0};
+    confetti(r.left + r.width/2, r.top + 20, 120);
+    toast(`<span class="badge">5</span><span><b>You have met every GTech product.</b> Now test yourself with the quiz.</span>`);
+  }
+}
 document.addEventListener("click", e => {
   const s = e.target.closest("[data-stage]");
-  if (s) { const k = s.dataset.stage, li = s.closest(".stage");
-    TOGGLE[k] = k === "__all" ? !TOGGLE.__all : !(li && li.classList.contains("open")); rerender(); return; }
+  if (s) { TOGGLE.__all = !TOGGLE.__all; rerender(); return; }
+  const c = e.target.closest("[data-car]");
+  if (c) { const car = $("#car"), card = car && car.querySelector(".pc");
+    if (car && card) car.scrollBy({left: (+c.dataset.car) * (card.offsetWidth + 12), behavior: "smooth"}); return; }
   const x = e.target.closest("[data-explore]");
-  if (x) { const k = x.dataset.explore, seen = new Set(mem.get("explored") || []), before = seen.size;
-    PROD = (PROD === k && x.classList.contains("ph")) ? null : k; seen.add(k); mem.set("explored", [...seen]);
-    rerender();
-    const el = document.querySelector(".prod.open"); if (el && !x.classList.contains("ph")) el.scrollIntoView({behavior:"smooth", block:"center"});
-    if (DIR && before < DIR.length && seen.size === DIR.length) {
-      const r = x.getBoundingClientRect(); confetti(r.left + r.width/2, r.top, 120);
-      toast(`<span class="badge">5</span><span><b>You have met every GTech product.</b> Now test yourself with the quiz.</span>`); }
-    return; }
-  if (e.target.closest("[data-quiz]")) {
-    toast(`<span class="badge">?</span><span><b>The GTech quiz opens here.</b> Our teammate's quiz plugs into this button.</span>`); }
+  if (x) { $("#explore").scrollIntoView({behavior: "smooth", block: "start"});
+    const car = $("#car"), card = car && car.querySelector(`[data-card="${x.dataset.explore}"]`);
+    if (car && card) car.scrollTo({left: card.offsetLeft - car.offsetLeft, behavior: "smooth"}); return; }
+  const q = e.target.closest("[data-quiz]");
+  if (q) { toast(`<span class="badge">?</span><span><b>The GTech quiz opens here.</b> Our teammate's quiz plugs into this button.</span>`); return; }
+  const k = e.target.closest("[data-card]");
+  if (k) markSeen(k.dataset.card);
 });
 boot();
 </script></body></html>
