@@ -279,14 +279,13 @@ header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing
 .tourbtn:hover{border-color:var(--blue)}
 
 /* ---------- tour ---------- */
-#tour{display:none}
-#tour.on{display:block}
-.tour-block{position:fixed;inset:0;z-index:80}
-.tour-spot{position:fixed;z-index:81;pointer-events:none;border-radius:22px 22px 22px 8px;
-  box-shadow:0 0 0 2px var(--yellow),0 0 0 9999px rgba(10,16,51,.56);
-  transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1)}
-.tour-card{position:fixed;z-index:82;width:380px;padding:18px 20px 16px 20px;background:var(--white);color:var(--ink);
-  border-radius:28px 28px 28px 8px;box-shadow:0 30px 60px -28px rgba(10,16,51,.6);
+#guide{display:none}
+#guide.on{display:block}
+.gring{position:fixed;z-index:81;pointer-events:none;border-radius:22px 22px 22px 8px;
+  box-shadow:0 0 0 3px var(--yellow),0 0 0 9px rgba(254,221,27,.28);
+  transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .2s}
+.tour-card{position:fixed;z-index:82;width:370px;padding:18px 20px 16px 20px;background:var(--white);color:var(--ink);
+  border:1px solid rgba(2,75,143,.14);border-radius:28px 28px 28px 8px;box-shadow:0 30px 60px -26px rgba(10,16,51,.55);
   transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1)}
 .tour-card.in{animation:cardin .4s cubic-bezier(.2,.9,.25,1.2)}
 @keyframes cardin{0%{opacity:0;transform:translateY(10px) scale(.97)}100%{opacity:1;transform:none}}
@@ -304,10 +303,15 @@ header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing
 .tour-card p small{display:block;margin-top:6px;font-size:11.5px;color:var(--mute)}
 .tour-ctl{display:flex;align-items:center;gap:8px;margin-top:14px}
 .tour-ctl .count{font:500 11.5px/1 var(--mono);color:var(--mute);margin-right:auto}
+.tour-ctl .yours{font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.09em;text-transform:uppercase;color:var(--red)}
+.gx{all:unset;cursor:pointer;position:absolute;top:10px;right:14px;font:400 20px/1 var(--font);color:var(--faint)}
+.gx:hover{color:var(--ink)}
 .tb{all:unset;cursor:pointer;font:600 13px/1 var(--font);padding:9px 16px;border-radius:999px 999px 999px 8px;background:var(--blue);color:var(--white)}
 .tb.ghost{background:transparent;color:var(--mute);padding:9px 8px}
 .tb.ghost:empty{display:none}
-.tour-card[data-tail="up"]::before,.tour-card[data-tail="down"]::before{content:"";position:absolute;left:34px;width:16px;height:16px;background:var(--white);transform:rotate(45deg);border-radius:3px}
+.tour-card[data-tail="up"]::before,.tour-card[data-tail="down"]::before{content:"";position:absolute;left:34px;width:16px;height:16px;background:var(--white);transform:rotate(45deg);border-radius:3px;border:1px solid rgba(2,75,143,.14)}
+.tour-card[data-tail="up"]::before{border-right:0;border-bottom:0}
+.tour-card[data-tail="down"]::before{border-left:0;border-top:0}
 .tour-card[data-tail="up"]::before{top:-7px}
 .tour-card[data-tail="down"]::before{bottom:-7px}
 .confetti{z-index:90}
@@ -325,7 +329,7 @@ header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing
       <b>Day&nbsp;One</b>
       <div class="with"><i>with</i><span class="name n1">Ali</span><span class="name n2">Muthu</span><span class="name n3">Ah&nbsp;Hock</span></div>
     </div>
-    <button class="tourbtn" id="tourbtn" type="button">Take the tour</button>
+    <button class="tourbtn" id="tourbtn" type="button">Restart guide</button>
   </div>
   <div class="rule"></div>
 </header>
@@ -380,7 +384,7 @@ function renderForm(){
   bindSeg("#seg-emp", "employment"); bindSeg("#seg-job", "job_family");
   $("#project").onchange = e => { F.project = e.target.value; preview(); };
   $("#go").onclick = submit;
-  preview();
+  preview().then(guide);
 }
 function bindSeg(sel, key){
   const box = $(sel);
@@ -408,9 +412,8 @@ async function submit(){
   $("#go").disabled = true;
   const v = await api("/onboardings", {method:"POST", headers:{"content-type":"application/json"},
     body: JSON.stringify({name, starter_email:starter, employment:F.employment,
-      job_family:F.job_family, project:F.project||null, start_date:$("#start").value.trim(),
-      manual: TOUR.on && TOUR.mode === "presenter"})});
-  TOUR.token = v.token;
+      job_family:F.job_family, project:F.project||null, start_date:$("#start").value.trim()})});
+  STARTED = v.token;
   const url = location.origin + "/n/" + v.token;
   $("#app").innerHTML = `<div class="panel" style="max-width:560px">
     <h2>Onboarding started</h2>
@@ -447,7 +450,7 @@ function openHire(token){ history.pushState({}, "", "/n/" + token); LAST = ""; w
 function watch(token){
   TOKEN = token;
   const tick = async () => { try { await render(await api("/n/" + token), token); } catch(e){ console.warn(e); } };
-  tick().then(() => { if (!TOUR.on && !mem.get("toured")) setTimeout(() => startTour("hire"), 600); });
+  tick();
   clearInterval(TIMER); TIMER = setInterval(tick, 1500);
 }
 const rerender = () => { LAST = ""; if (V) render(V, TOKEN); };
@@ -509,10 +512,10 @@ function row(v, s){
     : s.state==="waiting_user" ? "Open this step to see what to do."
     : s.state==="waiting_person" ? `${esc(v.poc_name)} adds you. Open this step to get the message to send.`
     : "Starts after: " + esc(s.blocked_by.join(", "));
-  if (!mine) return `<div class="row">${ico}<span>${esc(s.title)}<em>${sub}</em></span></div>`;
+  if (!mine) return `<div class="row" data-state="${s.state}">${ico}<span>${esc(s.title)}<em>${sub}</em></span></div>`;
   /* the new hire's steps start collapsed: a highlighted row that the new hire opens */
   const open = EXP.has(s.id);
-  return `<div class="mine ${open ? "open" : ""}">
+  return `<div class="mine ${open ? "open" : ""}" data-id="${s.id}">
     <button class="rh" data-step="${s.id}">${ico}<span class="t">${esc(s.title)}<em>${sub}</em></span>
       <span class="pill">Your turn</span><span class="chev"></span></button>
     ${open ? act(v, s, true) : ""}
@@ -620,6 +623,7 @@ async function render(v, token){
     if (we2 && typed !== null) { we2.value = typed; if (focused) we2.focus(); }
   }
   celebrate(list, done);
+  guide();
 }
 /* ---------- achievements ---------- */
 function celebrate(list, done){
@@ -666,123 +670,139 @@ function confetti(x, y, n){
     if (k < 2.2) requestAnimationFrame(frame); else c.remove();
   })(t0);
 }
-/* ---------- the tour: Ali, Muthu and Ah Hock walk through the LIVE app ---------- */
+/* ---------- the guide: part of the app. You use the app; Ali, Muthu and Ah Hock react. ----------
+   Each stop shows when its screen and condition are true. "Explain" stops wait for Next or the right
+   arrow key. "Do" stops tell you what to click and finish by themselves when you do it; the right
+   arrow key does the action for you if needed. Everything stays clickable: no dark overlay. */
 const WHO = {
   ali:    {name:"Ali",     role:"The problem",       img:"/brand/av-ali.png"},
   muthu:  {name:"Muthu",   role:"How Day One helps", img:"/brand/av-muthu.png"},
   ahhock: {name:"Ah Hock", role:"How it works",      img:"/brand/av-ahhock.png"},
   team:   {name:"Ali, Muthu and Ah Hock", role:"Day One", img:""},
 };
-const TOUR = {on:false, mode:"", i:0, ran:new Set(), token:""};
+let STARTED = "";
+const G = {cur:null, hist:[], busy:false};
+const gget = k => { try { return JSON.parse(localStorage.getItem("dayone:guide:" + k)); } catch(e){ return null; } };
+const gset = (k, v) => { try { localStorage.setItem("dayone:guide:" + k, JSON.stringify(v)); } catch(e){} };
+const gOn = () => !gget("off");
+const doneSet = () => new Set(gget("done") || []);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-async function typeInto(sel, text){ const el = $(sel); if (!el) return; el.value = "";
-  for (const ch of text) { el.value += ch; await sleep(28); } }
+const screen = () => $(".finish") ? "finish" : $(".stepper") ? "hire" : $(".link") ? "started" : $("#go") ? "form" : "";
+const isMine = x => x.state === "waiting_person" || (x.state === "waiting_user" && !(x.held_by||[]).length);
+const emailOk = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v || "");
+async function typeInto(sel, text){ const el = $(sel); if (!el) return; el.value = ""; for (const ch of text) { el.value += ch; await sleep(25); } }
 function setSeg(sel, val){ const b = $(sel) && [...$(sel).children].find(x => x.dataset.v === val); if (b) b.click(); }
-async function tokenView(){ return api("/n/" + TOUR.token); }
-async function post(p, body){ return api(p, {method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify(body || {})}); }
-async function fastForward(){
-  for (let k = 0; k < 25; k++) {
-    const v = await tokenView();
-    if (v.progress.done === v.progress.total) break;
-    const mine = v.steps.filter(x => x.state === "waiting_person" || (x.state === "waiting_user" && !(x.held_by||[]).length));
-    if (mine.length) { for (const x of mine) await post(`/n/${TOUR.token}/steps/${x.id}/confirm`, {}); }
-    else await post(`/n/${TOUR.token}/demo/next`);
+
+const STEP_TXT = {
+  password_reset: ["IT created your account. Now you must do one thing. <b>Open the yellow step.</b>",
+                   "The step tells you what to do, in short steps. When you are done, click <b>I have done this</b>."],
+  ges:            ["IT gave you GES access. <b>Open the yellow step</b> to see how to sign in.",
+                   "Sign in to GES with your employee ID. Then confirm."],
+  gcp:            ["You request GCP access in Slack, not in GSD. <b>Open the yellow step.</b>",
+                   "Day One filled in the values of the Slack form for you. Copy them, send the form, then confirm."],
+  repo_access:    ["Your team contact adds you to the repo. <b>Open the yellow step.</b>",
+                   "Day One wrote the message for you. Send it. Confirm when you have access."],
+};
+function stops(){
+  const v = V, list = [];
+  /* start form: Ali explains the problem, then Muthu shows the form */
+  list.push(
+    {id:"f-hello", page:"form", who:"ali", t:"header .mark", text:"Hello. We are Ali, Muthu and Ah Hock. This is <b>Day One</b>, the onboarding app for new hires at GTech."},
+    {id:"f-chain", page:"form", who:"ali", t:".side.panel", text:"Before a new hire can work, they need up to 11 accesses: email, HR systems, GSD, Slack, Atlassian, Bitbucket and more."},
+    {id:"f-days",  page:"form", who:"ali", t:".side.panel", text:"Each access is a separate request, and the requests must go in order. <b>4 hand-offs &times; 3&ndash;5 days = 12 to 20 working days</b> before a new hire has all access.<small>Estimate from GT staff.</small>"},
+    {id:"f-today", page:"form", who:"ali", t:".main.panel", text:"Today, a person must remember each next request. Nobody can see where the new hire is stuck."},
+    {id:"f-fill",  page:"form", who:"muthu", t:".main.panel", text:"I am Muthu. With Day One, you fill in <b>one form, one time</b>. Type the name of the new hire and your work email.",
+      until: () => ($("#name")||{}).value?.trim().length > 2 && emailOk(($("#starter")||{}).value?.trim()),
+      act: async () => { await typeInto("#name", "Nurul Aina"); await typeInto("#starter", "zal@gamuda.com.my"); }},
+    {id:"f-intern", page:"form", who:"muthu", t:"#seg-emp", text:"The steps change with the hire. <b>Click Intern</b> and watch the list.",
+      until: () => F.employment === "intern", act: async () => setSeg("#seg-emp", "intern")},
+    {id:"f-back", page:"form", who:"muthu", t:".side.panel", when: () => F.employment === "intern",
+      text:"An intern gets 8 steps, not 11. GEMS, GES and GSD are not necessary. <b>Click Staff</b> to go back.",
+      until: () => F.employment === "staff", act: async () => setSeg("#seg-emp", "staff")},
+    {id:"f-start", page:"form", who:"muthu", t:"#go", text:"Press <b>Start onboarding</b>. Day One sends only the first request to IT. The other requests wait for it.",
+      until: () => !!STARTED, act: async () => { await submit(); }},
+    {id:"s-link", page:"started", who:"muthu", t:".link", text:"The new hire gets one link to their own page. No password is necessary. <b>Open the new hire's page.</b>",
+      until: () => location.pathname.startsWith("/n/"), act: async () => openHire(STARTED)},
+  );
+  if (v && TOKEN) {
+    const k = id => `${TOKEN}:${id}`;
+    const acct = stagesOf(v).find(g => g.key === "account");
+    list.push({id:k("h-page"), page:"hire", who:"muthu", t:".stepper", text:"This is your page. The stepper shows your stage. <b>The red dot shows where you are now.</b>"});
+    if (acct && acct.complete) list.push(
+      {id:k("h-stage"), page:"hire", who:"muthu", t:".stepper", text:"<b>Stage 1 is done.</b> Day One sends the next requests to IT at once."});
+    list.push(
+      {id:k("h-ticket"), page:"hire", who:"muthu", t:".row[data-state=open]", when: () => !!$(".row[data-state=open]") && !v.your_turn,
+        text:"Day One raised this GSD ticket for you and checks its status. Nobody types updates. IT finishes the requests one by one."},
+    );
+    v.steps.filter(isMine).forEach(x => {
+      const [open, todo] = STEP_TXT[x.id] || ["A new step is yellow. <b>Open it.</b>", "Do what the step says. Then confirm."];
+      list.push(
+        {id:k("open:" + x.id), page:"hire", who:"muthu", t:`.mine[data-id="${x.id}"]`, text:open,
+          until: () => EXP.has(x.id), act: async () => { EXP.add(x.id); rerender(); }},
+        {id:k("do:" + x.id), page:"hire", who:"muthu", t:`.mine[data-id="${x.id}"]`, when: () => EXP.has(x.id), text:todo,
+          until: () => !(V.steps.find(y => y.id === x.id) || {}).state?.startsWith("waiting"),
+          act: async () => { await confirmStep(TOKEN, x.id); }},
+      );
+    });
+    if (acct && acct.complete) list.push(
+      {id:k("h-cards"), page:"hire", who:"muthu", t:"#car", text:"While IT works, learn about the GTech products. Each card shows a contact person."},
+      {id:k("h-quiz"),  page:"hire", who:"muthu", t:".quizcard", text:"Then try a short quiz about GTech."},
+    );
+    list.push(
+      {id:k("x-how"), page:"finish", who:"ahhock", t:".finish .stepper", text:"I am Ah Hock. How does it work? Each step knows which steps must be done before it. <b>One map</b> covers staff, interns, developers and non-developers."},
+      {id:k("x-api"), page:"finish", who:"ahhock", t:".finish .more", text:"Day One creates each request through the <b>Freshservice API</b>, the same API that GSD uses. This demo uses a local copy of that API. One setting connects Day One to the real GSD."},
+      {id:k("x-end"), page:"finish", who:"team", t:null, text:"Next: connect Day One to the real GSD, and add the GTech quiz.<br><b>From day one, every new hire knows the next step.</b> Thank you."},
+    );
   }
-  LAST = ""; await render(await tokenView(), TOUR.token);
+  return list;
 }
-const PRESENTER = [
-  {who:"ali", t:"header .mark", text:"Hello. We are Ali, Muthu and Ah Hock. This is <b>Day One</b>, the onboarding app for new hires at GTech."},
-  {who:"ali", t:".side.panel", text:"Before a new hire can work, they need up to 11 accesses: email, HR systems, GSD, Slack, Atlassian, Bitbucket and more."},
-  {who:"ali", t:".side.panel", text:"Each access is a separate request, and the requests must go in order. <b>4 hand-offs &times; 3&ndash;5 days = 12 to 20 working days</b> before a new hire has all access.<small>Estimate from GT staff.</small>"},
-  {who:"ali", t:".main.panel", text:"Today, a person must remember each next request. Nobody can see where the new hire is stuck."},
-  {who:"muthu", t:".main.panel", go: async () => { await typeInto("#name", "Nurul Aina"); await typeInto("#starter", "zal@gamuda.com.my");
-      setSeg("#seg-emp", "staff"); setSeg("#seg-job", "developer"); $("#project").value = "odin"; F.project = "odin"; await preview(); },
-   text:"I am Muthu. With Day One, the buddy fills in <b>one form, one time</b>."},
-  {who:"muthu", t:".cols", go: async () => { setSeg("#seg-emp", "intern"); await sleep(250); },
-   text:"The steps change with the hire. An intern gets 8 steps, not 11. A non-developer does not get Bitbucket or GCP."},
-  {who:"muthu", t:"#go", go: async () => { setSeg("#seg-emp", "staff"); await sleep(250); },
-   text:"Press <b>Start</b>. Day One sends only the first request to IT. The other requests wait for it."},
-  {who:"muthu", t:".link", go: async () => { await submit(); },
-   text:"The new hire gets one link to their own page. No password is necessary."},
-  {who:"muthu", t:".stepper", go: async () => { openHire(TOUR.token); await sleep(700); },
-   text:"This is the page of the new hire. The stepper shows the stage. The red dot shows where they are now."},
-  {who:"muthu", t:".flat .row", text:"Day One raised this GSD ticket and checks its status. Nobody types updates."},
-  {who:"muthu", t:".mine", go: async () => { await post(`/n/${TOUR.token}/demo/next`); LAST = ""; await render(await tokenView(), TOUR.token); },
-   text:"IT created the account. Now the new hire must do one thing. The <b>yellow step</b> shows it."},
-  {who:"muthu", t:".mine", go: async () => { EXP.add("password_reset"); rerender(); await sleep(150); },
-   text:"The step tells the new hire what to do, in short steps."},
-  {who:"muthu", t:".stepper", go: async () => { await confirmStep(TOUR.token, "password_reset"); await sleep(300); },
-   text:"The new hire confirms. <b>Stage 1 is done.</b> Day One sends the next requests to IT at once."},
-  {who:"muthu", t:"#car", text:"While IT works, the new hire learns about the GTech products. Each card shows a contact person."},
-  {who:"muthu", t:".quizcard", text:"Then a short quiz about GTech."},
-  {who:"muthu", t:".finish", go: async () => { await fastForward(); window.scrollTo({top:0}); await sleep(400); },
-   text:"When all steps are done, the new hire is ready to work."},
-  {who:"ahhock", t:".finish .stepper", text:"I am Ah Hock. How does it work? Each step knows which steps must be done before it. <b>One map</b> covers staff, interns, developers and non-developers."},
-  {who:"ahhock", t:".finish .flat", go: async () => { TOGGLE.__all = true; rerender(); await sleep(200); },
-   text:"Day One creates each request through the <b>Freshservice API</b>, the same API that GSD uses. This demo uses a local copy of that API. One setting connects Day One to the real GSD."},
-  {who:"team", t:null, go: async () => { TOGGLE.__all = false; rerender(); window.scrollTo({top:0}); },
-   text:"Next: connect Day One to the real GSD, and add the GTech quiz.<br><b>From day one, every new hire knows the next step.</b> Thank you."},
-];
-const HIRE = [
-  {who:"ali", t:".hello", text:"Welcome to Gamuda Technologies. I am Ali. This page shows your onboarding."},
-  {who:"muthu", t:".stepper", text:"The stepper shows your stage. The red dot shows where you are now."},
-  {who:"muthu", t:".flat", text:"These are all your steps. Day One sends the requests to IT for you. When a step is yellow, open it and do what it says."},
-  {who:"ahhock", t:"#explore", text:"While you wait, learn about the GTech products. Then try the quiz."},
-];
-function startTour(mode){
-  if (TOUR.on) return;
-  Object.assign(TOUR, {on:true, mode, i:0, ran:new Set()});
-  if (!$("#tour")) document.body.insertAdjacentHTML("beforeend",
-    `<div id="tour"><div class="tour-block"></div><div class="tour-spot" id="tour-spot"></div>
-      <div class="tour-card" id="tour-card"></div></div>`);
-  $("#tour").classList.add("on");
-  showStep(0);
-  (function loop(){ if (!TOUR.on) return; place(); requestAnimationFrame(loop); })();
+function guide(){
+  if (!gOn()) return hideGuide();
+  const where = screen(), done = doneSet();
+  let pick = null;
+  for (const st of stops()) {
+    if (st.page !== where || done.has(st.id)) continue;
+    if (st.when && !st.when()) continue;
+    if (st.until && st.until()) { done.add(st.id); gset("done", [...done]); continue; }
+    pick = st; break;
+  }
+  if (!pick) return hideGuide();
+  if (!G.cur || G.cur.id !== pick.id) showStop(pick); else G.cur = pick;
 }
-function steps(){ return TOUR.mode === "presenter" ? PRESENTER : HIRE; }
-function endTour(){
-  TOUR.on = false; if ($("#tour")) $("#tour").classList.remove("on");
-  if (TOKEN) mem.set("toured", true);
-}
-let BUSY = false;
-async function showStep(i){
-  const list = steps();
-  if (i < 0 || BUSY) return;
-  if (i >= list.length) return endTour();
-  BUSY = true;
-  const st = list[i];
-  if (st.go && !TOUR.ran.has(i)) { TOUR.ran.add(i); try { await st.go(); } catch(e){ console.warn(e); } }
-  TOUR.i = i;
+function showStop(st){
+  if (!$("#guide")) document.body.insertAdjacentHTML("beforeend",
+    `<div id="guide"><div class="gring" id="gring"></div><div class="tour-card" id="tour-card"></div></div>`);
+  const first = !G.cur; G.cur = st; $("#guide").classList.add("on");
   const w = WHO[st.who];
   const face = st.who === "team"
     ? `<span class="faces"><img src="/brand/av-ali.png" alt=""><img src="/brand/av-muthu.png" alt=""><img src="/brand/av-ahhock.png" alt=""></span>`
     : `<img class="face" src="${w.img}" alt="">`;
+  const explain = !st.until;
   $("#tour-card").innerHTML = `${face}
-    <div class="who"><b>${w.name}</b><span>${TOUR.mode === "hire" ? "Your guide" : w.role}</span></div>
+    <button class="gx" data-guide="off" aria-label="Hide the guide">&times;</button>
+    <div class="who"><b>${w.name}</b><span>${w.role}</span></div>
     <p>${st.text}</p>
-    <div class="tour-ctl"><span class="count">${i + 1} / ${list.length}</span>
-      <button class="tb ghost" data-tour="close">${i === list.length - 1 ? "" : "Skip"}</button>
-      ${i > 0 ? '<button class="tb ghost" data-tour="back">Back</button>' : ""}
-      <button class="tb" data-tour="next">${i === list.length - 1 ? "Finish" : "Next"}</button></div>`;
-  $("#tour-card").classList.remove("in"); void $("#tour-card").offsetWidth; $("#tour-card").classList.add("in");
+    <div class="tour-ctl">${explain
+      ? `<span class="count">&rarr; or Space</span><button class="tb" data-guide="next">${st.who === "team" ? "Finish" : "Next"}</button>`
+      : `<span class="count yours">Your move</span>`}</div>`;
+  const card = $("#tour-card"); card.classList.remove("in"); void card.offsetWidth; card.classList.add("in");
   const el = st.t && document.querySelector(st.t);
   if (el) { const r = el.getBoundingClientRect();
-    if (r.top < 90 || r.bottom > innerHeight - 40) el.scrollIntoView({behavior:"smooth", block: r.height > innerHeight * .6 ? "start" : "center"}); }
-  BUSY = false;
+    if (r.top < 90 || r.bottom > innerHeight - 60) el.scrollIntoView({behavior:"smooth", block: r.height > innerHeight * .6 ? "start" : "center"}); }
+  if (first) (function loop(){ if (!G.cur) return; place(); requestAnimationFrame(loop); })();
 }
+function hideGuide(){ G.cur = null; if ($("#guide")) $("#guide").classList.remove("on"); }
 function place(){
-  const st = steps()[TOUR.i], spot = $("#tour-spot"), card = $("#tour-card");
-  if (!st || !spot || !card) return;
+  const st = G.cur, ring = $("#gring"), card = $("#tour-card");
+  if (!st || !ring || !card) return;
   const el = st.t && document.querySelector(st.t);
-  const cw = card.offsetWidth, ch = card.offsetHeight, gap = 22, pad = 10;
+  const cw = card.offsetWidth, ch = card.offsetHeight, gap = 20, pad = 8;
   let x, y, tail = "none";
-  if (!el) {
-    spot.style.cssText = `left:${innerWidth/2}px;top:${innerHeight/2}px;width:0;height:0;border-radius:50%`;
-    x = (innerWidth - cw) / 2; y = (innerHeight - ch) / 2;
-  } else {
+  if (!el) { ring.style.opacity = 0; x = (innerWidth - cw) / 2; y = (innerHeight - ch) / 2; }
+  else {
     const r = el.getBoundingClientRect();
-    const top = Math.max(r.top - pad, 6), bottom = Math.min(r.bottom + pad, innerHeight - 6);
-    spot.style.cssText = `left:${r.left - pad}px;top:${top}px;width:${r.width + pad*2}px;height:${Math.max(bottom - top, 0)}px`;
+    const top = Math.max(r.top - pad, 4), bottom = Math.min(r.bottom + pad, innerHeight - 4);
+    ring.style.cssText = `opacity:1;left:${r.left - pad}px;top:${top}px;width:${r.width + pad*2}px;height:${Math.max(bottom - top, 0)}px`;
     x = Math.max(16, Math.min(innerWidth - cw - 16, r.left));
     if (bottom + gap + ch < innerHeight - 10) { y = bottom + gap; tail = "up"; }
     else if (top - gap - ch > 10) { y = top - gap - ch; tail = "down"; }
@@ -791,17 +811,33 @@ function place(){
   }
   card.style.left = Math.round(x) + "px"; card.style.top = Math.round(y) + "px"; card.dataset.tail = tail;
 }
+async function guideNext(){
+  const st = G.cur; if (!st || G.busy) return;
+  G.busy = true;
+  try {
+    if (st.until) { if (st.act) await st.act(); }
+    else { const d = doneSet(); d.add(st.id); gset("done", [...d]); G.hist.push(st.id); }
+  } finally { G.busy = false; }
+  guide();
+}
+function guideBack(){
+  const id = G.hist.pop(); if (!id) return;
+  const d = doneSet(); d.delete(id); gset("done", [...d]); G.cur = null; guide();
+}
 document.addEventListener("click", e => {
-  const b = e.target.closest("[data-tour]");
-  if (b) { const a = b.dataset.tour; if (a === "next") showStep(TOUR.i + 1); else if (a === "back") showStep(TOUR.i - 1); else endTour(); return; }
-  if (e.target.closest("#tourbtn")) startTour(location.pathname.startsWith("/n/") ? "hire" : "presenter");
+  const b = e.target.closest("[data-guide]");
+  if (b) { if (b.dataset.guide === "next") guideNext(); else { gset("off", true); hideGuide(); } return; }
+  if (e.target.closest("#tourbtn")) { gset("done", []); gset("off", false); G.hist = []; G.cur = null; guide(); return; }
+  setTimeout(guide, 0);
 });
+document.addEventListener("input", () => setTimeout(guide, 0));
 document.addEventListener("keydown", e => {
-  if (!TOUR.on) return;
-  if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") { e.preventDefault(); showStep(TOUR.i + 1); }
-  else if (e.key === "ArrowLeft") { e.preventDefault(); showStep(TOUR.i - 1); }
-  else if (e.key === "Escape") endTour();
+  if (!G.cur || e.target.closest("input, select, textarea")) return;
+  if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") { e.preventDefault(); guideNext(); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); guideBack(); }
+  else if (e.key === "Escape") { gset("off", true); hideGuide(); }
 });
+setInterval(() => { if (gOn()) guide(); }, 700);
 /* ---------- clicks ---------- */
 document.addEventListener("click", e => {
   const st = e.target.closest("[data-step]");

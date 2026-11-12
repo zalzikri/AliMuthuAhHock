@@ -86,6 +86,16 @@ engine.resolve_next(conn, fast, t1)
 assert engine.view(conn, fast, t1)["your_turn"]["id"] == "password_reset"
 print("manual tour hire: waits for the tour, resolve_next works: ok")
 
+# IT finishes requests one by one in the demo: three tickets raised together resolve 2 s apart
+import time as _t
+paced = servicedesk.MockServiceDesk(conn, demo_seconds=2)
+ids = [paced.create_ticket(f"t{i}", "", "x@gamuda.com.my")["id"] for i in range(3)]
+times = [conn.execute("SELECT resolve_at FROM mock_ticket WHERE id=?", (i,)).fetchone()[0] for i in ids]
+gaps = [round(b - a, 1) for a, b in zip(times, times[1:])]
+assert all(1.9 <= g <= 2.1 for g in gaps), gaps
+for i in ids: paced.resolve(i)
+print(f"tickets finish one by one, gaps {gaps} s: ok")
+
 a = run("staff", "developer", "odin")
 b = run("intern", "developer", "odin")
 c = run("staff", "other", None)

@@ -29,7 +29,13 @@ class MockServiceDesk:
 
     def create_ticket(self, subject: str, description: str, email: str, manual: bool = False) -> dict:
         now = time.time()
-        wait = 10 ** 9 if manual else self.demo_seconds     # a tour ticket waits for the tour
+        # Demo: IT finishes requests ONE BY ONE. A new ticket resolves demo_seconds after the last
+        # ticket that is still waiting, not at the same moment as the tickets raised with it.
+        last = self.conn.execute(
+            "SELECT MAX(resolve_at) FROM mock_ticket WHERE forced=0 AND resolve_at>? AND resolve_at<?",
+            (now, now + 10 ** 8)).fetchone()[0]
+        start = max(now, last or now)
+        wait = 10 ** 9 if manual else (start - now) + self.demo_seconds
         cur = self.conn.execute(
             "INSERT INTO mock_ticket (subject, description, email, created_at, resolve_at) "
             "VALUES (?,?,?,?,?)",
