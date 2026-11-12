@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Day One</title>
-<link rel="icon" type="image/png" href="/brand/favicon.png?v=4">
+<link rel="icon" type="image/png" href="/brand/favicon.png?v=5">
 <style>
 /* ===================== DESIGN TOKENS =====================
    Jalur Gemilang only. Official CMYK (Jabatan Penerangan):
@@ -43,7 +43,8 @@ a{color:inherit}
 
 /* poster layer */
 .poster{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:-21vw center}
+.bg{position:absolute;top:0;height:100vh;width:auto;max-width:none;
+  left:min(0px, calc(96vw - 850px - 78.7vh))}   /* hibiscus right edge tucks 30px under the first card */
 .accent{position:absolute;right:0;bottom:0;height:84vh;width:auto;mix-blend-mode:multiply}
 .grain{position:fixed;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:.07;mix-blend-mode:multiply}
 .tag{position:fixed;left:3vw;bottom:5vh;z-index:2;background:var(--yellow);color:var(--blue);
@@ -155,13 +156,13 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .hide{display:none}
 </style></head>
 <body>
-<div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=4" alt=""><img class="accent" src="/brand/accent.jpg?v=4" alt=""></div>
+<div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=5" alt=""><img class="accent" src="/brand/accent.jpg?v=5" alt=""></div>
 <svg class="grain" aria-hidden="true"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
 <div class="tag"><b>KopiCode 2026 presents</b><br>Day One: onboarding<br>Ali &middot; Muthu &middot; Ah Hock<br>13/11/26</div>
 <div class="wrap">
 <header>
   <div class="mark">
-    <img class="logo" src="/brand/logo-420.png?v=4" alt="Ali, Muthu and Ah Hock">
+    <img class="logo" src="/brand/logo-420.png?v=5" alt="Ali, Muthu and Ah Hock">
     <div class="title">
       <b>Day&nbsp;One</b>
       <div class="with"><i>with</i><span class="name n1">Ali</span><span class="name n2">Muthu</span><span class="name n3">Ah&nbsp;Hock</span></div>

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "bg-soft-a",
+    "aspect": "16:9",
+    "size": "2K",
+    "prompt": "Abstract editorial poster background for a web page, on pure bright white. NO people, no faces, no hands, no text. Rendered entirely in soft airbrush spray paint, like a risograph gig poster: shapes have NO hard outlines and NO line art; every edge dissolves into soft speckled spray, colour is dense in the middle of a shape and fades into fine grain at its edges, and the whole image carries visible risograph grain. Composition, all on the left and along the bottom: a navy blue sprayed band rising from the bottom-left, with a soft white zig-zag gap through it; a golden yellow sprayed sun glowing out of the top-left corner; a red hibiscus flower (bunga raya), about one sixth of the canvas width, at the upper middle-left, its five petals made of soft red spray with a glowing golden yellow stamen and no outlines; a soft red sprayed arc sweeping along the bottom edge. The centre and the whole right half stay empty pure white.",
+    "style": "Use ONLY navy blue #024B8F, red #DA332B, golden yellow #FEDD1B and pure white #FFFFFF. No cream, no beige, no peach, no orange, no pink, no brown. Soft, dreamy, airbrushed, grainy, but high resolution. No crescent, no star."
+  },
+  {
+    "name": "bg-soft-b",
+    "aspect": "16:9",
+    "size": "2K",
+    "prompt": "Abstract editorial poster background for a web page, on pure bright white. NO people, no faces, no text. Everything is soft airbrush spray with risograph grain, like a screen-printed gig poster: no hard outlines, no line art, edges fade into speckle. A large navy blue sprayed mass enters from the left edge and bleeds off the bottom, with a soft white lightning-shaped zig-zag gap through it. A red hibiscus (bunga raya) of soft sprayed petals with a glowing golden yellow stamen floats just to the right of the navy mass's top, about one sixth of the canvas width. A golden yellow spray haze in the top-left corner. A thin soft red sprayed arc along the bottom. A few soft yellow and navy spray dots drifting from the flower toward the centre and fading out. The centre and the right half stay empty pure white.",
+    "style": "Use ONLY navy blue #024B8F, red #DA332B, golden yellow #FEDD1B and pure white #FFFFFF. No cream, no beige, no peach, no orange, no pink. Soft, airbrushed, grainy, high resolution. No crescent, no star."
+  },
+  {
+    "name": "accent-soft",
+    "aspect": "9:16",
+    "size": "2K",
+    "prompt": "A small decorative accent for the RIGHT edge of a web page, on pure bright white. NO people, no text. Soft airbrush spray paint with risograph grain, no hard outlines, no line art, edges dissolve into speckle. Everything hugs the right edge and the lower third; the rest stays empty white. Two soft red sprayed hibiscus petals drifting down, one half cut off by the right edge. A thin soft navy sprayed arc curving up from the bottom. A soft golden yellow sprayed half-glow cut off by the right edge. A few tiny soft yellow and navy spray dots.",
+    "style": "Use ONLY navy blue #024B8F, red #DA332B, golden yellow #FEDD1B and pure white #FFFFFF. No cream, no peach, no orange, no pink. Soft, minimal, airbrushed, grainy. No crescent, no star."
+  },
+  {
+    "name": "logo-3d-cartoon-row",
+    "aspect": "1:1",
+    "size": "2K",
+    "prompt": "A 3D animated-film cartoon logo, like a character render from a modern animated feature: three friendly heads, each shaped as a rounded CUBE with soft bevelled edges, smooth stylised skin with gentle subsurface glow, big expressive eyes with bright highlights, small simple noses, warm open smiles, and sculpted stylised hair. One Malay man, one Chinese man and one Indian man, all young men, natural skin tones, different short hairstyles, clearly male. The three cube heads sit side by side at slightly different heights, gently touching, the middle one a little forward. Soft cinematic studio lighting. Heads only, no necks, no bodies, no clothing, no accessories, no costume.",
+    "style": "Isolated on a completely plain pure white background, no floor, no ground shadow, no backdrop, no frame. Small colour accents only in navy #024B8F, red #DA332B and golden yellow #FEDD1B. Respectful, warm, appealing, no caricature. No text, no symbols, no crescent, no star."
+  },
+  {
+    "name": "logo-3d-cartoon-tilt",
+    "aspect": "1:1",
+    "size": "2K",
+    "prompt": "A 3D animated-film cartoon logo: three cheerful heads, each a rounded CUBE with soft bevelled corners, rendered like characters from a modern animated feature film: smooth stylised skin, large expressive eyes with catch lights, rosy cheeks, warm smiles, stylised sculpted hair. One Malay man, one Chinese man and one Indian man, young adult men, natural skin tones, clearly male, different short hairstyles. Arranged asymmetrically: the left and right heads tilt inward toward the middle head like close friends, all at slightly different heights. Soft cinematic lighting. Heads only, no bodies, no clothing, no accessories.",
+    "style": "Isolated on a completely plain pure white background, no floor, no ground shadow, no backdrop, no frame. Small colour accents only in navy #024B8F, red #DA332B and golden yellow #FEDD1B. Respectful, warm, no caricature. No text, no symbols, no crescent, no star."
+  }
+]
