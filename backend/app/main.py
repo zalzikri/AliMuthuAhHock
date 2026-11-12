@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -43,8 +44,14 @@ def preview(employment: str = "staff", job_family: str = "developer",
     return engine.preview(employment, job_family, project, want_claude)
 
 
+GAMUDA = re.compile(r"^[^@\s]+@(gamuda\.com\.my|gamuda\.tech)$", re.I)
+
+
 @app.post("/api/onboardings")
 def create(h: NewHire):
+    # Only Gamuda staff start onboarding: a new hire has no Gamuda email yet.
+    if not GAMUDA.match(h.starter_email.strip()):
+        raise HTTPException(400, "Use your Gamuda work email. Only Gamuda staff can start onboarding.")
     oid = engine.create(conn, desk, h.model_dump())
     return engine.view(conn, desk, oid)
 

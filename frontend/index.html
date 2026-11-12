@@ -172,6 +172,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .hello .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .hello h1{font:900 32px/1.02 var(--display);font-stretch:108%;letter-spacing:-.035em;margin:9px 0 6px;text-wrap:balance}
 .hello p{margin:0;color:var(--mute)}
+.main.panel .hello{margin-bottom:18px}
 .act{padding:18px 20px;margin:8px 0 10px;border-radius:30px 10px 30px 10px}
 .flat{max-width:720px}
 .flat h2{margin:4px 0 4px}
@@ -274,19 +275,12 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 
 /* ---------- header: name of the app, tour button ---------- */
 header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:-2px}
-.tourbtn{all:unset;cursor:pointer;margin-left:auto;align-self:flex-start;margin-top:10px;
-  font:600 12.5px/1 var(--font);padding:9px 14px;border:1px solid rgba(2,75,143,.25);border-radius:999px 999px 999px 7px;background:var(--white)}
-.tourbtn:hover{border-color:var(--blue)}
 
 /* ---------- tour ---------- */
-#guide{display:none}
-#guide.on{display:block}
-.gring{position:fixed;z-index:81;pointer-events:none;border-radius:22px 22px 22px 8px;
-  box-shadow:0 0 0 3px var(--yellow),0 0 0 9px rgba(254,221,27,.28);
-  transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .2s}
-.tour-card{position:fixed;z-index:82;width:370px;padding:18px 20px 16px 20px;background:var(--white);color:var(--ink);
+.tour-card{display:none;position:fixed;z-index:82;width:370px;padding:18px 20px 16px 20px;background:var(--white);color:var(--ink);
   border:1px solid rgba(2,75,143,.14);border-radius:28px 28px 28px 8px;box-shadow:0 30px 60px -26px rgba(10,16,51,.55);
-  transition:left .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1)}
+  }
+.tour-card.on{display:block}
 .tour-card.in{animation:cardin .4s cubic-bezier(.2,.9,.25,1.2)}
 @keyframes cardin{0%{opacity:0;transform:translateY(10px) scale(.97)}100%{opacity:1;transform:none}}
 .tour-card .face{position:absolute;left:-14px;top:-46px;width:84px;height:84px;filter:drop-shadow(0 10px 14px rgba(10,16,51,.25));
@@ -312,6 +306,7 @@ header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing
 .tour-card[data-tail="up"]::before,.tour-card[data-tail="down"]::before{content:"";position:absolute;left:34px;width:16px;height:16px;background:var(--white);transform:rotate(45deg);border-radius:3px;border:1px solid rgba(2,75,143,.14)}
 .tour-card[data-tail="up"]::before{border-right:0;border-bottom:0}
 .tour-card[data-tail="down"]::before{border-left:0;border-top:0}
+.tour-card[data-tail="right"]::before{content:"";position:absolute;right:-8px;top:34px;width:16px;height:16px;background:var(--white);transform:rotate(45deg);border-radius:3px;border:1px solid rgba(2,75,143,.14);border-left:0;border-bottom:0}
 .tour-card[data-tail="up"]::before{top:-7px}
 .tour-card[data-tail="down"]::before{bottom:-7px}
 .confetti{z-index:90}
@@ -329,7 +324,6 @@ header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing
       <b>Day&nbsp;One</b>
       <div class="with"><i>with</i><span class="name n1">Ali</span><span class="name n2">Muthu</span><span class="name n3">Ah&nbsp;Hock</span></div>
     </div>
-    <button class="tourbtn" id="tourbtn" type="button">Restart guide</button>
   </div>
   <div class="rule"></div>
 </header>
@@ -337,6 +331,7 @@ header .kicker{font:700 10.5px/1 var(--display);font-stretch:112%;letter-spacing
 </div>
 <script>
 const $ = s => document.querySelector(s);
+const GAMUDA = /^[^@\s]+@(gamuda\.com\.my|gamuda\.tech)$/i;   // only Gamuda staff start onboarding
 const api = (p, o) => fetch("/api" + p, o).then(r => r.json());
 let F = {employment:"staff", job_family:"developer", project:"odin", want_claude:true};
 let PROJECTS = {}, TIMER = null, DIR = null, LAST = "";
@@ -360,9 +355,9 @@ function renderForm(){
   <div class="cols">
     <div class="main panel">
       <div class="hello"><div class="k">For new hires at Gamuda Technologies</div><h1>Add a new hire</h1>
-        <p>Fill in this form one time. Day One sends each access request to IT in the correct order.</p></div>
+        <p>Only Gamuda staff can start onboarding. Fill in this form one time. Day One sends each access request to IT in the correct order.</p></div>
       <div class="field"><label>Full name of the new hire</label><input id="name" placeholder="Nurul Aina binti Rahim"></div>
-      <div class="field"><label>Your work email. IT gets the requests from you.</label>
+      <div class="field"><label>Your Gamuda work email. IT gets the requests from you.</label>
         <input id="starter" placeholder="you@gamuda.com.my"></div>
       <div class="field"><label>Type of hire</label>
         <div class="seg" id="seg-emp">
@@ -384,14 +379,14 @@ function renderForm(){
   bindSeg("#seg-emp", "employment"); bindSeg("#seg-job", "job_family");
   $("#project").onchange = e => { F.project = e.target.value; preview(); };
   $("#go").onclick = submit;
-  preview().then(guide);
+  preview().then(() => say("start"));
 }
 function bindSeg(sel, key){
   const box = $(sel);
   [...box.children].forEach(b => {
     b.classList.toggle("on", b.dataset.v === F[key]);
     b.onclick = () => { F[key] = b.dataset.v;
-      [...box.children].forEach(x => x.classList.toggle("on", x === b)); preview(); };
+      [...box.children].forEach(x => x.classList.toggle("on", x === b)); preview().then(() => say("type")); };
   });
 }
 async function preview(){
@@ -409,6 +404,7 @@ async function preview(){
 async function submit(){
   const name = $("#name").value.trim(), starter = $("#starter").value.trim();
   if (!name || !starter) { $("#err").textContent = "Type the name of the new hire and your work email."; return; }
+  if (!GAMUDA.test(starter)) { $("#err").textContent = "Use your Gamuda work email. Only Gamuda staff can start onboarding."; return; }
   $("#go").disabled = true;
   const v = await api("/onboardings", {method:"POST", headers:{"content-type":"application/json"},
     body: JSON.stringify({name, starter_email:starter, employment:F.employment,
@@ -425,6 +421,7 @@ async function submit(){
     <div class="acts"><button class="btn" onclick="openHire('${v.token}')">Open the new hire's page</button>
     <button class="btn ghost sm" onclick="navigator.clipboard.writeText('${url}')">Copy link</button></div>
   </div>`;
+  say("started");
 }
 
 /* ---------- the new hire's page ---------- */
@@ -623,7 +620,7 @@ async function render(v, token){
     if (we2 && typed !== null) { we2.value = typed; if (focused) we2.focus(); }
   }
   celebrate(list, done);
-  guide();
+  events(v, list, done);
 }
 /* ---------- achievements ---------- */
 function celebrate(list, done){
@@ -641,7 +638,7 @@ function celebrate(list, done){
   const g = fresh[fresh.length - 1], i = list.indexOf(g), next = list[i + 1];
   const num = document.querySelector(`.stepper li[data-key="${g.key}"] .node`);
   if (num) { num.classList.add("pop"); const r = num.getBoundingClientRect(); confetti(r.left + r.width/2, r.top + r.height/2, 110); }
-  toast(`<span class="badge">&#10003;</span><span><b>${esc(g.name)} is done.</b> ${next ? `Next: ${esc(next.name)}. ` : ""}${NEXT_TIP[g.key] || ""}</span>`);
+  say("stage:" + g.key, `<b>${esc(g.name)} is done.</b> ${next ? `Next: ${esc(next.name)}. ` : ""}${NEXT_TIP[g.key] || ""}`);
   FIRST = false;
 }
 function toast(html){
@@ -670,174 +667,91 @@ function confetti(x, y, n){
     if (k < 2.2) requestAnimationFrame(frame); else c.remove();
   })(t0);
 }
-/* ---------- the guide: part of the app. You use the app; Ali, Muthu and Ah Hock react. ----------
-   Each stop shows when its screen and condition are true. "Explain" stops wait for Next or the right
-   arrow key. "Do" stops tell you what to click and finish by themselves when you do it; the right
-   arrow key does the action for you if needed. Everything stays clickable: no dark overlay. */
+/* ---------- the guide: part of the app ----------
+   An event in the app shows ONE message from one avatar, next to the part of the screen it is about.
+   The message goes away when you do something, or when the next event replaces it.
+   Each event shows one time only (kept in localStorage "dayone:seen"). No Next, no queue, no polling. */
 const WHO = {
   ali:    {name:"Ali",     role:"The problem",       img:"/brand/av-ali.png"},
   muthu:  {name:"Muthu",   role:"How Day One helps", img:"/brand/av-muthu.png"},
   ahhock: {name:"Ah Hock", role:"How it works",      img:"/brand/av-ahhock.png"},
-  team:   {name:"Ali, Muthu and Ah Hock", role:"Day One", img:""},
 };
-let STARTED = "";
-const G = {cur:null, hist:[], busy:false};
-const gget = k => { try { return JSON.parse(localStorage.getItem("dayone:guide:" + k)); } catch(e){ return null; } };
-const gset = (k, v) => { try { localStorage.setItem("dayone:guide:" + k, JSON.stringify(v)); } catch(e){} };
-const gOn = () => !gget("off");
-const doneSet = () => new Set(gget("done") || []);
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-const screen = () => $(".finish") ? "finish" : $(".stepper") ? "hire" : $(".link") ? "started" : $("#go") ? "form" : "";
-const isMine = x => x.state === "waiting_person" || (x.state === "waiting_user" && !(x.held_by||[]).length);
-const emailOk = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v || "");
-async function typeInto(sel, text){ const el = $(sel); if (!el) return; el.value = ""; for (const ch of text) { el.value += ch; await sleep(25); } }
-function setSeg(sel, val){ const b = $(sel) && [...$(sel).children].find(x => x.dataset.v === val); if (b) b.click(); }
-
 const STEP_TXT = {
-  password_reset: ["IT created your account. Now you must do one thing. <b>Open the yellow step.</b>",
-                   "The step tells you what to do, in short steps. When you are done, click <b>I have done this</b>."],
-  ges:            ["IT gave you GES access. <b>Open the yellow step</b> to see how to sign in.",
-                   "Sign in to GES with your employee ID. Then confirm."],
-  gcp:            ["You request GCP access in Slack, not in GSD. <b>Open the yellow step.</b>",
-                   "Day One filled in the values of the Slack form for you. Copy them, send the form, then confirm."],
-  repo_access:    ["Your team contact adds you to the repo. <b>Open the yellow step.</b>",
-                   "Day One wrote the message for you. Send it. Confirm when you have access."],
+  password_reset: "IT created your account. <b>Your turn: open the yellow step</b> and set your password.",
+  ges:            "IT gave you GES access. <b>Open the yellow step</b> to see how to sign in.",
+  gcp:            "You request GCP access in Slack, not in GSD. <b>Open the yellow step.</b> Day One filled in the form values for you.",
+  repo_access:    "Your team contact adds you to the repo. <b>Open the yellow step.</b> Day One wrote the message for you.",
 };
-function stops(){
-  const v = V, list = [];
-  /* start form: Ali explains the problem, then Muthu shows the form */
-  list.push(
-    {id:"f-hello", page:"form", who:"ali", t:"header .mark", text:"Hello. We are Ali, Muthu and Ah Hock. This is <b>Day One</b>, the onboarding app for new hires at GTech."},
-    {id:"f-chain", page:"form", who:"ali", t:".side.panel", text:"Before a new hire can work, they need up to 11 accesses: email, HR systems, GSD, Slack, Atlassian, Bitbucket and more."},
-    {id:"f-days",  page:"form", who:"ali", t:".side.panel", text:"Each access is a separate request, and the requests must go in order. <b>4 hand-offs &times; 3&ndash;5 days = 12 to 20 working days</b> before a new hire has all access.<small>Estimate from GT staff.</small>"},
-    {id:"f-today", page:"form", who:"ali", t:".main.panel", text:"Today, a person must remember each next request. Nobody can see where the new hire is stuck."},
-    {id:"f-fill",  page:"form", who:"muthu", t:".main.panel", text:"I am Muthu. With Day One, you fill in <b>one form, one time</b>. Type the name of the new hire and your work email.",
-      until: () => ($("#name")||{}).value?.trim().length > 2 && emailOk(($("#starter")||{}).value?.trim()),
-      act: async () => { await typeInto("#name", "Nurul Aina"); await typeInto("#starter", "zal@gamuda.com.my"); }},
-    {id:"f-intern", page:"form", who:"muthu", t:"#seg-emp", text:"The steps change with the hire. <b>Click Intern</b> and watch the list.",
-      until: () => F.employment === "intern", act: async () => setSeg("#seg-emp", "intern")},
-    {id:"f-back", page:"form", who:"muthu", t:".side.panel", when: () => F.employment === "intern",
-      text:"An intern gets 8 steps, not 11. GEMS, GES and GSD are not necessary. <b>Click Staff</b> to go back.",
-      until: () => F.employment === "staff", act: async () => setSeg("#seg-emp", "staff")},
-    {id:"f-start", page:"form", who:"muthu", t:"#go", text:"Press <b>Start onboarding</b>. Day One sends only the first request to IT. The other requests wait for it.",
-      until: () => !!STARTED, act: async () => { await submit(); }},
-    {id:"s-link", page:"started", who:"muthu", t:".link", text:"The new hire gets one link to their own page. No password is necessary. <b>Open the new hire's page.</b>",
-      until: () => location.pathname.startsWith("/n/"), act: async () => openHire(STARTED)},
-  );
-  if (v && TOKEN) {
-    const k = id => `${TOKEN}:${id}`;
-    const acct = stagesOf(v).find(g => g.key === "account");
-    list.push({id:k("h-page"), page:"hire", who:"muthu", t:".stepper", text:"This is your page. The stepper shows your stage. <b>The red dot shows where you are now.</b>"});
-    if (acct && acct.complete) list.push(
-      {id:k("h-stage"), page:"hire", who:"muthu", t:".stepper", text:"<b>Stage 1 is done.</b> Day One sends the next requests to IT at once."});
-    list.push(
-      {id:k("h-ticket"), page:"hire", who:"muthu", t:".row[data-state=open]", when: () => !!$(".row[data-state=open]") && !v.your_turn,
-        text:"Day One raised this GSD ticket for you and checks its status. Nobody types updates. IT finishes the requests one by one."},
-    );
-    v.steps.filter(isMine).forEach(x => {
-      const [open, todo] = STEP_TXT[x.id] || ["A new step is yellow. <b>Open it.</b>", "Do what the step says. Then confirm."];
-      list.push(
-        {id:k("open:" + x.id), page:"hire", who:"muthu", t:`.mine[data-id="${x.id}"]`, text:open,
-          until: () => EXP.has(x.id), act: async () => { EXP.add(x.id); rerender(); }},
-        {id:k("do:" + x.id), page:"hire", who:"muthu", t:`.mine[data-id="${x.id}"]`, when: () => EXP.has(x.id), text:todo,
-          until: () => !(V.steps.find(y => y.id === x.id) || {}).state?.startsWith("waiting"),
-          act: async () => { await confirmStep(TOKEN, x.id); }},
-      );
-    });
-    if (acct && acct.complete) list.push(
-      {id:k("h-cards"), page:"hire", who:"muthu", t:"#car", text:"While IT works, learn about the GTech products. Each card shows a contact person."},
-      {id:k("h-quiz"),  page:"hire", who:"muthu", t:".quizcard", text:"Then try a short quiz about GTech."},
-    );
-    list.push(
-      {id:k("x-how"), page:"finish", who:"ahhock", t:".finish .stepper", text:"I am Ah Hock. How does it work? Each step knows which steps must be done before it. <b>One map</b> covers staff, interns, developers and non-developers."},
-      {id:k("x-api"), page:"finish", who:"ahhock", t:".finish .more", text:"Day One creates each request through the <b>Freshservice API</b>, the same API that GSD uses. This demo uses a local copy of that API. One setting connects Day One to the real GSD."},
-      {id:k("x-end"), page:"finish", who:"team", t:null, text:"Next: connect Day One to the real GSD, and add the GTech quiz.<br><b>From day one, every new hire knows the next step.</b> Thank you."},
-    );
-  }
-  return list;
+const MSG = {
+  start:   {who:"ali", t:".side.panel", text:"Hello. We are Ali, Muthu and Ah Hock. A new hire at GTech needs up to 11 accesses, and each request waits for the one before it: <b>12 to 20 working days</b> before the new hire has all access. Nobody can see where they are stuck.<small>Estimate from GT staff.</small>"},
+  type:    {who:"muthu", t:".side.panel", text:"I am Muthu. The steps change with the hire. A staff developer gets 11 steps. An intern gets 8."},
+  started: {who:"muthu", t:".link", text:"Day One sent only the first request to IT. The other requests wait for it. <b>Send this link to the new hire.</b>"},
+  page:    {who:"muthu", t:".stepper", text:"This is your page. The stepper shows your stage. <b>The red dot shows where you are now.</b>"},
+  finish:  {who:"ahhock", t:".finish .stepper", text:"I am Ah Hock. Each step knows which steps must come first. Day One sends each request through the <b>Freshservice API</b>, the same API that GSD uses. Here it uses a local copy; one setting connects it to the real GSD.<br><b>From day one, every new hire knows the next step.</b>"},
+};
+const seen = () => new Set(JSON.parse(localStorage.getItem("dayone:seen") || "[]"));
+const markSeen = id => { const x = seen(); x.add(id); localStorage.setItem("dayone:seen", JSON.stringify([...x])); };
+let SHOWN = null, STARTED = "";
+const isMine = x => x.state === "waiting_person" || (x.state === "waiting_user" && !(x.held_by||[]).length);
+
+/* say(id): show message `id` if it was never shown. Stage and step messages pass their own text. */
+function say(id, text){
+  if (seen().has(id)) return;
+  const base = MSG[id] || (id.startsWith("stage:") ? {who:"muthu", t:".stepper"}
+    : id.startsWith("yellow:") ? {who:"muthu", t:`.mine[data-id="${id.slice(7)}"]`} : null);
+  if (!base) return;
+  markSeen(id);
+  show({...base, id, text: text || base.text || STEP_TXT[id.slice(7)] || "Your turn. <b>Open the yellow step.</b>"});
 }
-function guide(){
-  if (!gOn()) return hideGuide();
-  const where = screen(), done = doneSet();
-  let pick = null;
-  for (const st of stops()) {
-    if (st.page !== where || done.has(st.id)) continue;
-    if (st.when && !st.when()) continue;
-    if (st.until && st.until()) { done.add(st.id); gset("done", [...done]); continue; }
-    pick = st; break;
-  }
-  if (!pick) return hideGuide();
-  if (!G.cur || G.cur.id !== pick.id) showStop(pick); else G.cur = pick;
+/* the new hire's page: which events happened in this render? Show the most important new one. */
+function events(v, list, done){
+  if (done) return say("finish");
+  const yellow = v.steps.filter(isMine).map(x => "yellow:" + x.id).filter(id => !seen().has(id));
+  if (yellow.length) { markSeen("page"); return say(yellow[0]); }
+  say("page");
 }
-function showStop(st){
-  if (!$("#guide")) document.body.insertAdjacentHTML("beforeend",
-    `<div id="guide"><div class="gring" id="gring"></div><div class="tour-card" id="tour-card"></div></div>`);
-  const first = !G.cur; G.cur = st; $("#guide").classList.add("on");
-  const w = WHO[st.who];
-  const face = st.who === "team"
-    ? `<span class="faces"><img src="/brand/av-ali.png" alt=""><img src="/brand/av-muthu.png" alt=""><img src="/brand/av-ahhock.png" alt=""></span>`
-    : `<img class="face" src="${w.img}" alt="">`;
-  const explain = !st.until;
-  $("#tour-card").innerHTML = `${face}
-    <button class="gx" data-guide="off" aria-label="Hide the guide">&times;</button>
-    <div class="who"><b>${w.name}</b><span>${w.role}</span></div>
-    <p>${st.text}</p>
-    <div class="tour-ctl">${explain
-      ? `<span class="count">&rarr; or Space</span><button class="tb" data-guide="next">${st.who === "team" ? "Finish" : "Next"}</button>`
-      : `<span class="count yours">Your move</span>`}</div>`;
-  const card = $("#tour-card"); card.classList.remove("in"); void card.offsetWidth; card.classList.add("in");
-  const el = st.t && document.querySelector(st.t);
-  if (el) { const r = el.getBoundingClientRect();
-    if (r.top < 90 || r.bottom > innerHeight - 60) el.scrollIntoView({behavior:"smooth", block: r.height > innerHeight * .6 ? "start" : "center"}); }
-  if (first) (function loop(){ if (!G.cur) return; place(); requestAnimationFrame(loop); })();
+function show(m){
+  if (!$("#guide")) document.body.insertAdjacentHTML("beforeend", `<div class="tour-card" id="guide"></div>`);
+  const w = WHO[m.who], card = $("#guide");
+  card.innerHTML = `<img class="face" src="${w.img}" alt="">
+    <button class="gx" data-guide="off" aria-label="Close">&times;</button>
+    <div class="who"><b>${w.name}</b><span>${w.role}</span></div><p>${m.text}</p>`;
+  SHOWN = m; card.classList.add("on"); card.classList.remove("in"); void card.offsetWidth; card.classList.add("in");
+  const el = m.t && document.querySelector(m.t);
+  if (el) { const r = el.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) el.scrollIntoView({block:"center"}); }
+  place();
 }
-function hideGuide(){ G.cur = null; if ($("#guide")) $("#guide").classList.remove("on"); }
+function hideMsg(){ SHOWN = null; const c = $("#guide"); if (c) c.classList.remove("on"); }
+/* next to the target: below it if there is room, else above it, else beside it */
 function place(){
-  const st = G.cur, ring = $("#gring"), card = $("#tour-card");
-  if (!st || !ring || !card) return;
-  const el = st.t && document.querySelector(st.t);
-  const cw = card.offsetWidth, ch = card.offsetHeight, gap = 20, pad = 8;
-  let x, y, tail = "none";
-  if (!el) { ring.style.opacity = 0; x = (innerWidth - cw) / 2; y = (innerHeight - ch) / 2; }
-  else {
+  const m = SHOWN, card = $("#guide"); if (!m || !card) return;
+  const el = m.t && document.querySelector(m.t);
+  const cw = card.offsetWidth, ch = card.offsetHeight, gap = 18;
+  let x = innerWidth - cw - 24, y = innerHeight - ch - 24, tail = "none";
+  const wrap = $(".wrap").getBoundingClientRect();
+  if (el && wrap.left - gap - cw >= 16) {            // the empty space left of the app: covers nothing
     const r = el.getBoundingClientRect();
-    const top = Math.max(r.top - pad, 4), bottom = Math.min(r.bottom + pad, innerHeight - 4);
-    ring.style.cssText = `opacity:1;left:${r.left - pad}px;top:${top}px;width:${r.width + pad*2}px;height:${Math.max(bottom - top, 0)}px`;
+    x = wrap.left - gap - cw; y = Math.max(16, Math.min(innerHeight - ch - 16, Math.max(r.top, 16)));
+    tail = "right";
+  } else if (el) {
+    const r = el.getBoundingClientRect();
     x = Math.max(16, Math.min(innerWidth - cw - 16, r.left));
-    if (bottom + gap + ch < innerHeight - 10) { y = bottom + gap; tail = "up"; }
-    else if (top - gap - ch > 10) { y = top - gap - ch; tail = "down"; }
-    else { y = Math.max(16, Math.min(innerHeight - ch - 16, top + 30));
-      x = r.left - pad - gap - cw > 10 ? r.left - pad - gap - cw : Math.min(innerWidth - cw - 16, r.right + pad + gap); tail = "side"; }
+    if (r.bottom + gap + ch < innerHeight - 10) { y = r.bottom + gap; tail = "up"; }
+    else if (r.top - gap - ch > 10) { y = r.top - gap - ch; tail = "down"; }
+    else { y = Math.max(16, Math.min(innerHeight - ch - 16, r.top + 20));
+      x = r.left - gap - cw > 10 ? r.left - gap - cw : Math.min(innerWidth - cw - 16, r.right + gap); }
   }
   card.style.left = Math.round(x) + "px"; card.style.top = Math.round(y) + "px"; card.dataset.tail = tail;
 }
-async function guideNext(){
-  const st = G.cur; if (!st || G.busy) return;
-  G.busy = true;
-  try {
-    if (st.until) { if (st.act) await st.act(); }
-    else { const d = doneSet(); d.add(st.id); gset("done", [...d]); G.hist.push(st.id); }
-  } finally { G.busy = false; }
-  guide();
-}
-function guideBack(){
-  const id = G.hist.pop(); if (!id) return;
-  const d = doneSet(); d.delete(id); gset("done", [...d]); G.cur = null; guide();
-}
+addEventListener("scroll", place, {passive:true});
+addEventListener("resize", place);
+/* your next action closes the message. Capture phase: it runs BEFORE the app's own click handler,
+   so a click that causes a new event closes the old message first and then shows the new one. */
 document.addEventListener("click", e => {
-  const b = e.target.closest("[data-guide]");
-  if (b) { if (b.dataset.guide === "next") guideNext(); else { gset("off", true); hideGuide(); } return; }
-  if (e.target.closest("#tourbtn")) { gset("done", []); gset("off", false); G.hist = []; G.cur = null; guide(); return; }
-  setTimeout(guide, 0);
-});
-document.addEventListener("input", () => setTimeout(guide, 0));
-document.addEventListener("keydown", e => {
-  if (!G.cur || e.target.closest("input, select, textarea")) return;
-  if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") { e.preventDefault(); guideNext(); }
-  else if (e.key === "ArrowLeft") { e.preventDefault(); guideBack(); }
-  else if (e.key === "Escape") { gset("off", true); hideGuide(); }
-});
-setInterval(() => { if (gOn()) guide(); }, 700);
+  if (e.target.closest("#guide")) { if (e.target.closest("[data-guide]")) hideMsg(); return; }
+  if (SHOWN) hideMsg();
+}, true);
+document.addEventListener("input", () => { if (SHOWN) hideMsg(); }, true);
 /* ---------- clicks ---------- */
 document.addEventListener("click", e => {
   const st = e.target.closest("[data-step]");
