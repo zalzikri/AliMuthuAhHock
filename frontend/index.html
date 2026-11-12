@@ -342,7 +342,6 @@ const FULL = {gems:"SAP SuccessFactors", ges:"HR information system", gsd:"Gamud
 const fullName = (id, title) => FULL[id] ? `${esc(title)} <span class="fn">${FULL[id]}</span>` : esc(title);
 /* Puncak, the quiz game (PR #1 by carterc8888), served at /puncak/. It takes the player's first name. */
 const puncakUrl = v => "/puncak/?name=" + encodeURIComponent(callName(v.name).slice(0, 24));
-const GAMUDA = /^[^@\s]+@(gamuda\.com\.my|gamuda\.tech)$/i;   // only Gamuda staff start onboarding
 const api = (p, o) => fetch("/api" + p, o).then(r => r.json());
 let F = {employment:"staff", job_family:"developer", project:"odin", want_claude:true};
 let PREVIEW = null, PROJECTS = {}, TIMER = null, DIR = null, LAST = "";
@@ -368,7 +367,7 @@ function renderForm(){
       <div class="hello"><div class="k">For Gamuda staff</div><h1>Add a new hire</h1>
         <p>Day One sends each access request to IT, in order.</p></div>
       <div class="field"><label>New hire's full name</label><input id="name" placeholder="Nurul Aina binti Rahim"></div>
-      <div class="field"><label>Your Gamuda email</label>
+      <div class="field"><label>Your work email</label>
         <input id="starter" placeholder="you@gamuda.com.my"></div>
       <div class="field"><label>Type of hire</label>
         <div class="seg" id="seg-emp">
@@ -390,7 +389,10 @@ function renderForm(){
   bindSeg("#seg-emp", "employment"); bindSeg("#seg-job", "job_family");
   $("#project").onchange = e => { F.project = e.target.value; preview(); };
   $("#go").onclick = submit;
-  preview().then(() => { say("start"); place(); });
+  preview();
+  /* Ali speaks on the first click on the start page, not on load */
+  if (!seen().has("start")) document.addEventListener("click", function first(){
+    document.removeEventListener("click", first, true); if ($("#go")) say("start"); }, true);
 }
 function bindSeg(sel, key){
   const box = $(sel);
@@ -416,7 +418,6 @@ async function preview(){
 async function submit(){
   const name = $("#name").value.trim(), starter = $("#starter").value.trim();
   if (!name || !starter) { $("#err").textContent = "Type the name of the new hire and your work email."; return; }
-  if (!GAMUDA.test(starter)) { $("#err").textContent = "Use your Gamuda work email. Only Gamuda staff can start onboarding."; return; }
   $("#go").disabled = true;
   const v = await api("/onboardings", {method:"POST", headers:{"content-type":"application/json"},
     body: JSON.stringify({name, starter_email:starter, employment:F.employment,
@@ -729,8 +730,10 @@ const isMine = x => x.state === "waiting_person" || (x.state === "waiting_user" 
 
 /* say(id): show message `id` if it was never shown. Stage and step messages pass their own pages. */
 let PAGE = 0;
+let PENDING = null;
 function say(id, pages){
   if (seen().has(id)) return;
+  if (SHOWN && SHOWN.id === "start" && id === "type") { PENDING = id; return; }
   const base = MSG[id];
   if (!base) return;
   markSeen(id);
@@ -763,7 +766,8 @@ function drawMsg(scroll){
 }
 function turn(d){ const m = SHOWN; if (!m) return; const i = PAGE + d;
   if (i < 0) return; if (i >= m.pages.length) return hideMsg(); PAGE = i; drawMsg(false); }
-function hideMsg(){ SHOWN = null; const c = $("#guide"); if (c) c.classList.remove("on"); }
+function hideMsg(){ SHOWN = null; const c = $("#guide"); if (c) c.classList.remove("on");
+  if (PENDING) { const p = PENDING; PENDING = null; if ($("#go")) say(p); } }
 /* next to the target: below it if there is room, else above it, else beside it */
 function place(){
   const m = SHOWN, card = $("#guide"); if (!m || !card) return;
