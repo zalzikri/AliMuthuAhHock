@@ -4,6 +4,11 @@
 <title>Day One</title>
 <link rel="icon" type="image/png" href="/brand/favicon.png?v=6">
 <style>
+/* Self-hosted, so the demo does not depend on the venue Wi-Fi.
+   Archivo: sharp poster grotesk for headings and labels. Inter: crisp body text. */
+@font-face{font-family:"Archivo";src:url(/brand/fonts/archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:"Inter";src:url(/brand/fonts/inter.woff2) format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url(/brand/fonts/jetbrains-mono.woff2) format("woff2");font-weight:400 800;font-display:swap}
 /* ===================== DESIGN TOKENS =====================
    Jalur Gemilang only. Official CMYK (Jabatan Penerangan):
      blue C100 M75 Y0 K0 | red C0 M95 Y100 K0 | yellow C0 M9 Y100 K0
@@ -16,8 +21,8 @@
   --blue:#024B8F; --red:#DA332B; --yellow:#FEDD1B; --white:#FFFFFF;
 
   --ink:var(--blue);                    /* text is the flag navy */
-  --mute:rgba(2,75,143,.62);
-  --faint:rgba(2,75,143,.38);
+  --mute:rgba(2,75,143,.74);
+  --faint:rgba(2,75,143,.45);
   --line:rgba(2,75,143,.11);
   --wash:rgba(2,75,143,.045);           /* calm surfaces */
   --sun:#FFF8D1;                        /* flag yellow at 20% on white, flattened: opaque */
@@ -31,14 +36,15 @@
   --r-pill:999px;
 
   --shadow:0 22px 44px -30px rgba(2,75,143,.42);
-  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --font:"Inter",-apple-system,"Segoe UI",sans-serif;
+  --display:"Archivo","Inter",sans-serif;
   --pad:20px; --gap:24px;
 }
 /* ========================================================= */
 *{box-sizing:border-box}
 html,body{background:var(--bg)}
-body{margin:0;color:var(--ink);font:14px/1.55 var(--font);-webkit-font-smoothing:antialiased}
+body{margin:0;color:var(--ink);font:450 14px/1.55 var(--font);font-feature-settings:"cv11","ss01"}
 a{color:inherit}
 
 /* poster layer */
@@ -51,7 +57,7 @@ a{color:inherit}
 /* No page-wide grain layer: the art carries its own grain, and noise on the white paper reads as dirt.
    No blend modes or SVG filters on fixed layers either: they repaint the whole screen on every scroll. */
 .tag{position:fixed;left:3vw;bottom:5vh;z-index:2;background:var(--yellow);color:var(--blue);
-  font:600 10.5px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;
+  font:600 10.5px/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase;
   writing-mode:vertical-rl;transform:rotate(180deg);padding:14px 10px;max-height:46vh;
   border-radius:16px 16px 4px 16px}
 .tag b{font-weight:800}
@@ -64,11 +70,11 @@ header{margin:0 0 28px}
 header .mark{display:flex;align-items:center;gap:16px}
 header .logo{width:200px;height:auto;display:block;margin:-4px 0 -4px -10px}
 header .title{display:flex;flex-direction:column;gap:9px}
-header b{font-size:50px;line-height:.9;letter-spacing:-.05em;font-weight:800;color:var(--blue)}
+header b{font:900 52px/.9 var(--display);font-stretch:112%;letter-spacing:-.04em;color:var(--blue)}
 header .with{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-header .with i{font:italic 400 25px/1 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
-  color:var(--red);margin:0 6px 2px 2px}
-header .name{display:inline-block;font:700 14px/1 var(--font);letter-spacing:-.01em;
+header .with i{font:700 21px/1 var(--display);font-stretch:125%;font-style:normal;letter-spacing:-.01em;
+  color:var(--red);margin:0 8px 2px 2px}
+header .name{display:inline-block;font:800 14px/1 var(--display);font-stretch:108%;letter-spacing:0;
   padding:8px 14px 9px;border-radius:999px 999px 999px 7px}
 header .n1{background:var(--blue);color:var(--white);transform:rotate(-4deg)}
 header .n2{background:var(--red);color:var(--white);transform:rotate(3deg) translateY(3px)}
@@ -76,7 +82,7 @@ header .n3{background:var(--yellow);color:var(--blue);transform:rotate(-2deg) tr
 header .rule{height:4px;margin-top:18px;border-radius:999px;
   background:linear-gradient(90deg,var(--blue) 0 34%,var(--yellow) 34% 46%,var(--line) 46% 100%)}
 
-h2{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);margin:0 0 10px}
+h2{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:0 0 12px}
 .cols{display:flex;gap:var(--gap);align-items:flex-start}
 .cols>.main{flex:1 1 57%;min-width:0}
 .cols>.side{flex:1 1 43%;min-width:0}
@@ -90,13 +96,13 @@ h2{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
 .card p{margin:3px 0 8px;font-size:12.5px;color:var(--mute)}
 
 /* the one card that matters */
-.turn{background:var(--sun);border:1px solid rgba(254,221,27,.75);border-radius:var(--r-hero);
+.turn,.act{background:var(--sun);border:1px solid rgba(254,221,27,.75);border-radius:var(--r-hero);
   padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
-.turn.calm{background:var(--white);border:1px solid var(--line)}
-.turn .k{font:600 10.5px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
-.turn.calm .k{color:var(--mute)}
-.turn .v{font-size:22px;font-weight:700;margin:8px 0 6px;letter-spacing:-.02em;color:var(--blue)}
-.turn .d{font-size:13.5px;color:var(--mute)}
+.turn.calm,.act.calm{background:var(--white);border:1px solid var(--line)}
+.turn .k,.act .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.turn.calm .k,.act.calm .k{color:var(--mute)}
+.turn .v,.act .v{font:800 22px/1.15 var(--display);font-stretch:104%;margin:8px 0 6px;letter-spacing:-.02em;color:var(--blue)}
+.turn .d,.act .d{font-size:13.5px;color:var(--mute)}
 .howto{margin:14px 0 0;padding-left:20px;font-size:13.5px;line-height:1.65}
 .howto li{margin-bottom:6px}
 .howto li::marker{color:var(--red);font-weight:700}
@@ -109,20 +115,20 @@ h2{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
 .warn{margin:12px 0 0;font-size:12.5px;color:var(--red);font-weight:600}
 
 /* form */
-label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:0 0 6px}
+label{display:block;font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:0 0 7px}
 .field{margin-bottom:14px}
 input,select{width:100%;border:1px solid rgba(2,75,143,.2);border-radius:var(--r-field);padding:10px 13px;
   font:inherit;font-size:13.5px;background:var(--white);color:var(--blue);transition:border-color .15s,box-shadow .15s}
 input::placeholder{color:var(--faint)}
 input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(254,221,27,.45)}
 .seg{display:inline-flex;gap:4px;padding:4px;background:var(--wash);border-radius:var(--r-pill)}
-.seg button{border:0;background:transparent;padding:7px 16px;font:inherit;font-size:12.5px;font-weight:500;
+.seg button{border:0;background:transparent;padding:7px 16px;font:650 12.5px/1.2 var(--display);font-stretch:106%;
   color:var(--mute);cursor:pointer;border-radius:var(--r-pill);transition:background .15s,color .15s}
 .seg button.on{background:var(--blue);color:var(--white);font-weight:600}
 
 /* buttons */
 .btn{border:1px solid var(--blue);background:var(--blue);color:var(--white);border-radius:var(--r-btn);
-  padding:10px 20px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;text-decoration:none;
+  padding:10px 20px;font:700 13.5px/1.2 var(--display);font-stretch:106%;cursor:pointer;text-decoration:none;
   display:inline-block;transition:transform .12s}
 .btn:hover{transform:translateY(-1px)}
 .btn.ghost{background:var(--white);color:var(--blue);border-color:rgba(2,75,143,.25)}
@@ -157,6 +163,109 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .link{background:var(--wash);border-radius:16px 16px 16px 5px;padding:11px 14px;font-size:12.5px;word-break:break-all;margin:12px 0}
 .muted{color:var(--mute);font-size:12.5px}
 .hide{display:none}
+
+/* ---------- her page: the journey ---------- */
+.steps,.sb{font-size:13.5px}
+.row{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row em{font-style:normal;color:var(--mute);font-size:12px;display:block}
+.tk{font:500 11.5px/1 var(--mono)}
+.journey{padding:24px 24px 8px}
+.hello .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.hello h1{font:900 32px/1.02 var(--display);font-stretch:108%;letter-spacing:-.035em;margin:9px 0 6px;text-wrap:balance}
+.hello p{margin:0 0 14px;color:var(--mute)}
+.track{display:flex;gap:6px;margin:0 0 16px}
+.track span{flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden;position:relative}
+.track span i{position:absolute;inset:0 auto 0 0;width:calc(var(--p) * 100%);background:var(--blue);border-radius:inherit}
+.track span.here{background:rgba(218,51,43,.13)}
+.track span.here i{background:var(--red)}
+.stages{list-style:none;margin:0;padding:0}
+.stage{border-top:1px solid var(--line)}
+.sh{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;padding:14px 2px}
+.sh:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;border-radius:12px}
+.num{width:30px;height:30px;flex:none;border-radius:11px 11px 11px 4px;display:grid;place-items:center;
+  font:800 13px/1 var(--display);border:1.5px solid rgba(2,75,143,.2);color:var(--mute);background:var(--white)}
+.stage.complete .num{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.stage.here .num{border:2px solid var(--red);color:var(--red);background:rgba(218,51,43,.06)}
+.sn{flex:1;min-width:0}
+.sn b{display:block;font:800 15.5px/1.2 var(--display);font-stretch:104%;letter-spacing:-.01em}
+.sn em{font-style:normal;font-size:12.5px;color:var(--mute)}
+.stage.complete .sn b{color:var(--mute)}
+.sc{font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+.stage.here .sc{color:var(--red)}
+.chev{width:8px;height:8px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(45deg);margin:0 4px 4px 2px;flex:none}
+.stage.open .chev{transform:rotate(-135deg);margin:4px 4px 0 2px}
+.sb{padding:0 0 14px 42px}
+.act{padding:18px 20px;margin:4px 0 10px;border-radius:30px 10px 30px 10px}
+@keyframes pop{0%{transform:scale(.55)}55%{transform:scale(1.28)}100%{transform:scale(1)}}
+.num.pop{animation:pop .6s cubic-bezier(.2,.9,.25,1.3)}
+
+/* ---------- while you wait ---------- */
+.side>*+*{margin-top:14px}
+.wait{position:relative;background:var(--blue);color:var(--white);border-radius:34px 34px 34px 8px;padding:22px 22px 20px;box-shadow:var(--shadow)}
+.wait .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow)}
+.wait .hook{font:850 21px/1.15 var(--display);font-stretch:104%;letter-spacing:-.02em;margin:9px 0 7px;text-wrap:balance}
+.wait p{color:rgba(255,255,255,.86);font-size:13.5px;margin:0 0 15px}
+.wait b{color:var(--yellow)}
+.ping{position:absolute;top:22px;right:22px;width:10px;height:10px;border-radius:50%;background:var(--red)}
+.ping::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--red);animation:ping 1.8s ease-out infinite}
+@keyframes ping{0%{transform:scale(1);opacity:1}100%{transform:scale(3.2);opacity:0}}
+.meter{display:flex;justify-content:space-between;align-items:center;font:700 10px/1 var(--display);font-stretch:112%;
+  letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:15px}
+.meter .dots{display:flex;gap:5px}
+.meter i{width:18px;height:6px;border-radius:999px;background:rgba(255,255,255,.22)}
+.meter i.on{background:var(--yellow)}
+.btn.yellow{background:var(--yellow);border-color:var(--yellow);color:var(--blue)}
+.prods{padding:18px 18px 8px}
+.prod{border-top:1px solid var(--line)}
+.prods h2+.prod{border-top:0}
+.ph,.quiz{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:11px;align-items:center;width:100%;padding:10px 0}
+.ini{width:32px;height:32px;flex:none;border-radius:11px 11px 11px 4px;display:grid;place-items:center;
+  font:800 14px/1 var(--display);color:var(--white);background:var(--blue)}
+.ini.r{background:var(--red)} .ini.y{background:var(--yellow);color:var(--blue)}
+.ph .t,.quiz .t{flex:1;min-width:0}
+.ph b,.quiz b{font:800 14px/1.25 var(--display);font-stretch:104%}
+.ph .chip{margin:0 0 0 7px;padding:1px 8px;font:700 9.5px/1.5 var(--display);letter-spacing:.06em;text-transform:uppercase;vertical-align:1px}
+.ph em,.quiz em{display:block;font-style:normal;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tick{font:800 13px/1 var(--display);color:var(--faint);width:14px;text-align:center}
+.prod.seen .tick{color:var(--blue)}
+.prod.open .ph em{display:none}
+.pb{padding:0 0 14px 43px;font-size:13px}
+.pb p{margin:0 0 8px}
+.links{display:flex;gap:14px;margin-top:6px;font:700 12.5px/1 var(--display)}
+.links a{text-decoration:none;border-bottom:2px solid var(--yellow);padding-bottom:2px}
+.quiz{padding:13px 16px;background:var(--white);border:1px dashed rgba(2,75,143,.3);border-radius:22px 22px 22px 6px}
+.quiz.ready{border:1.5px solid var(--red);box-shadow:var(--shadow)}
+.quiz.ready .tick{color:var(--red)}
+
+/* ---------- achievements ---------- */
+.toast{position:fixed;left:50%;bottom:28px;z-index:60;transform:translate(-50%,28px) scale(.96);opacity:0;
+  display:flex;gap:12px;align-items:center;max-width:540px;padding:13px 20px 13px 13px;
+  background:var(--blue);color:var(--white);font-size:13.5px;border-radius:22px 22px 22px 6px;
+  box-shadow:0 26px 50px -24px rgba(2,75,143,.65);transition:transform .4s cubic-bezier(.2,.9,.25,1.25),opacity .25s}
+.toast.in{transform:translate(-50%,0) scale(1);opacity:1}
+.toast b{font-family:var(--display);font-weight:800}
+.badge{width:36px;height:36px;flex:none;border-radius:12px 12px 12px 4px;background:var(--yellow);color:var(--blue);
+  display:grid;place-items:center;font:900 16px/1 var(--display)}
+.confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:70}
+.finish{padding:24px 26px 20px}
+.finish .heads{width:240px;display:block;margin:-8px 0 4px -10px;animation:rise .9s cubic-bezier(.2,.9,.25,1.25) both}
+@keyframes rise{0%{transform:translateY(26px) scale(.85);opacity:0}100%{transform:none;opacity:1}}
+.finish .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.finish h1{font:900 38px/1 var(--display);font-stretch:108%;letter-spacing:-.035em;margin:9px 0 8px}
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 8px}
+.nx{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-start;padding:15px 14px 14px;border-radius:24px 24px 24px 6px;
+  animation:rise .7s cubic-bezier(.2,.9,.25,1.2) both;transition:transform .15s}
+.nx:hover{transform:translateY(-2px)}
+.nx:nth-child(2){animation-delay:.12s} .nx:nth-child(3){animation-delay:.24s}
+.nx small{display:block;font:700 9.5px/1 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;opacity:.8;margin-bottom:9px}
+.nx b{display:block;font:850 15.5px/1.15 var(--display);letter-spacing:-.01em;margin-bottom:6px}
+.nx span{display:block;font-size:12px;line-height:1.4;opacity:.85}
+.nx.a{background:var(--blue);color:var(--white)}
+.nx.b{background:var(--yellow);color:var(--blue)}
+.nx.c{background:var(--white);color:var(--blue);border:1px solid var(--line)}
+.more{all:unset;cursor:pointer;font:700 12.5px/1 var(--display);border-bottom:2px solid var(--yellow);padding-bottom:2px;margin-top:6px}
+@media (prefers-reduced-motion: reduce){.ping::after,.finish .heads,.nx,.num.pop{animation:none}}
 </style></head>
 <body>
 <div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=6" alt=""><img class="accent" src="/brand/accent.png?v=6" alt=""></div>
@@ -181,6 +290,9 @@ let F = {employment:"staff", job_family:"developer", project:"odin", want_claude
 let PROJECTS = {}, TIMER = null, DIR = null, LAST = "";
 
 const esc = s => (s||"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* Malaysian names: never take the first word blindly. "Lim Wei Jie" starts with the family name,
+   so keep the whole name, and stop only at bin / binti / a/l / a/p / s/o / d/o. */
+const callName = n => (n||"").split(/\s+(?:binti|bin|bte|bt|a\/l|a\/p|s\/o|d\/o)\s+/i)[0].trim();
 
 async function boot(){
   PROJECTS = await api("/projects");
@@ -195,7 +307,8 @@ function renderForm(){
   $("#app").innerHTML = `
   <div class="cols">
     <div class="main panel">
-      <h2>Start someone</h2>
+      <div class="hello"><div class="k">New hire</div><h1>Start someone</h1>
+        <p>One form. Day One raises every request in the right order.</p></div>
       <div class="field"><label>Full name</label><input id="name" placeholder="Nurul Aina binti Rahim"></div>
       <div class="field"><label>Your Gamuda email — the request is raised in your name</label>
         <input id="starter" placeholder="you@gamuda.com.my"></div>
@@ -254,7 +367,7 @@ async function submit(){
     <div class="turn"><div class="k">Raised now</div>
       <div class="v">1 request is open</div>
       <div class="d">${v.progress.total - 1} more are queued behind it. They go out by themselves.</div></div>
-    <p class="muted">Send ${esc(name.split(" ")[0])} this link. There is no password.</p>
+    <p class="muted">Send ${esc(callName(name))} this link. There is no password.</p>
     <div class="link">${url}</div>
     <div class="acts"><button class="btn" onclick="location.href='/n/${v.token}'">Open her page</button>
     <button class="btn ghost sm" onclick="navigator.clipboard.writeText('${url}')">Copy link</button></div>
@@ -262,56 +375,181 @@ async function submit(){
 }
 
 /* ---------- her page ---------- */
+/* Four stages. The step she must act on opens INSIDE its stage, so the action sits in the process. */
+const STAGES = [
+  {key:"account", name:"Account",          blurb:"Your Gamuda email and your own password", ids:["email","password_reset"]},
+  {key:"hr",      name:"HR and help desk", blurb:"GEMS, GES and the GSD portal",            ids:["gems","ges","gsd"]},
+  {key:"tools",   name:"Work tools",       blurb:"Slack, Atlassian, Bitbucket, Claude Code", ids:["slack","atlassian","bitbucket","claude_seat"]},
+  {key:"project", name:"Your project",     blurb:"GCP access and the repo",                 ids:["gcp","repo_access"]},
+];
+const NEXT_TIP = {
+  account: "IT has it from here. Meet your project on the right while you wait.",
+  hr:      "Your GSD portal works now: you can raise your own IT tickets.",
+  tools:   "Slack is ready. Say hello to your team, then try the GTech quiz.",
+  project: "You can open the repo now.",
+};
+let TOKEN = "", V = null, TOGGLE = {}, PROD = null, FIRST = true;
+const mem = {
+  get: k => { try { return JSON.parse(localStorage.getItem(`dayone:${TOKEN}:${k}`)); } catch(e){ return null; } },
+  set: (k, v) => { try { localStorage.setItem(`dayone:${TOKEN}:${k}`, JSON.stringify(v)); } catch(e){} },
+};
 function watch(token){
+  TOKEN = token;
   const tick = async () => { try { await render(await api("/n/" + token), token); } catch(e){ console.warn(e); } };
   tick(); clearInterval(TIMER); TIMER = setInterval(tick, 1500);
 }
+const rerender = () => { LAST = ""; if (V) render(V, TOKEN); };
+
+function stagesOf(v){
+  const byId = Object.fromEntries(v.steps.map(s => [s.id, s]));
+  const list = STAGES.map(g => ({...g, steps: g.ids.map(i => byId[i]).filter(Boolean)})).filter(g => g.steps.length);
+  list.forEach(g => {
+    g.done = g.steps.filter(s => s.state === "done").length;
+    g.complete = g.done === g.steps.length;
+    g.withIT = g.steps.filter(s => s.state === "open").length;
+    g.mine = g.steps.some(s => s.state === "waiting_person" || (s.state === "waiting_user" && !s.held_by.length));
+  });
+  const here = list.find(g => !g.complete);
+  list.forEach(g => { g.here = g === here; g.open = g.key in TOGGLE ? TOGGLE[g.key] : (g.here || g.mine); });
+  return list;
+}
 const CH = {
   self:   {k:"Your turn", act:"I have done it"},
-  slack_guided:{k:"Your turn — this one is not GSD", act:"I have sent it"},
-  person: {k:"Nothing for you today — waiting on a person", act:"He has added me"},
+  slack_guided:{k:"Your turn &middot; this one is in Slack, not GSD", act:"I have sent it"},
+  person: {k:"Waiting on a person", act:"He has added me"},
 };
-function card(v, token){
-  const t = v.your_turn;
-  if (!t) {
-    const w = v.waiting_on;
-    if (!w) return `<div class="turn"><div class="k">Done</div>
-      <div class="v">You have everything</div>
-      <div class="d">${v.progress.done} of ${v.progress.total} ready.</div></div>`;
-    return `<div class="turn calm"><div class="k">Nothing for you today</div>
-      <div class="v">${esc(w.title)} is with IT</div>
-      <div class="d">GSD #${w.ticket_id} &middot; usually ${w.eta_days} days. We will tell you when it lands.</div></div>`;
-  }
-  const c = (t.then_self && t.state === "waiting_user")
-    ? {k:"Your turn — IT has granted it", act:"I am in"}
-    : (CH[t.channel] || CH.self);
+function act(v, t){
+  const c = (t.then_self && t.state === "waiting_user") ? {k:"Your turn &middot; IT has granted it", act:"I am in"} : (CH[t.channel] || CH.self);
+  const n = v.your_turn_count || 1;
   const fields = (t.fields||[]).length ? `<div class="pre"><table>${
       t.fields.map(f => `<tr><td>${esc(f.label)}</td><td>${esc(f.value)}</td></tr>`).join("")}</table></div>` : "";
-  const howto = (t.howto||[]).length ? `<ol class="howto">${
-      t.howto.map(h => `<li>${esc(h)}</li>`).join("")}</ol>` : "";
+  const howto = (t.howto||[]).length ? `<ol class="howto">${t.howto.map(h => `<li>${esc(h)}</li>`).join("")}</ol>` : "";
   const ask = t.ask ? `<div class="pre">${esc(t.ask)}</div>` : "";
   const emailAsk = t.ask_email ? `<div class="pre">
       <label>Which address did you sign in with?</label>
       <input id="we" value="${esc(v.guess_email)}">
-      <span class="muted">We guessed it from your name. Correct it if it differs.</span>
-    </div>` : "";
+      <span class="muted">We guessed it from your name. Correct it if it differs.</span></div>` : "";
   const copy = (t.fields||[]).length ? t.fields.map(f => f.label + ": " + f.value).join("\n") : t.ask;
-  const n = v.your_turn_count || 1;
-  return `<div class="turn ${t.channel==="person"?"calm":""}">
+  const exp = t.id === "password_reset" && v.link_expires_in_hours !== null
+    ? (v.link_expires_in_hours > 0
+        ? `<p class="warn">Google's sign-in link expires in ${Math.floor(v.link_expires_in_hours)} hours.</p>`
+        : `<p class="warn">That link has expired. IT must reset the account: raise a GSD ticket.</p>`) : "";
+  return `<div class="act ${t.channel==="person"?"calm":""}">
     <div class="k">${c.k}${n > 1 ? ` &middot; 1 of ${n}` : ""}</div>
     <div class="v">${esc(t.title)}</div>
     <div class="d">${esc(t.hint || "")}</div>
-    ${howto}${fields}${ask}${emailAsk}
-    ${t.id==="password_reset" && v.link_expires_in_hours !== null ?
-      (v.link_expires_in_hours > 0
-        ? `<p class="warn">Google's sign-in link expires in ${Math.floor(v.link_expires_in_hours)} hours.</p>`
-        : `<p class="warn">That link has expired. IT must reset the account - raise a GSD ticket.</p>`) : ""}
+    ${howto}${fields}${ask}${emailAsk}${exp}
     ${t.id==="password_reset" ? '<p class="muted" style="margin-top:9px">Day One never sees or stores your password.</p>' : ""}
     <div class="acts">
+      <button class="btn sm" onclick="confirmStep('${TOKEN}','${t.id}')">${c.act}</button>
       ${copy ? `<button class="btn ghost sm" data-copy="${esc(copy)}" onclick="navigator.clipboard.writeText(this.dataset.copy)">Copy</button>`:""}
       ${t.channel==="person" && v.poc_email ? `<a class="btn ghost sm" href="mailto:${v.poc_email}">Email ${esc(v.poc_name)}</a>`:""}
-      <button class="btn sm" onclick="confirmStep('${token}','${t.id}')">${c.act}</button>
     </div></div>`;
+}
+function row(v, s){
+  const held = s.state === "waiting_user" && (s.held_by||[]).length;
+  const ico = s.state==="done" ? '<span class="ico done">&#10003;</span>'
+    : s.state==="open" || held ? '<span class="ico open"></span>'
+    : s.state.startsWith("waiting") ? '<span class="ico now"></span>' : '<span class="ico"></span>';
+  const sub = s.state==="done" ? "ready"
+    : s.state==="open" ? `with IT &middot; <span class="tk">GSD #${s.ticket_id}</span> &middot; usually ${s.eta_days} days`
+    : held ? `IT granted it &middot; yours after ${esc(s.held_by.join(", "))}`
+    : s.state==="waiting_user" ? "your turn, next"
+    : s.state==="waiting_person" ? `${esc(v.poc_name)} does this`
+    : "queued &middot; goes out after " + esc(s.blocked_by.join(", "));
+  return `<div class="row">${ico}<span>${esc(s.title)}<em>${sub}</em></span></div>`;
+}
+function journey(v, list){
+  const here = list.find(g => g.here), idx = list.indexOf(here) + 1;
+  const first = esc(callName(v.name));
+  const withIT = v.steps.filter(s => s.state === "open").length;
+  const n = v.your_turn_count || 0;
+  const line = n ? (n > 1 ? `${n} things for you. The first is open below.` : "1 thing for you. It is open below.")
+    : withIT ? `Nothing for you right now. IT is working on ${withIT} request${withIT>1?"s":""}.` : "";
+  return `<section class="journey panel">
+    <div class="hello">
+      <div class="k">Welcome, ${first} &middot; stage ${idx} of ${list.length}</div>
+      <h1>${esc(here.name)}</h1>
+      <p>${line}</p>
+      <div class="track">${list.map(g => `<span class="${g.complete?"done":g.here?"here":""}" style="--p:${g.done/g.steps.length}"><i></i></span>`).join("")}</div>
+    </div>
+    ${stageList(v, list)}
+  </section>`;
+}
+function stageList(v, list){
+  return `<ol class="stages">${list.map((g, i) => {
+    const status = g.complete ? "Done" : g.here ? "You are here" : g.mine ? "Your turn" : g.withIT ? `${g.withIT} with IT` : "Later";
+    const body = g.open ? `<div class="sb">${g.steps.map(s => v.your_turn && s.id === v.your_turn.id ? act(v, s) : row(v, s)).join("")}
+      ${g.key==="account" && v.work_email ? `<p class="muted" style="margin:10px 0 0">Your address: <b>${esc(v.work_email)}</b></p>` : ""}</div>` : "";
+    return `<li class="stage ${g.complete?"complete":""} ${g.here?"here":""} ${g.open?"open":""}" data-key="${g.key}">
+      <button class="sh" data-stage="${g.key}">
+        <span class="num">${g.complete ? "&#10003;" : i + 1}</span>
+        <span class="sn"><b>${esc(g.name)}</b><em>${esc(g.blurb)}</em></span>
+        <span class="sc">${status} &middot; ${g.done}/${g.steps.length}</span><span class="chev"></span>
+      </button>${body}</li>`; }).join("")}</ol>`;
+}
+function finish(v, list, d){
+  const mine = d.find(x => x.key === (v.project||"").toLowerCase());
+  return `<section class="finish panel">
+    <img class="heads" src="/brand/logo-420.png?v=6" alt="">
+    <div class="k">Day One &middot; complete</div>
+    <h1>You are set, ${esc(callName(v.name))}.</h1>
+    <p class="muted">${v.progress.total} of ${v.progress.total} ready. Every account works. Here is where to go next.</p>
+    <div class="next">
+      ${mine ? `<a class="nx a" href="${mine.docs_url || mine.url}" target="_blank"><small>Your project</small><b>Start on ${esc(mine.name)}</b><span>Ask ${esc(mine.poc_name)} for your first task.</span></a>` : ""}
+      <button class="nx b" data-quiz="1"><small>Two minutes</small><b>Take the GTech quiz</b><span>See how much you picked up.</span></button>
+      <button class="nx c" data-explore="${(d.find(x => !mine || x.key !== mine.key) || d[0]).key}"><small>Explore</small><b>Meet the other products</b><span>${d.length} products, one line each.</span></button>
+    </div>
+    <button class="more" data-stage="__all">${TOGGLE.__all ? "Hide" : "See"} all ${v.progress.total} steps</button>
+  </section>
+  ${TOGGLE.__all ? `<section class="journey panel" style="margin-top:14px">${stageList(v, list)}</section>` : ""}`;
+}
+function side(v, d){
+  const seen = new Set(mem.get("explored") || []);
+  const open = v.steps.filter(s => s.state === "open");
+  const eta = Math.max(0, ...open.map(s => s.eta_days || 0));
+  const mine = d.find(x => x.key === (v.project||"").toLowerCase());
+  const pick = (mine && !seen.has(mine.key)) ? mine : (d.find(x => !seen.has(x.key)) || mine || d[0]);
+  const hook = open.length
+    ? `${open.length === 1 ? esc(open[0].title) + " is" : open.length + " requests are"} with IT, about ${eta}&nbsp;day${eta>1?"s":""}.`
+    : v.your_turn ? "Do your step. Then IT takes a few days." : "Now meet what GTech builds.";
+  const all = seen.size >= d.length, ready = v.progress.done === v.progress.total;
+  const colours = ["", "r", "y"];
+  return `<div class="wait">
+      <span class="ping"></span>
+      <div class="k">${ready ? "Next for you" : "While you wait"}</div>
+      <div class="hook">${hook}</div>
+      <p>${all ? "You have met every product. Test yourself with the quiz." : ready
+        ? `${d.length} products, one minute each${mine ? `. Start with <b>${esc(mine.name)}</b>, your project` : ""}.`
+        : `Use the time to meet what GTech builds${mine ? `, starting with <b>${esc(mine.name)}</b>, your project` : ""}.`}</p>
+      <div class="meter"><span>${seen.size} of ${d.length} explored</span>
+        <span class="dots">${d.map(x => `<i class="${seen.has(x.key)?"on":""}"></i>`).join("")}</span></div>
+      ${all ? `<button class="btn yellow" data-quiz="1">Take the quiz &rarr;</button>`
+            : `<button class="btn yellow" data-explore="${pick.key}">${seen.size ? "Next" : "Start with"}: ${esc(pick.name)} &rarr;</button>`}
+    </div>
+    <div class="panel prods">
+      <h2>GTech products</h2>
+      ${d.map((x, i) => `<div class="prod ${PROD===x.key?"open":""} ${seen.has(x.key)?"seen":""}">
+        <button class="ph" data-explore="${x.key}">
+          <span class="ini ${colours[i % 3]}">${esc(x.name[0])}</span>
+          <span class="t"><b>${esc(x.name)}</b>${mine && x.key===mine.key ? '<span class="chip red">your project</span>' : ""}<em>${esc(x.one_line||"")}</em></span>
+          <span class="tick">${seen.has(x.key) ? "&#10003;" : "&rarr;"}</span>
+        </button>
+        ${PROD===x.key ? `<div class="pb">
+          <p>${esc(x.one_line||"")}</p>
+          ${x.try_in_5 ? `<p><b>Try in 5 minutes:</b> ${esc(x.try_in_5)}</p>` : ""}
+          <div>${(x.stack||[]).map(s => `<span class="chip">${esc(s)}</span>`).join("")}<span class="chip">ask ${esc(x.poc_name)}</span></div>
+          <div class="links"><a href="${x.url}" target="_blank">Open it &rarr;</a>
+            ${x.docs_url ? `<a href="${x.docs_url}" target="_blank">Docs &rarr;</a>` : ""}
+            ${x.poc_email ? `<a href="mailto:${x.poc_email}">Email ${esc(x.poc_name)}</a>` : ""}</div>
+        </div>` : ""}
+      </div>`).join("")}
+    </div>
+    <button class="quiz ${seen.size >= 3 ? "ready" : ""}" data-quiz="1">
+      <span class="ini y">?</span>
+      <span class="t"><b>GTech quiz</b><em>${seen.size >= 3 ? "You have explored enough. Ready?" : "Two minutes. Better after 3 products."}</em></span>
+      <span class="tick">&rarr;</span>
+    </button>`;
 }
 async function confirmStep(token, step){
   const el = document.querySelector("#we");
@@ -320,63 +558,86 @@ async function confirmStep(token, step){
     body: JSON.stringify({work_email: el ? el.value.trim() : ""})}), token);
 }
 /* Polling runs every 1.5 s. Build the whole screen as one string and touch the DOM only when that
-   string changes: no empty right column between polls, no lost hover, no reset of what she types. */
+   string changes: no empty column between polls, no lost hover, no reset of what she types. */
 async function render(v, token){
   if (!DIR) DIR = await api("/directory");
-  const icon = s => s.state==="done" ? '<span class="ico done">&#10003;</span>'
-    : s.state==="open" ? '<span class="ico open"></span>'
-    : s.state.startsWith("waiting") && !(s.held_by||[]).length ? '<span class="ico now"></span>'
-    : s.state==="waiting_user" ? '<span class="ico open"></span>' : '<span class="ico"></span>';
-  const sub = s => s.state==="done" ? "ready"
-    : s.state==="open" ? `with IT &middot; GSD #${s.ticket_id} &middot; usually ${s.eta_days} days`
-    : s.state==="waiting_user" && s.held_by.length ? `IT granted it &middot; yours after ${esc(s.held_by.join(", "))}`
-    : s.state==="waiting_user" ? "your turn"
-    : s.state==="waiting_person" ? `${esc(v.poc_name)} does this` 
-    : "queued &middot; needs " + s.blocked_by.join(", ");
+  V = v;
+  const list = stagesOf(v);
+  const done = v.progress.done === v.progress.total;
   const html = `<div class="cols">
-    <div class="main">
-      ${card(v, token)}
-      <div class="panel"><h2>Everything else — ${v.progress.done} of ${v.progress.total} ready</h2>
-      <div class="steps">${v.steps.map(s => `<div class="row">${icon(s)}
-        <span>${esc(s.title)}<em>${sub(s)}</em></span></div>`).join("")}</div>
-      ${v.work_email ? `<p class="muted" style="margin-top:11px">Your address: <b>${esc(v.work_email)}</b></p>` : ""}
-      </div>
-    </div>
-    <div class="side panel" id="side">${side(v, DIR)}</div>
+    <div class="main">${done ? finish(v, list, DIR) : journey(v, list)}</div>
+    <div class="side">${side(v, DIR)}</div>
   </div>`;
-  if (html === LAST) return;
-  const we = $("#we"), typed = we ? we.value : null, focused = we && document.activeElement === we;
-  LAST = html;
-  $("#app").innerHTML = html;
-  const we2 = $("#we");
-  if (we2 && typed !== null) { we2.value = typed; if (focused) we2.focus(); }
+  if (html !== LAST) {
+    const we = $("#we"), typed = we ? we.value : null, focused = we && document.activeElement === we;
+    LAST = html;
+    $("#app").innerHTML = html;
+    const we2 = $("#we");
+    if (we2 && typed !== null) { we2.value = typed; if (focused) we2.focus(); }
+  }
+  celebrate(list, done);
 }
-function side(v, d){
-  const mine = d.find(x => x.key === (v.project||"").toLowerCase());
-  const idle = !v.your_turn;
-  return `
-    ${idle ? `<h2>While you wait</h2>
-      <div class="card"><b>Test what you know</b>
-        <p>A short quiz on GTech. Two minutes, no access needed.</p>
-        <button class="btn sm" onclick="alert('Quiz drops in here')">Start the quiz</button></div>` : ""}
-    ${mine ? `<h2>Your project</h2>
-      <div class="card"><b>${esc(mine.name)}</b><p>${esc(mine.one_line)}</p>
-        <span class="chip">ask ${esc(mine.poc_name)}</span>
-        ${(mine.stack||[]).map(s=>`<span class="chip">${esc(s)}</span>`).join("")}
-        <div style="margin-top:7px">
-          <a class="muted" href="${mine.url}" target="_blank">Open it &rarr;</a>
-          ${mine.docs_url?` &nbsp; <a class="muted" href="${mine.docs_url}" target="_blank">Docs &rarr;</a>`:""}
-        </div>
-        <p style="margin-top:7px"><b>Try in 5 minutes:</b> ${esc(mine.try_in_5)}</p></div>
-      <div style="height:16px"></div>`:""}
-    <h2>What GTech builds</h2>
-    ${d.filter(x => x.key !== (v.project||"")).map(x => `<div class="card"><b>${esc(x.name)}</b>
-       <p>${esc(x.one_line||"")}</p>
-       <span class="chip">${esc(x.status)}</span>
-       <span class="chip">ask ${esc(x.poc_name)}</span>
-       <div style="margin-top:6px"><a class="muted" href="${x.url}" target="_blank">Open it &rarr;</a>
-       ${x.docs_url?` &nbsp; <a class="muted" href="${x.docs_url}" target="_blank">Docs &rarr;</a>`:""}</div>
-       </div>`).join("")}`;
+/* ---------- achievements ---------- */
+function celebrate(list, done){
+  const seen = new Set(mem.get("celebrated") || []);
+  const fresh = list.filter(g => g.complete && !seen.has(g.key));
+  const allFresh = done && !seen.has("__all");
+  if (!fresh.length && !allFresh) { FIRST = false; return; }
+  fresh.forEach(g => seen.add(g.key)); if (done) seen.add("__all");
+  mem.set("celebrated", [...seen]);
+  if (allFresh) {
+    const h = document.querySelector(".finish .heads"), r = h ? h.getBoundingClientRect() : {left:innerWidth/2, top:200, width:0};
+    confetti(r.left + r.width/2, r.top + 60, 180); setTimeout(() => confetti(innerWidth*0.75, innerHeight*0.35, 120), 350);
+    FIRST = false; return;
+  }
+  const g = fresh[fresh.length - 1], i = list.indexOf(g), next = list[i + 1];
+  const num = document.querySelector(`.stage[data-key="${g.key}"] .num`);
+  if (num) { num.classList.add("pop"); const r = num.getBoundingClientRect(); confetti(r.left + r.width/2, r.top + r.height/2, 110); }
+  toast(`<span class="badge">&#10003;</span><span><b>${esc(g.name)} done.</b> ${next ? `Next: ${esc(next.name)}. ` : ""}${NEXT_TIP[g.key] || ""}</span>`);
+  FIRST = false;
 }
+function toast(html){
+  document.querySelectorAll(".toast").forEach(t => t.remove());
+  const t = document.createElement("div"); t.className = "toast"; t.innerHTML = html;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add("in")));
+  setTimeout(() => { t.classList.remove("in"); setTimeout(() => t.remove(), 400); }, 5600);
+}
+function confetti(x, y, n){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c = document.createElement("canvas"), dpr = devicePixelRatio || 1;
+  c.className = "confetti"; c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+  document.body.appendChild(c);
+  const g = c.getContext("2d"); g.scale(dpr, dpr);
+  const cols = ["#024B8F", "#DA332B", "#FEDD1B"];
+  const P = Array.from({length: n}, () => { const a = -Math.PI/2 + (Math.random() - .5) * Math.PI * .95, sp = 5 + Math.random() * 9;
+    return {x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: Math.random() * 6, vr: (Math.random() - .5) * .35,
+            w: 5 + Math.random() * 6, h: 3 + Math.random() * 3, c: cols[Math.floor(Math.random() * 3)]}; });
+  const t0 = performance.now();
+  (function frame(t){
+    const k = (t - t0) / 1000; g.clearRect(0, 0, innerWidth, innerHeight);
+    P.forEach(p => { p.vy += .3; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      g.save(); g.translate(p.x, p.y); g.rotate(p.r); g.globalAlpha = Math.max(0, 1 - k / 2.2);
+      g.fillStyle = p.c; g.fillRect(-p.w/2, -p.h/2, p.w, p.h); g.restore(); });
+    if (k < 2.2) requestAnimationFrame(frame); else c.remove();
+  })(t0);
+}
+/* ---------- clicks ---------- */
+document.addEventListener("click", e => {
+  const s = e.target.closest("[data-stage]");
+  if (s) { const k = s.dataset.stage, li = s.closest(".stage");
+    TOGGLE[k] = k === "__all" ? !TOGGLE.__all : !(li && li.classList.contains("open")); rerender(); return; }
+  const x = e.target.closest("[data-explore]");
+  if (x) { const k = x.dataset.explore, seen = new Set(mem.get("explored") || []), before = seen.size;
+    PROD = (PROD === k && x.classList.contains("ph")) ? null : k; seen.add(k); mem.set("explored", [...seen]);
+    rerender();
+    const el = document.querySelector(".prod.open"); if (el && !x.classList.contains("ph")) el.scrollIntoView({behavior:"smooth", block:"center"});
+    if (DIR && before < DIR.length && seen.size === DIR.length) {
+      const r = x.getBoundingClientRect(); confetti(r.left + r.width/2, r.top, 120);
+      toast(`<span class="badge">5</span><span><b>You have met every GTech product.</b> Now test yourself with the quiz.</span>`); }
+    return; }
+  if (e.target.closest("[data-quiz]")) {
+    toast(`<span class="badge">?</span><span><b>The GTech quiz opens here.</b> Our teammate's quiz plugs into this button.</span>`); }
+});
 boot();
 </script></body></html>
