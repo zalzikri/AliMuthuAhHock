@@ -1,0 +1,37 @@
+[
+  {
+    "name": "bg-crisp-a",
+    "aspect": "16:9",
+    "size": "2K",
+    "prompt": "Abstract editorial poster background for a web page, on pure bright white. NO people, no faces, no hands, no text. One dominant navy blue cut-paper mass enters from the left edge and bleeds off the bottom, angular, with a jagged white zig-zag cut through its lower half; the navy is airbrush-sprayed, dense on one edge and fading into fine speckle on the other, with risograph grain. A red hibiscus flower (bunga raya) sits on the upper right edge of the navy mass, about one sixth of the canvas width: its five petals have CRISP, sharply defined outlines and clear petal veins, with sprayed shading only inside the petals, and a golden yellow stamen with distinct pollen dots. More asymmetric variety, all small and kept to the edges: a sprayed golden yellow half-sun cut off by the top-left corner; a thin red sprayed arc sweeping along the bottom edge from the left; a small red half-circle cut off by the right edge near the bottom; three or four tiny golden yellow dots scattered near the flower. The centre and the upper right stay empty pure white for content.",
+    "style": "Use ONLY navy blue #024B8F, red #DA332B, golden yellow #FEDD1B and pure white #FFFFFF. No cream, no beige, no peach, no orange, no pink, no brown. Pure white background. Sharp, high resolution, not blurry. No crescent, no star."
+  },
+  {
+    "name": "bg-crisp-b",
+    "aspect": "16:9",
+    "size": "2K",
+    "prompt": "Abstract editorial poster background for a web page, on pure bright white. NO people, no faces, no text. A navy blue cut-paper mass with angular edges enters from the left edge and bleeds off the bottom, airbrush-sprayed with fine risograph grain, and a jagged white zig-zag cut through it. A red hibiscus (bunga raya) with CRISP, clearly defined petal edges and visible veins overlaps the navy mass's top right corner, about one sixth of the canvas width, with a golden yellow stamen. Asymmetric accents, each small and different: a tall thin red sprayed sliver at the far right edge, cut off top and bottom; a golden yellow sprayed circle partly hidden behind the navy mass at the bottom; a scatter of tiny navy and red dots like confetti drifting from the flower toward the centre and fading out. The centre and the upper right stay empty pure white for content.",
+    "style": "Use ONLY navy blue #024B8F, red #DA332B, golden yellow #FEDD1B and pure white #FFFFFF. No cream, no beige, no peach, no orange, no pink, no brown. Pure white background. Sharp, high resolution, not blurry. No crescent, no star."
+  },
+  {
+    "name": "logo-clay-row",
+    "aspect": "1:1",
+    "size": "2K",
+    "prompt": "A claymation logo, like a stop-motion plasticine model: three heads sculpted from soft matte clay, each head shaped as a rounded CUBE with softly squashed edges and visible thumbprint and tool marks in the clay. Simple sculpted faces: clay-bead eyes, little clay eyebrows, a warm smile pressed into the clay, hair added as a separate clay piece on top. One Malay man, one Chinese man and one Indian man, natural clay skin tones, different simple hairstyles, friendly and warm. The three clay cube heads sit side by side at slightly different heights, gently touching. Soft studio lighting, slight subsurface glow of real clay, photographed close up. Heads only, no bodies, no clothing, no costume, no accessories.",
+    "style": "Isolated on a completely plain pure white background, no floor, no ground shadow, no backdrop, no frame. Tiny accents in the clay may use navy #024B8F, red #DA332B and golden yellow #FEDD1B. Respectful, no caricature. No text, no symbols, no crescent, no star."
+  },
+  {
+    "name": "logo-clay-cluster",
+    "aspect": "1:1",
+    "size": "2K",
+    "prompt": "A claymation logo in the style of a stop-motion plasticine model: three heads hand-sculpted from soft matte modelling clay, each a chunky rounded CUBE with soft pressed edges and visible fingerprints. Simple clay faces with round bead eyes, small eyebrows and a warm smile. One Malay man, one Chinese man and one Indian man, natural clay skin tones, different simple clay hairstyles. Arranged as a playful asymmetric cluster: the middle head slightly forward and tilted, the other two leaning in like friends. Soft studio light, real clay texture, close-up product photo. Heads only, no bodies, no clothing, no costume, no accessories.",
+    "style": "Isolated on a completely plain pure white background, no floor, no ground shadow, no backdrop, no frame. Tiny accents in the clay may use navy #024B8F, red #DA332B and golden yellow #FEDD1B. Respectful, no caricature. No text, no symbols, no crescent, no star."
+  },
+  {
+    "name": "accent-right",
+    "aspect": "9:16",
+    "size": "2K",
+    "prompt": "A small decorative accent for the RIGHT edge of a web page, on pure bright white. NO people, no faces, no text. Everything hugs the right edge and the lower third; the left two thirds and the top half stay empty white. Two loose red hibiscus (bunga raya) petals drifting down, with crisp outlines and airbrush-sprayed shading inside, one partly cut off by the right edge. A thin navy blue sprayed arc curving up from the bottom edge. A small golden yellow sprayed half-circle cut off by the right edge. Four or five tiny golden yellow and navy dots like confetti. Fine risograph grain on the shapes only.",
+    "style": "Use ONLY navy blue #024B8F, red #DA332B, golden yellow #FEDD1B and pure white #FFFFFF. No cream, no beige, no peach, no orange, no pink. Pure white background. Sharp, not blurry. Minimal and light. No crescent, no star."
+  }
+]

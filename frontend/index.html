@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Day One</title>
-<link rel="icon" type="image/png" href="/brand/favicon.png?v=3">
+<link rel="icon" type="image/png" href="/brand/favicon.png?v=4">
 <style>
 /* ===================== DESIGN TOKENS =====================
    Jalur Gemilang only. Official CMYK (Jabatan Penerangan):
@@ -43,7 +43,8 @@ a{color:inherit}
 
 /* poster layer */
 .poster{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:-13vw center}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:-21vw center}
+.accent{position:absolute;right:0;bottom:0;height:84vh;width:auto;mix-blend-mode:multiply}
 .grain{position:fixed;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:.07;mix-blend-mode:multiply}
 .tag{position:fixed;left:3vw;bottom:5vh;z-index:2;background:var(--yellow);color:var(--blue);
   font:600 10.5px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;
@@ -53,15 +54,21 @@ a{color:inherit}
 
 /* page */
 .wrap{position:relative;z-index:2;max-width:880px;margin:0 4vw 0 auto;padding:30px 0 64px}
-@media (max-width:1100px){.wrap{margin:0 auto;padding:24px 18px 56px}.bg{opacity:.22}}
+@media (max-width:1100px){.wrap{margin:0 auto;padding:24px 18px 56px}.bg,.accent{opacity:.22}}
 
 header{margin:0 0 28px}
-header .mark{display:flex;align-items:center;gap:14px}
-header .logo{width:132px;height:auto;display:block;margin:-6px 0 -4px -6px}
-header b{font-size:42px;line-height:.92;letter-spacing:-.045em;font-weight:800;color:var(--blue)}
-header .by{display:flex;align-items:center;gap:8px;font:600 10px/1 var(--mono);letter-spacing:.14em;
-  text-transform:uppercase;color:var(--mute);white-space:nowrap;align-self:flex-end;margin:0 0 7px 2px}
-header .by::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red)}
+header .mark{display:flex;align-items:center;gap:16px}
+header .logo{width:200px;height:auto;display:block;margin:-4px 0 -4px -10px}
+header .title{display:flex;flex-direction:column;gap:9px}
+header b{font-size:50px;line-height:.9;letter-spacing:-.05em;font-weight:800;color:var(--blue)}
+header .with{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+header .with i{font:italic 400 25px/1 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  color:var(--red);margin:0 6px 2px 2px}
+header .name{display:inline-block;font:700 14px/1 var(--font);letter-spacing:-.01em;
+  padding:8px 14px 9px;border-radius:999px 999px 999px 7px}
+header .n1{background:var(--blue);color:var(--white);transform:rotate(-4deg)}
+header .n2{background:var(--red);color:var(--white);transform:rotate(3deg) translateY(3px)}
+header .n3{background:var(--yellow);color:var(--blue);transform:rotate(-2deg) translateY(-1px)}
 header .rule{height:4px;margin-top:18px;border-radius:999px;
   background:linear-gradient(90deg,var(--blue) 0 34%,var(--yellow) 34% 46%,var(--line) 46% 100%)}
 
@@ -148,12 +155,18 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .hide{display:none}
 </style></head>
 <body>
-<div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=3" alt=""></div>
+<div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=4" alt=""><img class="accent" src="/brand/accent.jpg?v=4" alt=""></div>
 <svg class="grain" aria-hidden="true"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
 <div class="tag"><b>KopiCode 2026 presents</b><br>Day One: onboarding<br>Ali &middot; Muthu &middot; Ah Hock<br>13/11/26</div>
 <div class="wrap">
 <header>
-  <div class="mark"><img class="logo" src="/brand/logo-200.png" alt="Ali, Muthu and Ah Hock"><b>Day&nbsp;One</b><span class="by">Ali Muthu Ah Hock</span></div>
+  <div class="mark">
+    <img class="logo" src="/brand/logo-420.png?v=4" alt="Ali, Muthu and Ah Hock">
+    <div class="title">
+      <b>Day&nbsp;One</b>
+      <div class="with"><i>with</i><span class="name n1">Ali</span><span class="name n2">Muthu</span><span class="name n3">Ah&nbsp;Hock</span></div>
+    </div>
+  </div>
   <div class="rule"></div>
 </header>
 <div id="app"></div>
