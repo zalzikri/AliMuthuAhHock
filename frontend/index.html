@@ -5,9 +5,9 @@
 <link rel="icon" type="image/png" href="/brand/favicon.png?v=6">
 <style>
 /* Self-hosted, so the demo does not depend on the venue Wi-Fi.
-   Archivo: sharp poster grotesk for headings and labels. Inter: crisp body text. */
+   Archivo: sharp poster grotesk for headings and labels. Work Sans: body text and buttons. */
 @font-face{font-family:"Archivo";src:url(/brand/fonts/archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
-@font-face{font-family:"Inter";src:url(/brand/fonts/inter.woff2) format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Work Sans";src:url(/brand/fonts/work-sans.woff2) format("woff2");font-weight:100 900;font-display:swap}
 @font-face{font-family:"JetBrains Mono";src:url(/brand/fonts/jetbrains-mono.woff2) format("woff2");font-weight:400 800;font-display:swap}
 /* ===================== DESIGN TOKENS =====================
    Jalur Gemilang only. Official CMYK (Jabatan Penerangan):
@@ -20,9 +20,9 @@
 :root{
   --blue:#024B8F; --red:#DA332B; --yellow:#FEDD1B; --white:#FFFFFF;
 
-  --ink:var(--blue);                    /* text is the flag navy */
-  --mute:rgba(2,75,143,.74);
-  --faint:rgba(2,75,143,.45);
+  --ink:#111111;                        /* text is black: the one colour outside the flag */
+  --mute:rgba(17,17,17,.64);
+  --faint:rgba(17,17,17,.4);
   --line:rgba(2,75,143,.11);
   --wash:rgba(2,75,143,.045);           /* calm surfaces */
   --sun:#FFF8D1;                        /* flag yellow at 20% on white, flattened: opaque */
@@ -37,14 +37,14 @@
 
   --shadow:0 22px 44px -30px rgba(2,75,143,.42);
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
-  --font:"Inter",-apple-system,"Segoe UI",sans-serif;
-  --display:"Archivo","Inter",sans-serif;
+  --font:"Work Sans",-apple-system,"Segoe UI",sans-serif;
+  --display:"Archivo","Work Sans",sans-serif;
   --pad:20px; --gap:24px;
 }
 /* ========================================================= */
 *{box-sizing:border-box}
 html,body{background:var(--bg)}
-body{margin:0;color:var(--ink);font:450 14px/1.55 var(--font);font-feature-settings:"cv11","ss01"}
+body{margin:0;color:var(--ink);font:420 14px/1.55 var(--font)}
 a{color:inherit}
 
 /* poster layer */
@@ -56,7 +56,7 @@ a{color:inherit}
 .accent{position:absolute;right:0;bottom:0;width:min(19vw,330px);height:auto}
 /* No page-wide grain layer: the art carries its own grain, and noise on the white paper reads as dirt.
    No blend modes or SVG filters on fixed layers either: they repaint the whole screen on every scroll. */
-.tag{position:fixed;left:3vw;bottom:5vh;z-index:2;background:var(--yellow);color:var(--blue);
+.tag{position:fixed;left:3vw;bottom:5vh;z-index:2;background:var(--yellow);color:var(--ink);
   font:600 10.5px/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase;
   writing-mode:vertical-rl;transform:rotate(180deg);padding:14px 10px;max-height:46vh;
   border-radius:16px 16px 4px 16px}
@@ -70,7 +70,7 @@ header{margin:0 0 28px}
 header .mark{display:flex;align-items:center;gap:16px}
 header .logo{width:200px;height:auto;display:block;margin:-4px 0 -4px -10px}
 header .title{display:flex;flex-direction:column;gap:9px}
-header b{font:900 52px/.9 var(--display);font-stretch:112%;letter-spacing:-.04em;color:var(--blue)}
+header b{font:900 52px/.9 var(--display);font-stretch:112%;letter-spacing:-.04em;color:var(--ink)}
 header .with{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 header .with i{font:700 21px/1 var(--display);font-stretch:125%;font-style:normal;letter-spacing:-.01em;
   color:var(--red);margin:0 8px 2px 2px}
@@ -101,11 +101,11 @@ h2{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text
 .turn.calm,.act.calm{background:var(--white);border:1px solid var(--line)}
 .turn .k,.act .k{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .turn.calm .k,.act.calm .k{color:var(--mute)}
-.turn .v,.act .v{font:800 22px/1.15 var(--display);font-stretch:104%;margin:8px 0 6px;letter-spacing:-.02em;color:var(--blue)}
+.turn .v,.act .v{font:800 22px/1.15 var(--display);font-stretch:104%;margin:8px 0 6px;letter-spacing:-.02em;color:var(--ink)}
 .turn .d,.act .d{font-size:13.5px;color:var(--mute)}
 .howto{margin:14px 0 0;padding-left:20px;font-size:13.5px;line-height:1.65}
 .howto li{margin-bottom:6px}
-.howto li::marker{color:var(--blue);font-weight:800}
+.howto li::marker{color:var(--ink);font-weight:800}
 .pre{background:var(--white);border:1px solid var(--line);border-radius:16px 16px 16px 5px;
   padding:12px 14px;margin-top:12px;font-size:12.5px;line-height:1.6}
 .pre table{width:100%;border-collapse:collapse}
@@ -118,7 +118,7 @@ h2{font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text
 label{display:block;font:700 10.5px/1.2 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:0 0 7px}
 .field{margin-bottom:14px}
 input,select{width:100%;border:1px solid rgba(2,75,143,.2);border-radius:var(--r-field);padding:10px 13px;
-  font:inherit;font-size:13.5px;background:var(--white);color:var(--blue);transition:border-color .15s,box-shadow .15s}
+  font:inherit;font-size:13.5px;background:var(--white);color:var(--ink);transition:border-color .15s,box-shadow .15s}
 input::placeholder{color:var(--faint)}
 input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(254,221,27,.45)}
 .seg{display:inline-flex;gap:4px;padding:4px;background:var(--wash);border-radius:var(--r-pill)}
@@ -128,10 +128,10 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 
 /* buttons */
 .btn{border:1px solid var(--blue);background:var(--blue);color:var(--white);border-radius:var(--r-btn);
-  padding:10px 20px;font:700 13.5px/1.2 var(--display);font-stretch:106%;cursor:pointer;text-decoration:none;
+  padding:10px 20px;font:600 13.5px/1.2 var(--font);cursor:pointer;text-decoration:none;
   display:inline-block;transition:transform .12s}
 .btn:hover{transform:translateY(-1px)}
-.btn.ghost{background:var(--white);color:var(--blue);border-color:rgba(2,75,143,.25)}
+.btn.ghost{background:var(--white);color:var(--ink);border-color:rgba(2,75,143,.25)}
 .btn.sm{padding:7px 15px;font-size:12.5px}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 
@@ -176,6 +176,18 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .flat{max-width:720px}
 .flat h2{margin:4px 0 4px}
 
+/* her steps: collapsed by default, highlighted so she sees them */
+.mine{margin:6px 0;background:var(--sun);border:1px solid rgba(254,221,27,.9);border-radius:22px 22px 22px 6px}
+.rh{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:11px;align-items:center;width:100%;padding:11px 14px;font-size:13.5px}
+.rh:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:22px}
+.rh .t{flex:1;min-width:0}
+.rh em{font-style:normal;color:var(--mute);font-size:12px;display:block}
+.pill{font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;
+  background:var(--blue);color:var(--white);padding:6px 10px;border-radius:999px 999px 999px 4px}
+.chev{width:8px;height:8px;flex:none;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg);margin:0 4px 4px 2px}
+.mine.open .chev{transform:rotate(-135deg);margin:4px 4px 0 2px}
+.mine .act{margin:0;padding:2px 18px 16px 41px;background:transparent;border:0;box-shadow:none;border-radius:0}
+
 /* stepper: the one place with colour. Done = navy check, here = red node + "You are here". */
 .stepper{list-style:none;margin:22px 0 22px;padding:0;display:grid;grid-template-columns:repeat(var(--n),1fr)}
 .stepper li{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
@@ -187,7 +199,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .stepper li.done .node{background:var(--blue);border-color:var(--blue);color:var(--white)}
 .stepper li.here .node{background:var(--red);border-color:var(--red);color:var(--white);box-shadow:0 0 0 6px rgba(218,51,43,.14)}
 .lab{font:800 13.5px/1.2 var(--display);font-stretch:104%;color:var(--mute)}
-.stepper li.done .lab,.stepper li.here .lab{color:var(--blue)}
+.stepper li.done .lab,.stepper li.here .lab{color:var(--ink)}
 .sub{font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
 .stepper li.done .sub{color:var(--mute)}
 .you{display:inline-block;background:var(--red);color:var(--white);padding:4px 9px 4px;border-radius:999px 999px 999px 4px}
@@ -200,34 +212,28 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .ex-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
 .ex-head h2{margin:0 0 6px}
 .hook{margin:0;font-size:14px;max-width:520px}
-.ex-ctl{display:flex;align-items:center;gap:16px}
-.meter{display:flex;flex-direction:column;align-items:flex-end;gap:7px;font:700 10px/1 var(--display);font-stretch:112%;
-  letter-spacing:.09em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
-.meter .dots{display:flex;gap:4px}
-.meter i{width:16px;height:5px;border-radius:999px;background:var(--line)}
-.meter i.on{background:var(--blue)}
 .arrows{display:flex;gap:6px}
 .arrows button{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;
-  border:1px solid rgba(2,75,143,.25);font:800 14px/1 var(--display);color:var(--blue)}
+  border:1px solid rgba(2,75,143,.25);font:800 14px/1 var(--display);color:var(--ink)}
 .arrows button:hover{border-color:var(--blue)}
 .car{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,calc((100% - 24px) / 2.6));gap:12px;
   overflow-x:auto;scroll-snap-type:x mandatory;margin:16px -24px 0;padding:2px 24px 14px;scroll-padding:0 24px;scrollbar-width:none}
 .car::-webkit-scrollbar{display:none}
-.pc{scroll-snap-align:start;display:flex;flex-direction:column;gap:9px;padding:16px 16px 14px;cursor:pointer;
-  background:var(--white);border:1px solid rgba(2,75,143,.16);border-radius:24px 24px 24px 6px;transition:border-color .15s,transform .15s}
-.pc:hover{border-color:var(--blue);transform:translateY(-2px)}
+.pc{scroll-snap-align:start;display:flex;flex-direction:column;gap:9px;padding:16px 16px 14px;
+  background:var(--white);border:1px solid rgba(2,75,143,.16);border-radius:24px 24px 24px 6px}
 .pc-top{display:flex;align-items:center;gap:8px;min-height:30px}
 .ini{width:30px;height:30px;flex:none;border-radius:10px 10px 10px 4px;display:grid;place-items:center;
-  font:800 13px/1 var(--display);color:var(--blue);background:var(--wash);border:1px solid var(--line)}
+  font:800 13px/1 var(--display);color:var(--white);background:var(--blue)}
+.ini.c1,.ini.c4{background:var(--red)} .ini.c2{background:var(--yellow);color:var(--ink)} .ini.c3{background:var(--blue)}
 .pc .chip{margin:0;padding:1px 8px;font:700 9.5px/1.6 var(--display);letter-spacing:.06em;text-transform:uppercase;
-  background:transparent;border:1px solid rgba(2,75,143,.25);color:var(--blue)}
-.pc div .chip{margin:0 4px 4px 0;text-transform:none;letter-spacing:0;font:500 11px/1.6 var(--font);border-color:var(--line);color:var(--mute)}
-.ok{margin-left:auto;font:700 10px/1 var(--display);font-stretch:112%;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+  background:transparent;border:1px solid rgba(2,75,143,.25);color:var(--ink)}
 .pc-name{font:850 19px/1.1 var(--display);font-stretch:104%;letter-spacing:-.015em}
 .pc p{margin:0;font-size:13px;line-height:1.5}
 .pc .try{color:var(--mute)}
-.pc-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:11px;border-top:1px solid var(--line)}
-.poc{font-size:12px;color:var(--mute)}
+.pc-foot{margin-top:auto;display:flex;justify-content:flex-end;align-items:center;gap:10px;padding-top:11px;border-top:1px solid var(--line)}
+.pc .poc{font-size:12.5px;color:var(--mute)}
+.pc .poc b{color:var(--ink);font-weight:600}
+.pc .poc a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
 .links{display:flex;gap:12px;font:700 12.5px/1 var(--display)}
 .links a{text-decoration:none;border-bottom:1.5px solid var(--blue);padding-bottom:2px}
 /* the quiz is not a product: tinted, dashed, mirrored corners */
@@ -246,7 +252,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
   box-shadow:0 26px 50px -24px rgba(2,75,143,.65);transition:transform .4s cubic-bezier(.2,.9,.25,1.25),opacity .25s}
 .toast.in{transform:translate(-50%,0) scale(1);opacity:1}
 .toast b{font-family:var(--display);font-weight:800}
-.badge{width:36px;height:36px;flex:none;border-radius:12px 12px 12px 4px;background:var(--yellow);color:var(--blue);
+.badge{width:36px;height:36px;flex:none;border-radius:12px 12px 12px 4px;background:var(--yellow);color:var(--ink);
   display:grid;place-items:center;font:900 16px/1 var(--display)}
 .confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:70}
 .finish{padding:24px 26px 20px}
@@ -261,7 +267,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .nx small{display:block;font:700 9.5px/1 var(--display);font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;opacity:.8;margin-bottom:9px}
 .nx b{display:block;font:850 15.5px/1.15 var(--display);letter-spacing:-.01em;margin-bottom:6px}
 .nx span{display:block;font-size:12px;line-height:1.4;opacity:.85}
-.nx{background:var(--white);color:var(--blue);border:1px solid rgba(2,75,143,.18)}
+.nx{background:var(--white);color:var(--ink);border:1px solid rgba(2,75,143,.18)}
 .nx:first-child{border-color:var(--blue)}
 .more{all:unset;cursor:pointer;font:700 12.5px/1 var(--display);border-bottom:1.5px solid var(--blue);padding-bottom:2px;margin-top:6px}
 @media (prefers-reduced-motion: reduce){.nx,.node.pop{animation:none}}
@@ -387,7 +393,7 @@ const NEXT_TIP = {
   tools:   "Slack is ready. Say hello to your team, then try the GTech quiz.",
   project: "You can open the repo now.",
 };
-let TOKEN = "", V = null, TOGGLE = {}, PROD = null, FIRST = true;
+let TOKEN = "", V = null, TOGGLE = {}, EXP = new Set(), FIRST = true;
 const mem = {
   get: k => { try { return JSON.parse(localStorage.getItem(`dayone:${TOKEN}:${k}`)); } catch(e){ return null; } },
   set: (k, v) => { try { localStorage.setItem(`dayone:${TOKEN}:${k}`, JSON.stringify(v)); } catch(e){} },
@@ -417,7 +423,7 @@ const CH = {
   slack_guided:{k:"Your turn &middot; this one is in Slack, not GSD", act:"I have sent it"},
   person: {k:"Waiting on a person", act:"He has added me"},
 };
-function act(v, t){
+function act(v, t, inRow){
   const c = (t.then_self && t.state === "waiting_user") ? {k:"Your turn &middot; IT has granted it", act:"I am in"} : (CH[t.channel] || CH.self);
   const n = v.your_turn_count || 1;
   const fields = (t.fields||[]).length ? `<div class="pre"><table>${
@@ -434,8 +440,7 @@ function act(v, t){
         ? `<p class="warn">Google's sign-in link expires in ${Math.floor(v.link_expires_in_hours)} hours.</p>`
         : `<p class="warn">That link has expired. IT must reset the account: raise a GSD ticket.</p>`) : "";
   return `<div class="act ${t.channel==="person"?"calm":""}">
-    <div class="k">${c.k}${n > 1 ? ` &middot; 1 of ${n}` : ""}</div>
-    <div class="v">${esc(t.title)}</div>
+    ${inRow ? "" : `<div class="k">${c.k}${n > 1 ? ` &middot; 1 of ${n}` : ""}</div><div class="v">${esc(t.title)}</div>`}
     <div class="d">${esc(t.hint || "")}</div>
     ${howto}${fields}${ask}${emailAsk}${exp}
     ${t.id==="password_reset" ? '<p class="muted" style="margin-top:9px">Day One never sees or stores your password.</p>' : ""}
@@ -447,23 +452,31 @@ function act(v, t){
 }
 function row(v, s){
   const held = s.state === "waiting_user" && (s.held_by||[]).length;
+  const mine = s.state === "waiting_person" || (s.state === "waiting_user" && !held);
   const ico = s.state==="done" ? '<span class="ico done">&#10003;</span>'
     : s.state==="open" || held ? '<span class="ico open"></span>'
-    : s.state.startsWith("waiting") ? '<span class="ico now"></span>' : '<span class="ico"></span>';
+    : mine ? '<span class="ico now"></span>' : '<span class="ico"></span>';
   const sub = s.state==="done" ? "ready"
     : s.state==="open" ? `with IT &middot; <span class="tk">GSD #${s.ticket_id}</span> &middot; usually ${s.eta_days} days`
     : held ? `IT granted it &middot; yours after ${esc(s.held_by.join(", "))}`
-    : s.state==="waiting_user" ? "your turn, next"
-    : s.state==="waiting_person" ? `${esc(v.poc_name)} does this`
+    : s.state==="waiting_user" ? "IT has done its part. Open this to see what to do."
+    : s.state==="waiting_person" ? `${esc(v.poc_name)} does this. Open this for the message to send.`
     : "queued &middot; goes out after " + esc(s.blocked_by.join(", "));
-  return `<div class="row">${ico}<span>${esc(s.title)}<em>${sub}</em></span></div>`;
+  if (!mine) return `<div class="row">${ico}<span>${esc(s.title)}<em>${sub}</em></span></div>`;
+  /* her steps start collapsed: a highlighted row she opens herself */
+  const open = EXP.has(s.id);
+  return `<div class="mine ${open ? "open" : ""}">
+    <button class="rh" data-step="${s.id}">${ico}<span class="t">${esc(s.title)}<em>${sub}</em></span>
+      <span class="pill">${s.state === "waiting_person" ? "Waiting on " + esc(v.poc_name) : "Your turn"}</span><span class="chev"></span></button>
+    ${open ? act(v, s, true) : ""}
+  </div>`;
 }
 function journey(v, list){
   const n = v.your_turn_count || 0;
   const withIT = v.steps.filter(x => x.state === "open").length;
   const h1 = n ? (n > 1 ? `${n} things for you` : "1 thing for you")
     : withIT ? `IT is working on ${withIT} request${withIT>1?"s":""}` : "Almost there";
-  const p = n ? "It is open in the list below." : "Nothing for you right now. It shows up here when IT finishes.";
+  const p = n ? "Find the highlighted step in the list below and open it." : "Nothing for you right now. It shows up here when IT finishes.";
   return `<section class="journey panel">
     <div class="hello"><div class="k">Welcome, ${esc(callName(v.name))}</div><h1>${h1}</h1><p>${p}</p></div>
     ${stepper(list)}
@@ -481,7 +494,7 @@ function stepper(list){
 function flatList(v){
   return `<div class="flat">
     <h2>All steps &middot; ${v.progress.done} of ${v.progress.total} ready</h2>
-    ${v.steps.map(x => v.your_turn && x.id === v.your_turn.id ? act(v, x) : row(v, x)).join("")}
+    ${v.steps.map(x => row(v, x)).join("")}
     ${v.work_email ? `<p class="muted" style="margin:12px 0 0">Your address: <b>${esc(v.work_email)}</b></p>` : ""}
   </div>`;
 }
@@ -502,7 +515,6 @@ function finish(v, list, d){
   </section>`;
 }
 function explore(v, d){
-  const seen = new Set(mem.get("explored") || []);
   const open = v.steps.filter(x => x.state === "open");
   const eta = Math.max(0, ...open.map(x => x.eta_days || 0));
   const mine = d.find(x => x.key === (v.project||"").toLowerCase());
@@ -514,28 +526,22 @@ function explore(v, d){
   return `<section class="panel explore" id="explore">
     <div class="ex-head">
       <div><h2>${ready ? "Next for you" : "While you wait"}</h2><p class="hook">${hook}</p></div>
-      <div class="ex-ctl">
-        <div class="meter"><span>${seen.size} of ${d.length} explored</span>
-          <span class="dots">${list.map(x => `<i class="${seen.has(x.key)?"on":""}"></i>`).join("")}</span></div>
-        <div class="arrows"><button data-car="-1" aria-label="Previous">&larr;</button><button data-car="1" aria-label="Next">&rarr;</button></div>
-      </div>
+      <div class="arrows"><button data-car="-1" aria-label="Previous">&larr;</button><button data-car="1" aria-label="Next">&rarr;</button></div>
     </div>
-    <div class="car" id="car">${list.map(x => `
-      <article class="pc ${seen.has(x.key)?"seen":""}" data-card="${x.key}">
-        <div class="pc-top"><span class="ini">${esc(x.name[0])}</span>
-          ${mine && x.key===mine.key ? '<span class="chip">your project</span>' : ""}
-          ${seen.has(x.key) ? '<span class="ok">&#10003; explored</span>' : ""}</div>
+    <div class="car" id="car">${list.map((x, i) => `
+      <article class="pc" data-card="${x.key}">
+        <div class="pc-top"><span class="ini c${i % 5}">${esc(x.name[0])}</span>
+          ${mine && x.key===mine.key ? '<span class="chip">your project</span>' : ""}</div>
         <b class="pc-name">${esc(x.name)}</b>
         <p>${esc(x.one_line||"")}</p>
         ${x.try_in_5 ? `<p class="try"><b>Try in 5 minutes:</b> ${esc(x.try_in_5)}</p>` : ""}
-        ${(x.stack||[]).length ? `<div>${x.stack.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>` : ""}
-        <div class="pc-foot"><span class="poc">Ask ${esc(x.poc_name)}</span>
-          <span class="links"><a href="${x.url}" target="_blank">Open &rarr;</a>${x.docs_url ? `<a href="${x.docs_url}" target="_blank">Docs &rarr;</a>` : ""}</span></div>
+        <p class="poc">Contact <b>${esc(x.poc_name)}</b>${x.poc_email ? `<br><a href="mailto:${x.poc_email}">${esc(x.poc_email)}</a>` : ""}</p>
+        <div class="pc-foot"><span class="links"><a href="${x.url}" target="_blank">Open &rarr;</a>${x.docs_url ? `<a href="${x.docs_url}" target="_blank">Docs &rarr;</a>` : ""}</span></div>
       </article>`).join("")}
     </div>
     <div class="quizcard">
       <span class="qi">?</span>
-      <span class="t"><b>GTech quiz</b><em>${seen.size >= 3 ? "You have explored enough. Ready to test yourself?" : "Two minutes on what GTech builds. Best after 3 products."}</em></span>
+      <span class="t"><b>GTech quiz</b><em>Two minutes on what GTech builds. Best after you read the cards above.</em></span>
       <button class="btn sm" data-quiz="1">Start the quiz &rarr;</button>
     </div>
   </section>`;
@@ -614,19 +620,10 @@ function confetti(x, y, n){
   })(t0);
 }
 /* ---------- clicks ---------- */
-function markSeen(k){
-  const seen = new Set(mem.get("explored") || []), before = seen.size;
-  if (seen.has(k)) return;
-  seen.add(k); mem.set("explored", [...seen]); rerender();
-  if (DIR && before < DIR.length && seen.size === DIR.length) {
-    const c = document.querySelector(`[data-card="${k}"]`), r = c ? c.getBoundingClientRect() : {left:innerWidth/2, top:innerHeight/2, width:0};
-    confetti(r.left + r.width/2, r.top + 20, 120);
-    toast(`<span class="badge">5</span><span><b>You have met every GTech product.</b> Now test yourself with the quiz.</span>`);
-  }
-}
 document.addEventListener("click", e => {
-  const s = e.target.closest("[data-stage]");
-  if (s) { TOGGLE.__all = !TOGGLE.__all; rerender(); return; }
+  const st = e.target.closest("[data-step]");
+  if (st) { const k = st.dataset.step; EXP.has(k) ? EXP.delete(k) : EXP.add(k); rerender(); return; }
+  if (e.target.closest("[data-stage]")) { TOGGLE.__all = !TOGGLE.__all; rerender(); return; }
   const c = e.target.closest("[data-car]");
   if (c) { const car = $("#car"), card = car && car.querySelector(".pc");
     if (car && card) car.scrollBy({left: (+c.dataset.car) * (card.offsetWidth + 12), behavior: "smooth"}); return; }
@@ -634,10 +631,8 @@ document.addEventListener("click", e => {
   if (x) { $("#explore").scrollIntoView({behavior: "smooth", block: "start"});
     const car = $("#car"), card = car && car.querySelector(`[data-card="${x.dataset.explore}"]`);
     if (car && card) car.scrollTo({left: card.offsetLeft - car.offsetLeft, behavior: "smooth"}); return; }
-  const q = e.target.closest("[data-quiz]");
-  if (q) { toast(`<span class="badge">?</span><span><b>The GTech quiz opens here.</b> Our teammate's quiz plugs into this button.</span>`); return; }
-  const k = e.target.closest("[data-card]");
-  if (k) markSeen(k.dataset.card);
+  if (e.target.closest("[data-quiz]"))
+    toast(`<span class="badge">?</span><span><b>The GTech quiz opens here.</b> Our teammate's quiz plugs into this button.</span>`);
 });
 boot();
 </script></body></html>

@@ -40,6 +40,14 @@ class Step:
     hint: str = ""         # one line of context shown on the card
 
 
+# Stages run strictly in order: a stage's requests go out only when the stage before it is
+# fully done, including her own confirmations. Then nothing finishes "ahead" of her, and the
+# stepper always matches the list. This is also GT's real order: sign in, then HR systems and
+# GSD, then Slack / Atlassian / Bitbucket, then the project. Skipped steps (interns) are
+# ignored by the engine. The optional Claude seat does not hold up the project stage.
+HR_STAGE = ("gems", "ges", "gsd")
+TOOLS_STAGE = ("slack", "atlassian", "bitbucket")
+
 STEPS: tuple[Step, ...] = (
     Step("email", "Google Workspace email", "Google Workspace", GSD_AUTO, 3,
          subject="New email account for {name}",
@@ -70,7 +78,7 @@ STEPS: tuple[Step, ...] = (
     # GES mails the WORK address with a user ID and a temporary password, so this
     # one she can finish alone - unlike the Google sign-in.
     Step("ges", "GES", "GES", GSD_AUTO, 3,
-         deps=("email",), staff_only=True,
+         deps=("password_reset",), staff_only=True,
          subject="GES access for {name}",
          body="Grant GES access for {name}. Login is the employee ID.",
          then_self=True, self_after=("password_reset",),
@@ -83,22 +91,22 @@ STEPS: tuple[Step, ...] = (
          )),
 
     Step("gsd", "GSD portal access", "Freshservice", GSD_AUTO, 3,
-         deps=("email",), staff_only=True,
+         deps=("password_reset",), staff_only=True,
          subject="GSD portal access for {name}",
          body="Grant GSD requester access so {name} can raise their own tickets."),
 
     Step("slack", "Slack", "Slack", GSD_AUTO, 3,
-         deps=("gsd",), deps_intern=("email",),
+         deps=HR_STAGE, deps_intern=("password_reset",),
          subject="Slack access for {name}",
          body="Add {name} to gamudatechnologies.slack.com."),
 
     Step("atlassian", "Atlassian", "Atlassian", GSD_AUTO, 3,
-         deps=("gsd",), deps_intern=("email",),
+         deps=HR_STAGE, deps_intern=("password_reset",),
          subject="Atlassian access for {name}",
          body="Grant Jira and Confluence access for {name}."),
 
     Step("bitbucket", "Bitbucket account", "Bitbucket", GSD_AUTO, 3,
-         deps=("gsd",), deps_intern=("email",), developer_only=True,
+         deps=HR_STAGE, deps_intern=("password_reset",), developer_only=True,
          subject="Bitbucket access for {name}",
          body="Grant Bitbucket access for {name}."),
 
@@ -107,7 +115,7 @@ STEPS: tuple[Step, ...] = (
     # fills the modal's fields instead. Field names from
     # gtech-docs/apps/docs/platform/requests/gcp-access.md.
     Step("gcp", "GCP project access", "GCP", SLACK_GUIDED, 2,
-         deps=("slack",), developer_only=True,
+         deps=TOOLS_STAGE, developer_only=True,
          hint="GCP is the one access that does not go through GSD. "
               "Run /gcp-request in Slack; it opens a form.",
          fields=(
@@ -126,13 +134,13 @@ STEPS: tuple[Step, ...] = (
 
     # The repo admin adds you directly. There is no ticket for this.
     Step("repo_access", "Added to the repo", "Bitbucket", PERSON, 1,
-         deps=("bitbucket",), developer_only=True, needs_project=True,
+         deps=TOOLS_STAGE, developer_only=True, needs_project=True,
          hint="{poc_name} does this directly in Bitbucket. No ticket exists for it.",
          ask="Hi {poc_first} - could you add {work_email} to {repo}? "
              "I joined {project} on {start_date}. Thanks."),
 
     Step("claude_seat", "Claude Code seat", "Freshservice", GSD_AUTO, 3,
-         deps=("gsd",), deps_intern=("email",), optional=True,
+         deps=HR_STAGE, deps_intern=("password_reset",), optional=True,
          subject="Claude Code seat for {name}",
          body="Assign a Claude Code licence seat to {name}."),
 )

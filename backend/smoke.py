@@ -38,26 +38,30 @@ def run(employment, job_family, project):
     print(f"  work email read back from the ticket reply: {v['work_email']}")
     assert v["your_turn"]["id"] == "password_reset"
 
-    # GES mails her WORK inbox, so her GES part must wait until she has signed in
-    ges = next((s for s in v["steps"] if s["id"] == "ges"), None)
-    if ges:
-        desk.resolve(ges["ticket_id"])
-        v = engine.view(conn, desk, oid)
-        ges = next(s for s in v["steps"] if s["id"] == "ges")
-        assert ges["state"] == "waiting_user" and ges["held_by"], ges
-        assert v["your_turn"]["id"] == "password_reset", "GES must not jump the sign-in"
-        engine.confirm(conn, desk, oid, "ges")
-        assert next(s for s in engine.view(conn, desk, oid)["steps"]
-                    if s["id"] == "ges")["state"] == "waiting_user", "early GES confirm ignored"
-        print("  GES granted early, held until she signs in: ok")
+    # Stages run in order: nothing past the Account stage goes out before she signs in
+    early = [s["title"] for s in v["steps"] if s["id"] not in ("email", "password_reset") and s["ticket_id"]]
+    assert not early, f"went out before sign-in: {early}"
+    print("  nothing goes out before she signs in: ok")
 
     engine.confirm(conn, desk, oid, "password_reset")
-    for _ in range(5):
+    order = ["email", "password_reset", "gems", "ges", "gsd", "slack", "atlassian", "bitbucket",
+             "claude_seat", "gcp", "repo_access"]
+    stage = {"email": 0, "password_reset": 0, "gems": 1, "ges": 1, "gsd": 1, "slack": 2,
+             "atlassian": 2, "bitbucket": 2, "claude_seat": 2, "gcp": 3, "repo_access": 3}
+    for _ in range(6):
         v = engine.view(conn, desk, oid)
         for s in v["steps"]:
             if s["state"] == "open":
                 desk.resolve(s["ticket_id"])
-            elif s["state"] == "waiting_user" and s["then_self"]:
+        v = engine.view(conn, desk, oid)
+        st = {s["id"]: s["state"] for s in v["steps"]}
+        for s in v["steps"]:   # IT granted something in a later stage while an earlier one is not done?
+            if s["state"] != "blocked" and s["ticket_id"] and not s.get("optional"):
+                earlier = [i for i in st if stage[i] < stage[s["id"]] and st[i] != "done"
+                           and not v["steps"][[x["id"] for x in v["steps"]].index(i)]["optional"]]
+                assert not earlier, f"{s['id']} went out before {earlier} were done"
+        for s in v["steps"]:
+            if s["state"] == "waiting_user" and s["then_self"]:
                 engine.confirm(conn, desk, oid, s["id"])
     v = show(oid, "IT cleared every ticket")
 
