@@ -24,8 +24,9 @@ MODEL_PREFERENCE = (
     "gemini-2.5-flash-image",         # original nano banana
 )
 
-# Official Jalur Gemilang colours, converted from the government CMYK spec.
-BLUE, RED, YELLOW = "#0040FF", "#FF0D00", "#FFE800"
+# Official Jalur Gemilang CMYK (Jabatan Penerangan), converted to sRGB through
+# the ColorSync Generic CMYK profile: blue 100/75/0/0, red 0/95/100/0, yellow 0/9/100/0.
+BLUE, RED, YELLOW = "#024B8F", "#DA332B", "#FEDD1B"
 
 STYLE = (
     "Flat vector editorial poster illustration, in the style of contemporary "

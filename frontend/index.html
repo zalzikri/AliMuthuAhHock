@@ -5,17 +5,26 @@
 <style>
 /* ============ DESIGN TOKENS - change the look from here only ============ */
 :root{
-  /* colour */
-  --ink:#14171a;          /* text, buttons, strong borders */
-  --mute:#6b7280;         /* secondary text */
-  --line:#e3e6ea;         /* hairlines */
-  --bg:#fbfcfd;           /* page */
-  --card:#fff;            /* surfaces */
-  --red:#e4002b;          /* one accent, used sparingly */
-  --ok:#eef3ee;           /* calm/waiting surface */
-  --done:#2f7d4f;         /* completed marker */
+  /* Jalur Gemilang. Official CMYK from Jabatan Penerangan:
+       blue   C100 M75 Y0  K0
+       red    C0   M95 Y100 K0
+       yellow C0   M9  Y100 K0
+     converted to sRGB through the ColorSync Generic CMYK profile
+     (LittleCMS, relative colorimetric). Pantone 2768 / 199 / 108 for print. */
+  --blue:#024B8F;
+  --red:#DA332B;
+  --yellow:#FEDD1B;
+  --ink:#0A1033;          /* near-black with the canton in it */
+  --mute:#5A6076;
+  --line:#DCE0EC;
+  --bg:#FFFFFF;
+  --card:#FFFFFF;
+  --paper:#F4F2ED;        /* warm paper, for poster blocks */
+  --ok:#EDF2F8;           /* calm/waiting surface, navy-tinted */
+  --done:#024B8F;         /* completed marker uses the flag blue */
   /* shape */
-  --r-lg:8px; --r-md:6px; --r-sm:5px; --r-xs:4px;
+  --r-lg:2px; --r-md:2px; --r-sm:2px; --r-xs:1px;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   /* rhythm */
   --pad:16px; --gap:22px;
   /* type */
@@ -25,35 +34,45 @@
 /* ======================================================================== */
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs-body)/1.5 var(--font)}
-.wrap{max-width:1020px;margin:0 auto;padding:26px 22px 60px}
-header{display:flex;align-items:baseline;gap:9px;margin-bottom:22px}
-header b{font-size:21px;letter-spacing:-.02em}
-header span{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
-header .dot{width:7px;height:7px;background:var(--red);border-radius:50%;align-self:center}
+.wrap{max-width:1020px;margin:0 auto;padding:26px 22px 60px;position:relative}
+header{position:relative;margin:0 0 26px;padding:0 0 14px}
+header .mark{display:flex;align-items:flex-end;gap:10px}
+header b{font-size:40px;line-height:.9;letter-spacing:-.045em;font-weight:800;color:var(--ink)}
+header .by{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);
+  writing-mode:vertical-rl;transform:rotate(180deg);height:38px;align-self:flex-end;
+  border-left:3px solid var(--red);padding-left:6px;margin-bottom:2px}
+header .stripes{position:absolute;right:0;top:-26px;display:flex;gap:4px;align-items:flex-start}
+header .stripes i{display:block;width:18px}
+header .stripes i:nth-child(1){height:74px;background:var(--blue)}
+header .stripes i:nth-child(2){height:46px;background:var(--red)}
+header .stripes i:nth-child(3){height:98px;background:var(--yellow)}
+header .rule{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--ink)}
+header .rule::after{content:"";position:absolute;left:0;bottom:0;width:38%;height:3px;background:var(--blue)}
 h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);margin:0 0 9px;font-weight:600}
 .cols{display:flex;gap:var(--gap);align-items:flex-start}
 .cols>.main{flex:1 1 56%;min-width:0}
 .cols>.side{flex:1 1 44%;min-width:0}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--pad)}
 label{display:block;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 0 4px}
-input,select{width:100%;border:1px solid var(--line);border-radius:5px;padding:7px 9px;font:inherit;font-size:13px;background:#fff;color:var(--ink)}
+input,select{width:100%;border:1.5px solid var(--ink);border-radius:1px;padding:7px 9px;font:inherit;font-size:13px;background:#fff;color:var(--ink)}
 input:focus,select:focus{outline:none;border-color:var(--ink)}
 .field{margin-bottom:11px}
-.seg{display:flex;border:1px solid var(--line);border-radius:5px;overflow:hidden;width:fit-content}
+.seg{display:flex;border:1.5px solid var(--ink);border-radius:1px;overflow:hidden;width:fit-content}
 .seg button{border:0;background:#fff;padding:6px 13px;font:inherit;font-size:12.5px;color:var(--mute);cursor:pointer;border-right:1px solid var(--line)}
 .seg button:last-child{border-right:0}
-.seg button.on{background:var(--ink);color:#fff;font-weight:600}
-.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:5px;padding:8px 17px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-.btn.ghost{background:#fff;color:var(--ink)}
+.seg button.on{background:var(--blue);color:#fff;font-weight:600}
+.btn{border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:5px;padding:8px 17px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--blue)}
 .btn.sm{padding:5px 11px;font-size:12px;font-weight:500}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .plan{font-size:12.5px}
 .plan div{display:flex;gap:7px;padding:4px 0;border-bottom:1px solid var(--line)}
 .plan div:last-child{border-bottom:0}
 .plan .why{color:var(--mute);font-size:11px;margin-left:auto;text-align:right}
-.plan s{color:#b6bcc4}
-.turn{border:2px solid var(--ink);border-radius:var(--r-lg);padding:var(--pad);background:var(--card);margin-bottom:var(--pad)}
-.turn.calm{border:1px solid var(--line);background:var(--ok)}
+.plan s{color:#A9AEC0}
+.plan .why{color:var(--mute)}
+.turn{border:2px solid var(--blue);border-radius:var(--r-lg);padding:var(--pad);background:var(--card);margin-bottom:var(--pad)}
+.turn.calm{border:1px solid var(--line);background:var(--ok);border-left:4px solid var(--blue)}
 .turn .k{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--mute)}
 .turn .v{font-size:var(--fs-hero);font-weight:650;margin:6px 0 5px;letter-spacing:-.01em}
 .turn .d{font-size:13px;color:#4a5159}
@@ -70,7 +89,7 @@ input:focus,select:focus{outline:none;border-color:var(--ink)}
 .steps .row:last-child{border-bottom:0}
 .ico{width:15px;height:15px;border:1px solid var(--line);border-radius:4px;flex:none;margin-top:2px;font-size:9px;display:flex;align-items:center;justify-content:center;color:#fff;background:#fff}
 .ico.done{background:var(--done);border-color:var(--done)}
-.ico.now{border:2px solid var(--ink)}
+.ico.now{border:2px solid var(--red)}
 .ico.open{border-color:var(--mute);background:repeating-linear-gradient(45deg,#fff,#fff 2px,#eceff2 2px,#eceff2 4px)}
 .steps em{font-style:normal;color:var(--mute);font-size:11.5px;display:block}
 .card{border:1px solid var(--line);border-radius:var(--r-md);padding:11px 12px;margin-bottom:8px;background:var(--card)}
@@ -78,17 +97,66 @@ input:focus,select:focus{outline:none;border-color:var(--ink)}
 .card p{margin:3px 0 7px;font-size:12px;color:var(--mute)}
 .chip{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:10px;color:var(--mute);margin:0 4px 4px 0}
 .chip.red{border-color:var(--red);color:var(--red)}
+.turn .k{color:var(--red);font-weight:600}
 a{color:inherit}
 .doc{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--line);text-decoration:none}
 .doc:last-child{border-bottom:0}
-.new{border:1px solid var(--ink);border-radius:4px;padding:0 5px;font-size:9.5px;height:fit-content}
+.new{border:1px solid var(--red);color:var(--red);border-radius:4px;padding:0 5px;font-size:9.5px;height:fit-content}
 .link{border:1px solid var(--line);border-radius:6px;padding:9px 11px;background:#fafbfc;font-size:12.5px;word-break:break-all;margin:10px 0}
 .muted{color:var(--mute);font-size:12px}
+
+/* ================= POSTER LAYER ================= */
+body{background:var(--bg)}
+.poster{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.poster svg{position:absolute;inset:0;width:100%;height:100%}
+.grain{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.17;mix-blend-mode:multiply}
+.wrap{z-index:2;margin-left:auto;margin-right:5vw;max-width:980px}
+.tag{position:fixed;left:3.2vw;bottom:5vh;z-index:2;background:var(--yellow);color:var(--ink);
+  font:600 10.5px/1.25 var(--mono);letter-spacing:.06em;text-transform:uppercase;
+  writing-mode:vertical-rl;transform:rotate(180deg);padding:12px 9px;max-height:46vh}
+.tag b{font-weight:800}
+/* panels read as paper pasted onto the poster */
+.panel,.turn,.card{border:2px solid var(--ink)!important;background:#fff}
+.turn{border-color:var(--blue)!important;border-width:3px!important}
+.turn.calm{border:2px solid var(--ink)!important;border-left:8px solid var(--blue)!important;background:#fff}
+h2{font-family:var(--mono);letter-spacing:.08em}
+.turn .k{font-family:var(--mono);letter-spacing:.06em}
+.btn{border-radius:1px}
+@media (max-width:1100px){.wrap{margin-right:auto}}
 .warn{margin:10px 0 0;font-size:12.5px;color:var(--red);font-weight:600}
 .hide{display:none}
 </style></head>
-<body><div class="wrap">
-<header><b>Day One</b><span class="dot"></span><span>Ali Muthu Ah Hock</span></header>
+<body>
+<div class="poster" aria-hidden="true">
+<svg viewBox="0 0 1440 900" preserveAspectRatio="xMinYMid slice">
+  <defs>
+    <radialGradient id="spray" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#DA332B" stop-opacity=".55"/>
+      <stop offset="45%" stop-color="#E8705F" stop-opacity=".28"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- airbrushed head, top-left, half off the canvas -->
+  <ellipse cx="250" cy="40" rx="210" ry="150" fill="url(#spray)"/>
+  <!-- the dominant blue mass, entering from the left edge -->
+  <polygon fill="#024B8F" points="0,150 210,92 395,118 352,300 438,452 318,560 410,900 0,900"/>
+  <!-- white zig-zag cut through the blue -->
+  <polygon fill="#FFFFFF" points="196,470 262,428 232,560 300,532 196,742 222,612 158,646"/>
+  <!-- yellow wedge, top right, cut off by the edge -->
+  <polygon fill="#FEDD1B" points="1230,0 1440,0 1440,170 1330,118"/>
+  <!-- red block, bottom right, bleeding off -->
+  <polygon fill="#DA332B" points="1262,720 1440,640 1440,900 1302,900"/>
+  <!-- a small blue disc, the only circle on the page -->
+  <circle cx="1388" cy="604" r="17" fill="#024B8F"/>
+</svg>
+</div>
+<svg class="grain" aria-hidden="true"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div class="tag"><b>KopiCode 2026 presents</b><br>Day One: onboarding<br>Ali &middot; Muthu &middot; Ah Hock<br>13/11/26</div>
+<div class="wrap">
+<header>
+  <div class="mark"><b>Day&nbsp;One</b><span class="by">Ali Muthu Ah Hock</span></div>
+  <div class="rule"></div>
+</header>
 <div id="app"></div>
 </div>
 <script>
