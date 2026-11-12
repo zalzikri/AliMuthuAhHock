@@ -340,10 +340,12 @@ const $ = s => document.querySelector(s);
 const FULL = {gems:"SAP SuccessFactors", ges:"HR information system", gsd:"Gamuda Service Desk",
               atlassian:"Jira and Confluence", gcp:"Google Cloud", claude_seat:"AI coding assistant"};
 const fullName = (id, title) => FULL[id] ? `${esc(title)} <span class="fn">${FULL[id]}</span>` : esc(title);
+/* Puncak, the quiz game (PR #1 by carterc8888), served at /puncak/. It takes the player's first name. */
+const puncakUrl = v => "/puncak/?name=" + encodeURIComponent(callName(v.name).slice(0, 24));
 const GAMUDA = /^[^@\s]+@(gamuda\.com\.my|gamuda\.tech)$/i;   // only Gamuda staff start onboarding
 const api = (p, o) => fetch("/api" + p, o).then(r => r.json());
 let F = {employment:"staff", job_family:"developer", project:"odin", want_claude:true};
-let PROJECTS = {}, TIMER = null, DIR = null, LAST = "";
+let PREVIEW = null, PROJECTS = {}, TIMER = null, DIR = null, LAST = "";
 
 const esc = s => (s||"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 /* Malaysian names: never take the first word blindly. "Lim Wei Jie" starts with the family name,
@@ -403,6 +405,7 @@ async function preview(){
                                  want_claude:F.want_claude});
   if (F.project) q.set("project", F.project);
   const p = await api("/preview?" + q);
+  PREVIEW = p;
   const chan = {gsd_auto:"GSD ticket", slack_guided:"Slack form", self:"new hire", person:"team contact"};
   $("#plan").innerHTML =
     p.steps.map(s => `<div><span>${fullName(s.id, s.title)}</span><span class="why">${chan[s.channel]}</span></div>`).join("")
@@ -557,7 +560,7 @@ function finish(v, list, d){
     ${stepper(list)}
     <div class="next">
       ${mine ? `<a class="nx" href="${mine.docs_url || mine.url}" target="_blank"><small>Your project</small><b>Start on ${esc(mine.name)}</b><span>Ask ${esc(mine.poc_name)} for your first task.</span></a>` : ""}
-      <button class="nx" data-quiz="1"><small>Two minutes</small><b>Take the GTech quiz</b><span>See how much you know.</span></button>
+      <a class="nx" href="${puncakUrl(v)}" target="_blank" rel="noopener"><small>Two minutes</small><b>Climb Puncak</b><span>The GTech quiz game.</span></a>
       <button class="nx" data-explore="${(d.find(x => !mine || x.key !== mine.key) || d[0]).key}"><small>Read</small><b>Learn about the other products</b><span>${d.length} products, below.</span></button>
     </div>
     <button class="more" data-stage="__all">${TOGGLE.__all ? "Hide" : "See"} all ${v.progress.total} steps</button>
@@ -590,9 +593,9 @@ function explore(v, d){
       </article>`).join("")}
     </div>
     <div class="quizcard">
-      <span class="qi">?</span>
-      <span class="t"><b>GTech quiz</b><em>Two minutes. Test what you know about GTech.</em></span>
-      <button class="btn sm" data-quiz="1">Start the quiz &rarr;</button>
+      <span class="qi">&#9650;</span>
+      <span class="t"><b>Puncak: the GTech quiz</b><em>Seven questions. Each right answer takes you higher up the mountain.</em></span>
+      <a class="btn sm" href="${puncakUrl(v)}" target="_blank" rel="noopener">Start the climb &rarr;</a>
     </div>
   </section>`;
 }
@@ -688,23 +691,34 @@ const MSG = {
     "Before a new hire can work, they need up to <b>11 accesses</b>: a Google Workspace email, the HR systems, GSD (Gamuda Service Desk), Slack, Atlassian, Bitbucket and more. Each access is a separate request.",
     "The requests must go in order. Each one waits for the one before it, and each one takes 3 to 5 days. <b>4 hand-offs &times; 3&ndash;5 days = 12 to 20 working days</b> before a new hire has all access.<small>Estimate from GT staff.</small>",
     "Today, a person must remember to raise each next request, in the correct channel. Nobody can see where the new hire is stuck. And the new hire does not know what GTech builds, or whom to ask."]},
-  type: {who:"muthu", t:".side.panel", pages:[
-    "I am Muthu. I show how Day One helps. The access depends on two things: the <b>type of hire</b> (staff or intern) and the <b>role</b> (developer or not).",
-    "Interns do not get GEMS, GES or GSD, so they get 8 steps, not 11. Non-developers do not get Bitbucket, GCP or the repo. Day One knows these rules, so the buddy does not have to."]},
+  type: {who:"muthu", t:".side.panel", pages: () => {
+    const p = PREVIEW || {steps:[], skipped:[]};
+    const who = `${F.employment === "intern" ? "an intern" : "a staff"} ${F.job_family === "developer" ? "developer" : "non-developer"}`;
+    return [
+      "I am Muthu. I show how Day One helps. The access depends on two things: the <b>type of hire</b> (staff or intern) and the <b>role</b> (developer or not).",
+      `This hire is ${who}, so the plan has <b>${p.steps.length} steps</b>.` +
+        (p.skipped.length ? ` Not needed: ${p.skipped.map(x => esc(x.title)).join(", ")}.` : "") +
+        " Day One knows these rules, so the buddy does not have to."]; }},
   started: {who:"muthu", t:".link", pages:[
     "Day One sent only the first request to IT: the Google Workspace email. The other requests wait in a queue. Day One sends each one when the step before it is done.",
     "The new hire gets one link to their own page. <b>No password is necessary</b>, because the new hire has no company account yet."]},
-  page: {who:"muthu", t:".stepper", pages:[
-    "This is the page of the new hire. The stepper shows the 4 stages: Account, HR and help desk, Work tools, Your project. <b>The red dot shows the stage now.</b>",
-    "Day One checks each GSD ticket by itself, so nobody types status updates. IT finishes the requests one by one, and each stage starts when the stage before it is done.",
-    "When the new hire must act, the step turns <b>yellow</b>. Open it: it tells the new hire what to do, in short steps. For example, the Google sign-in link works for 48 hours only, so Day One shows a countdown.",
-    "Some steps are not GSD tickets. <b>GCP</b> (Google Cloud) access goes through Slack, and a team contact adds the new hire to the repo. Day One writes the form values and the message.",
-    "While IT works, the new hire learns about GTech products below. Each card shows a contact person. Then a short quiz."]},
+  page: {who:"muthu", t:".stepper", pages: () => {
+    const v = V, list = stagesOf(v), has = id => v.steps.some(x => x.id === id);
+    const out = [
+      `This is the page of the new hire. The stepper shows the <b>${list.length} stages</b> for this hire: ${list.map(g => g.name).join(", ")}. The red dot shows the stage now.` +
+        (v.employment === "intern" ? " Interns do not get GEMS, GES or GSD, so there is no HR stage." : ""),
+      `This hire has <b>${v.progress.total} steps</b>. Day One checks each GSD ticket by itself, so nobody types status updates. IT finishes the requests one by one, and each stage starts when the stage before it is done.`,
+      "When the new hire must act, the step turns <b>yellow</b>. Open it: it tells the new hire what to do, in short steps. For example, the Google sign-in link works for 48 hours only, so Day One shows a countdown."];
+    const other = [has("gcp") && " <b>GCP</b> (Google Cloud) access goes through Slack. Day One fills in the form values.",
+                   has("repo_access") && ` A team contact (${esc(v.poc_name)}) adds the new hire to the repo. Day One writes the message.`].filter(Boolean);
+    if (other.length) out.push("Some steps are not GSD tickets." + other.join(""));
+    out.push("While IT works, the new hire learns about GTech products below. Each card shows a contact person. Then the new hire can climb <b>Puncak</b>, the GTech quiz game.");
+    return out; }},
   finish: {who:"ahhock", t:".finish .stepper", pages:[
     "I am Ah Hock. I explain how Day One works. All access steps are in <b>one map</b>. Each step knows which steps must come first. The same map covers staff, interns, developers and non-developers.",
     "Each step has a channel: a GSD ticket, a Slack form, a task for the new hire, or a team contact. Day One sends each request through the correct channel.",
     "Day One creates each GSD ticket through the <b>Freshservice API</b>, the system behind GSD. This demo uses a local copy of that API, because a GSD user account cannot get an API key. One setting connects Day One to the real GSD.",
-    {team:true, text:"Next: connect Day One to the real GSD, and add the GTech quiz. <b>From day one, every new hire knows the next step.</b> Thank you."}]},
+    {team:true, text:"Next: connect Day One to the real GSD. <b>From day one, every new hire knows the next step.</b> Thank you."}]},
 };
 /* one time per browser TAB: a reload does not repeat a message, a new tab shows the guide again */
 const seen = () => new Set(JSON.parse(sessionStorage.getItem("dayone:seen") || "[]"));
@@ -719,7 +733,7 @@ function say(id, pages){
   const base = MSG[id];
   if (!base) return;
   markSeen(id);
-  const p = pages || base.pages;
+  const p = pages || (typeof base.pages === "function" ? base.pages() : base.pages);
   show({...base, id, pages: Array.isArray(p) ? p : [p]});
 }
 /* the new hire's page: which events happened in this render? Show the most important new one. */
@@ -798,8 +812,7 @@ document.addEventListener("click", e => {
   if (x) { $("#explore").scrollIntoView({behavior: "smooth", block: "start"});
     const car = $("#car"), card = car && car.querySelector(`[data-card="${x.dataset.explore}"]`);
     if (car && card) car.scrollTo({left: card.offsetLeft - car.offsetLeft, behavior: "smooth"}); return; }
-  if (e.target.closest("[data-quiz]"))
-    toast(`<span class="badge">?</span><span><b>The GTech quiz starts here.</b> Our quiz connects to this button.</span>`);
+
 });
 boot();
 </script></body></html>

@@ -9,7 +9,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import directory, engine, servicedesk, store
+from . import directory, engine, puncak, servicedesk, store
 
 ROOT = Path(__file__).resolve().parents[2]
 conn = store.connect()
@@ -120,6 +120,10 @@ def health():
 
 INDEX = ROOT / "frontend" / "index.html"
 app.mount("/brand", StaticFiles(directory=ROOT / "frontend" / "brand"), name="brand")
+
+# Puncak, the "while you wait" mini game: its page at /puncak/, its API under /api/puncak.
+app.include_router(puncak.router)
+app.mount("/puncak", StaticFiles(directory=ROOT / "frontend" / "puncak", html=True), name="puncak")
 
 
 @app.get("/")

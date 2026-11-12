@@ -1,0 +1,243 @@
+{
+  "company": "Gamuda",
+  "questions": [
+    {
+      "id": "m-countries",
+      "type": "rarity",
+      "category": "Happenings",
+      "prompt": "Name a country or territory where Gamuda builds.",
+      "blurb": "Home is the obvious one. Think further afield.",
+      "answers": [
+        {
+          "text": "Malaysia",
+          "tier": "common",
+          "note": "Home base, including the MRT Kajang and Putrajaya lines."
+        },
+        {
+          "text": "Australia",
+          "tier": "common",
+          "note": "Sydney Metro West and the Coffs Harbour Bypass."
+        },
+        {
+          "text": "Singapore",
+          "tier": "rare",
+          "note": "Stations and tunnels on the MRT Cross Island Line."
+        },
+        {
+          "text": "Taiwan",
+          "tier": "rare",
+          "note": "Rail, metro and underground transmission line work."
+        },
+        {
+          "text": "Vietnam",
+          "tier": "very rare",
+          "note": "Gamuda Land developments in Hanoi and Ho Chi Minh City."
+        },
+        {
+          "text": "United Kingdom",
+          "aliases": [
+            "UK",
+            "England",
+            "Britain",
+            "Great Britain"
+          ],
+          "tier": "very rare",
+          "note": "Gamuda Land property developments in London."
+        }
+      ]
+    },
+    {
+      "id": "m-townships",
+      "type": "rarity",
+      "category": "Product",
+      "prompt": "Name a Gamuda Land township.",
+      "blurb": "The ones with Gamuda in the name are the easy picks.",
+      "answers": [
+        {
+          "text": "Gamuda Gardens",
+          "tier": "common",
+          "note": "A Gamuda Land township north of Kuala Lumpur."
+        },
+        {
+          "text": "Gamuda Cove",
+          "tier": "common",
+          "note": "A Gamuda Land township in southern Selangor."
+        },
+        {
+          "text": "twentyfive.7",
+          "aliases": [
+            "twentyfive7",
+            "25.7",
+            "257",
+            "twenty five seven"
+          ],
+          "tier": "rare",
+          "note": "A Gamuda Land township in Kota Kemuning."
+        },
+        {
+          "text": "Horizon Hills",
+          "tier": "rare",
+          "note": "A Gamuda Land township in Johor."
+        },
+        {
+          "text": "Jade Hills",
+          "tier": "rare",
+          "note": "A gated Gamuda Land township in Kajang."
+        },
+        {
+          "text": "Kota Kemuning",
+          "tier": "very rare",
+          "note": "Gamuda Land's first township, in Shah Alam."
+        },
+        {
+          "text": "Valencia",
+          "tier": "very rare",
+          "note": "A Gamuda Land township in Sungai Buloh."
+        },
+        {
+          "text": "Kundang Estates",
+          "aliases": [
+            "Kundang"
+          ],
+          "tier": "very rare",
+          "note": "One of Gamuda Land's boutique townships."
+        }
+      ]
+    },
+    {
+      "id": "m-innovation",
+      "type": "binary",
+      "category": "Tech",
+      "prompt": "Name a Gamuda technology or digital initiative.",
+      "blurb": "One of them digs by itself.",
+      "answers": [
+        {
+          "text": "Autonomous TBM",
+          "aliases": [
+            "A-TBM",
+            "ATBM",
+            "Autonomous tunnel boring machine",
+            "TBM"
+          ],
+          "note": "Gamuda's AI-driven tunnel boring machine, first used on the MRT Putrajaya Line."
+        },
+        {
+          "text": "Digital IBS",
+          "aliases": [
+            "IBS",
+            "Industrialised Building System",
+            "Next-Gen Digital IBS",
+            "Gamuda IBS"
+          ],
+          "note": "Robotic factories in Banting and Sepang that build homes as components."
+        },
+        {
+          "text": "Gamuda AI Academy",
+          "aliases": [
+            "AI Academy"
+          ],
+          "note": "Launched with Google Cloud to train Malaysians in AI."
+        }
+      ]
+    },
+    {
+      "id": "m-expo",
+      "type": "binary",
+      "category": "Happenings",
+      "prompt": "Name an expo that happened recently that Gamuda was involved in.",
+      "blurb": "There are two. Either one counts.",
+      "answers": [
+        {
+          "text": "BuildXpo",
+          "aliases": [
+            "Build Xpo",
+            "BuildExpo",
+            "Build Expo"
+          ]
+        },
+        {
+          "text": "ICW",
+          "aliases": [
+            "International Construction Week",
+            "ICW (International Construction Week)"
+          ],
+          "note": "ICW stands for International Construction Week."
+        }
+      ]
+    },
+    {
+      "id": "m-pantry-lost",
+      "type": "binary",
+      "category": "People",
+      "prompt": "Name a person who was reported to have lost an item in the #pantry channel.",
+      "blurb": "Four colleagues, four missing things. Any one of them counts.",
+      "answers": [
+        {
+          "text": "Zal Zikri",
+          "note": "Left a wallet on the pantry counter two days ago. (A made-up story, for fun.)"
+        },
+        {
+          "text": "Carter Chin",
+          "note": "Lost a tumbler somewhere near the coffee machine. (A made-up story, for fun.)"
+        },
+        {
+          "text": "Tracy Jia En",
+          "aliases": [
+            "Tracy",
+            "Jia En"
+          ],
+          "note": "Left an umbrella behind the microwave. (A made-up story, for fun.)"
+        },
+        {
+          "text": "Jeremy Leong",
+          "note": "Lost an access card, later found in the toaster. (A made-up story, for fun.)"
+        }
+      ]
+    },
+    {
+      "id": "m-spatialq",
+      "type": "binary",
+      "category": "People",
+      "prompt": "Name someone who has worked on the SpatialQ repo recently.",
+      "blurb": "Three people have been busy in there. Any one counts.",
+      "answers": [
+        {
+          "text": "Carter Chin",
+          "note": "Made 125 pull requests in a single week! Allegedly. The reviewers are still recovering."
+        },
+        {
+          "text": "Jeremy Leong",
+          "note": "Reviewed all 125 of them before lunch. Allegedly."
+        },
+        {
+          "text": "Wan Qin",
+          "aliases": [
+            "Qin"
+          ],
+          "note": "Kept the build green through every single one. Allegedly."
+        }
+      ]
+    },
+    {
+      "id": "m-snacks",
+      "type": "binary",
+      "category": "People",
+      "prompt": "Name someone who brought snacks for the team recently.",
+      "blurb": "Two snack heroes. Either one counts.",
+      "answers": [
+        {
+          "text": "Haiman Karim Hamzah",
+          "aliases": [
+            "Haiman Karim",
+            "Haiman Hamzah"
+          ],
+          "note": "Snack hero of the week. The pantry thanks you."
+        },
+        {
+          "text": "Carter Chin",
+          "note": "Brought snacks, possibly to apologise for the 125 pull requests."
+        }
+      ]
+    }
+  ]
+}

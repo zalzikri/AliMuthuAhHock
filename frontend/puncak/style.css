@@ -1,0 +1,1453 @@
+:root {
+  --night: #070b1c;
+  --night-2: #141d3f;
+  --snow: #eef2ff;
+  --dim: #a3adcf;
+  --line: #2b3560;
+  --sun: #ffb454; /* sunrise orange: progress and success */
+  --sun-deep: #8a4a12;
+  --fern: #5fd39a;
+  --slip: #ff6b6b;
+  --fill: 0; /* 0..1, set from the score */
+  --cam: 0px; /* vertical camera offset of the mountain, set from the score */
+  --display: "Archivo Black", "Arial Black", Impact, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--snow);
+  font: 15px/1.6 var(--mono);
+  background: linear-gradient(var(--night) 0%, var(--night-2) 70%, #25305c 100%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* ---- sky: stars fade and dawn rises as you climb ---- */
+
+.stars,
+.dawn {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.stars {
+  opacity: calc(1 - var(--fill) * 0.85);
+  transition: opacity 1.2s;
+  background:
+    radial-gradient(1.5px 1.5px at 8% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 19% 34%, #cfd8ff, transparent),
+    radial-gradient(1.5px 1.5px at 31% 8%, #fff, transparent),
+    radial-gradient(1px 1px at 44% 22%, #cfd8ff, transparent),
+    radial-gradient(1.5px 1.5px at 57% 6%, #fff, transparent),
+    radial-gradient(1px 1px at 66% 28%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 78% 14%, #cfd8ff, transparent),
+    radial-gradient(1px 1px at 88% 36%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 94% 9%, #fff, transparent),
+    radial-gradient(1px 1px at 12% 52%, #cfd8ff, transparent),
+    radial-gradient(1px 1px at 38% 46%, #fff, transparent),
+    radial-gradient(1px 1px at 72% 50%, #cfd8ff, transparent);
+}
+
+.dawn {
+  opacity: var(--fill);
+  transition: opacity 1.2s;
+  background: linear-gradient(to top, rgba(255, 150, 70, 0.55), rgba(255, 110, 130, 0.22) 38%, transparent 72%);
+}
+
+/* ---- the mountain ---- */
+
+.world {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* The drawn mountain (fallback when there is no 3D model) keeps to the right half. */
+.world svg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: min(50vw, 660px);
+  height: auto;
+  overflow: visible;
+  transform: translateY(var(--cam));
+  transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.massif {
+  fill: url(#rock);
+  stroke: rgba(238, 242, 255, 0.3);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.massif-shade {
+  fill: url(#shade);
+}
+
+.ridges path {
+  fill: none;
+  stroke: rgba(7, 11, 28, 0.28);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.trees path {
+  fill: #0d2618;
+  opacity: 0.75;
+}
+
+.trail,
+.climbed {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.trail {
+  stroke: rgba(238, 242, 255, 0.42);
+  stroke-width: 3;
+  stroke-dasharray: 3 10;
+}
+
+.climbed {
+  stroke: var(--sun);
+  stroke-width: 5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--fill));
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.checkpoint circle {
+  fill: var(--night);
+  stroke: var(--snow);
+  stroke-width: 2.5;
+}
+
+.checkpoint text {
+  fill: var(--snow);
+  font: 600 19px var(--mono);
+  paint-order: stroke;
+  stroke: rgba(7, 11, 28, 0.9);
+  stroke-width: 5px;
+}
+
+.checkpoint .alt {
+  fill: var(--dim);
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.checkpoint.reached circle {
+  fill: var(--sun);
+  stroke: var(--sun);
+}
+
+.checkpoint.reached text {
+  fill: var(--sun);
+}
+
+.cloud {
+  fill: rgba(238, 242, 255, 0.16);
+  animation: drift 38s ease-in-out infinite alternate;
+}
+
+.cloud.c2 {
+  animation-duration: 52s;
+  animation-direction: alternate-reverse;
+}
+
+.cloud.c3 {
+  animation-duration: 44s;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-70px);
+  }
+  to {
+    transform: translateX(90px);
+  }
+}
+
+.other circle {
+  stroke: var(--night);
+  stroke-width: 2;
+}
+
+.other text {
+  fill: var(--night);
+  font: 600 10px var(--mono);
+  text-anchor: middle;
+}
+
+.other {
+  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.climber .dot {
+  fill: var(--snow);
+  stroke: var(--night);
+  stroke-width: 3;
+}
+
+.climber .pulse {
+  fill: rgba(238, 242, 255, 0.4);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse 1.8s ease-out infinite;
+}
+
+.climber .you {
+  fill: var(--snow);
+  font: 600 15px var(--mono);
+  letter-spacing: 0.15em;
+  paint-order: stroke;
+  stroke: rgba(7, 11, 28, 0.9);
+  stroke-width: 5px;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* ---- the 3D mountain (replaces the drawn one once the model has loaded) ---- */
+
+.world.is-3d svg,
+.world.loading-3d svg {
+  display: none;
+}
+
+.world-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.9s ease-out;
+}
+
+.world.is-3d .world-canvas {
+  opacity: 1;
+}
+
+.labels3d {
+  opacity: 0;
+  transition: opacity 0.9s ease-out;
+}
+
+.world.is-3d .labels3d {
+  opacity: 1;
+}
+
+/* Darkens the left side of the scene so the text over it stays readable. */
+.world.is-3d::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(7, 11, 28, 0.9) 0%, rgba(7, 11, 28, 0.72) 30%, rgba(7, 11, 28, 0) 64%);
+}
+
+.world-loading {
+  position: fixed;
+  right: 24px;
+  bottom: 20px;
+  z-index: 3;
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+  animation: blink 1.4s steps(2) infinite;
+}
+
+.labels3d {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.label3d {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  translate: 0 -50%;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.15;
+  text-shadow: 0 0 6px var(--night), 0 0 3px var(--night), 0 0 2px var(--night);
+  transition: opacity 0.4s;
+  will-change: transform;
+}
+
+.label3d i {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  border: 2px solid var(--snow);
+  border-radius: 50%;
+  background: var(--night);
+}
+
+.label3d small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+
+.label3d.flip {
+  flex-direction: row-reverse;
+  translate: -100% -50%;
+  text-align: right;
+}
+
+.label3d.flip i {
+  margin-left: 0;
+  margin-right: -6px;
+}
+
+.checkpoint3d.reached {
+  color: var(--sun);
+}
+
+.checkpoint3d.reached i {
+  border-color: var(--sun);
+  background: var(--sun);
+}
+
+/* The player's label always sits to the left, clear of the checkpoint names on the right. */
+.you3d,
+.you3d.flip {
+  z-index: 2;
+  flex-direction: row-reverse;
+  translate: -100% -50%;
+  letter-spacing: 0.15em;
+}
+
+.you3d i,
+.you3d.flip i {
+  width: 20px;
+  height: 20px;
+  margin: 0 -10px 0 0;
+  border: 3px solid var(--night);
+  background: var(--snow);
+  box-shadow: 0 0 0 5px rgba(238, 242, 255, 0.3);
+}
+
+.other3d,
+.other3d.flip {
+  flex-direction: row;
+  translate: 0 -50%;
+  pointer-events: auto;
+}
+
+.other3d i,
+.other3d.flip i {
+  width: 22px;
+  height: 22px;
+  margin: 0 0 0 -11px;
+  border: 2px solid var(--night);
+}
+
+.other3d span {
+  position: absolute;
+  left: -11px;
+  width: 22px;
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--night);
+  text-shadow: none;
+}
+
+/* Altitude readout, pinned over the mountain */
+.altbar {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 3;
+  display: grid;
+  justify-items: end;
+  text-align: right;
+  text-shadow: 0 2px 8px var(--night);
+}
+
+.altbar-level {
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
+  color: var(--sun);
+}
+
+.altbar strong {
+  font: 400 2rem/1.15 var(--display);
+  font-variant-numeric: tabular-nums;
+}
+
+.altbar-others {
+  font-size: 0.75rem;
+  color: var(--dim);
+}
+
+.toast {
+  position: fixed;
+  top: 112px;
+  right: 24px;
+  z-index: 4;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 12px 16px;
+  border: 2px solid var(--sun);
+  background: rgba(7, 11, 28, 0.92);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  animation: toast 3.6s ease-out forwards;
+}
+
+@keyframes toast {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  10%,
+  80% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- the summit moment ---- */
+
+.sunburst {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(120% 95% at 68% 112%, rgba(255, 196, 96, 0.8), rgba(255, 120, 96, 0.38) 42%, transparent 72%);
+}
+
+.sunburst.on {
+  animation: sunburst 12s ease-in-out forwards;
+}
+
+@keyframes sunburst {
+  0% {
+    opacity: 0;
+    transform: translateY(22%);
+  }
+  35% {
+    opacity: 1;
+    transform: none;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.summit {
+  position: fixed;
+  right: 4vw;
+  top: 24vh;
+  z-index: 4;
+  max-width: 42vw;
+  text-align: right;
+  pointer-events: none;
+  animation: summit 10s ease-out forwards;
+}
+
+.summit p {
+  margin: 0;
+}
+
+.summit-kicker {
+  letter-spacing: 0.5em;
+  font-weight: 600;
+  color: var(--sun);
+}
+
+.summit-title {
+  font: 400 clamp(1.9rem, 4.4vw, 4rem) / 1 var(--display);
+  overflow-wrap: anywhere;
+  text-shadow: 0 6px 0 var(--sun), 0 0 46px rgba(255, 180, 84, 0.7);
+}
+
+.summit-sub {
+  margin-top: 12px !important;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-shadow: 0 2px 8px var(--night);
+}
+
+@keyframes summit {
+  0% {
+    opacity: 0;
+    transform: translateY(26px) scale(0.96);
+  }
+  12% {
+    opacity: 1;
+    transform: none;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- the question column ---- */
+
+.stage {
+  position: relative;
+  z-index: 2;
+  width: min(580px, 46vw);
+  margin-left: max(24px, 6vw);
+  padding: 56px 0 72px;
+}
+
+.screen {
+  animation: arrive 0.35s ease-out;
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* ---- landing ---- */
+
+.logo {
+  margin: 0;
+  font: 400 clamp(3.2rem, 9vw, 6.4rem) / 0.95 var(--display);
+  letter-spacing: 0.03em;
+  text-shadow: 0 5px 0 var(--sun);
+}
+
+.sub {
+  margin: 20px 0 0;
+  letter-spacing: 0.5em;
+  font-weight: 600;
+  color: var(--sun);
+}
+
+.pitch {
+  margin: 6px 0 28px;
+  color: var(--dim);
+}
+
+.rules {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 3px solid var(--line);
+}
+
+.rules li {
+  padding: 4px 0 4px 16px;
+  color: var(--dim);
+}
+
+.link {
+  display: block;
+  margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--sun);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.links {
+  display: flex;
+  gap: 22px;
+  margin-top: 18px;
+}
+
+.links .link {
+  margin-top: 0;
+}
+
+.join label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--dim);
+}
+
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--line);
+  border-radius: 0;
+  background: rgba(4, 7, 20, 0.7);
+  color: var(--snow);
+  font: 600 1.05rem var(--mono);
+  caret-color: var(--sun);
+}
+
+input::placeholder {
+  color: #66719a;
+  font-weight: 400;
+}
+
+input:focus-visible {
+  outline: none;
+  border-color: var(--sun);
+  box-shadow: 0 0 0 4px rgba(255, 180, 84, 0.18);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--snow);
+  outline-offset: 3px;
+}
+
+.cta {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 18px 16px;
+  border: 2px solid var(--sun);
+  background: rgba(40, 28, 20, 0.72);
+  color: var(--snow);
+  font: 600 1.05rem var(--mono);
+  letter-spacing: 0.35em;
+  cursor: pointer;
+  box-shadow: 6px 6px 0 var(--sun-deep);
+  transition: transform 0.08s, box-shadow 0.08s, background 0.15s;
+}
+
+.cta:hover {
+  background: rgba(96, 62, 24, 0.85);
+}
+
+.cta:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 var(--sun-deep);
+}
+
+.foot {
+  margin-top: 18px;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: #7a85ad;
+  text-transform: uppercase;
+}
+
+/* ---- play ---- */
+
+.hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 34px;
+}
+
+.dots {
+  display: flex;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dots li {
+  width: 26px;
+  height: 10px;
+  background: var(--line);
+}
+
+.dots li.current {
+  background: var(--snow);
+  animation: blink 1s steps(2) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.t4 {
+  background: var(--sun) !important;
+}
+.t3 {
+  background: var(--fern) !important;
+}
+.t2 {
+  background: #7fa8ff !important;
+}
+.t1 {
+  background: #6f7aa3 !important;
+}
+.t0 {
+  background: var(--slip) !important;
+}
+
+.hud-score {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-score small,
+.final-score small {
+  color: var(--dim);
+  font-weight: 400;
+}
+
+.order {
+  margin: 0 0 10px;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--sun);
+  text-transform: uppercase;
+}
+
+.prompt {
+  margin: 0;
+  font: 400 clamp(1.5rem, 3.2vw, 2.3rem) / 1.2 var(--display);
+  text-wrap: balance;
+}
+
+.blurb {
+  margin: 12px 0 0;
+  color: var(--dim);
+  font-size: 0.86rem;
+}
+
+.clock {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 30px 0 14px;
+}
+
+.clock-bar {
+  flex: 1;
+  height: 10px;
+  background: var(--line);
+}
+
+.clock-bar i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--fern);
+  transform-origin: left;
+}
+
+#clock-text {
+  width: 2.4ch;
+  text-align: right;
+  font-weight: 600;
+  font-size: 1.3rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.clock.low .clock-bar i {
+  background: var(--slip);
+}
+
+.clock.low #clock-text {
+  color: var(--slip);
+}
+
+.answer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.answer button {
+  padding: 0 22px;
+  border: 2px solid var(--snow);
+  background: var(--snow);
+  color: var(--night);
+  font: 600 0.95rem var(--mono);
+  letter-spacing: 0.2em;
+  cursor: pointer;
+}
+
+.answer button:disabled,
+.answer input:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.answer.shake {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(-8px);
+  }
+  75% {
+    transform: translateX(8px);
+  }
+}
+
+.miss {
+  min-height: 1.6em;
+  margin: 8px 0 0;
+  color: var(--slip);
+  font-size: 0.86rem;
+}
+
+.result {
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 2px dashed var(--line);
+  animation: arrive 0.3s ease-out;
+}
+
+.result-points {
+  margin: 0;
+  font: 400 3.2rem/1 var(--display);
+  color: var(--sun);
+  font-variant-numeric: tabular-nums;
+}
+
+.result.slipped .result-points {
+  color: var(--slip);
+}
+
+.result-tier {
+  margin: 10px 0 4px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.result-detail {
+  margin: 0 0 6px;
+  color: var(--dim);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.fact {
+  margin: 16px 0 4px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--fern);
+  background: rgba(7, 11, 28, 0.6);
+}
+
+.fact p {
+  margin: 0 0 6px;
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.fact p:last-child {
+  margin-bottom: 0;
+}
+
+.fact b {
+  color: var(--snow);
+}
+
+.fact .fact-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--fern);
+}
+
+#fact-rarest {
+  color: var(--dim);
+}
+
+/* ---- done ---- */
+
+.final-level {
+  margin: 10px 0 0;
+  font: 400 clamp(2rem, 5vw, 3.4rem) / 1 var(--display);
+  text-shadow: 0 4px 0 var(--sun);
+}
+
+.final-score {
+  margin: 16px 0 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.final-score small {
+  font-size: 0.95rem;
+}
+
+.grid {
+  margin: 8px 0 6px;
+  font-size: 1.7rem;
+  letter-spacing: 3px;
+}
+
+.panel {
+  margin-top: 34px;
+  padding: 18px 16px 6px;
+  border-top: 2px solid var(--line);
+  background: rgba(7, 11, 28, 0.55);
+}
+
+h3 {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.35em;
+  color: var(--sun);
+}
+
+.hint {
+  margin: -4px 0 10px;
+  font-size: 0.8rem;
+  color: var(--dim);
+}
+
+.leaderboard {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: place;
+}
+
+.leaderboard li {
+  display: flex;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+  counter-increment: place;
+}
+
+.leaderboard li::before {
+  content: counter(place, decimal-leading-zero);
+  color: var(--dim);
+}
+
+.leaderboard li.me {
+  color: var(--sun);
+  font-weight: 600;
+}
+
+.leaderboard span {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+details {
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+summary small {
+  display: block;
+  font-weight: 400;
+  color: var(--dim);
+}
+
+.answers {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.answers li {
+  display: grid;
+  grid-template-columns: 1fr 90px 34px;
+  gap: 2px 10px;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+}
+
+.answers li.mine {
+  color: var(--sun);
+  font-weight: 600;
+}
+
+.answers .note {
+  grid-column: 1 / -1;
+  font-size: 0.76rem;
+  font-weight: 400;
+  color: var(--dim);
+}
+
+.bar {
+  height: 6px;
+  background: var(--line);
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  background: currentColor;
+}
+
+.pts {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.error {
+  margin-top: 16px;
+  color: var(--slip);
+}
+
+/* ---- dialogs ---- */
+
+dialog {
+  width: min(680px, calc(100vw - 32px));
+  max-height: 84vh;
+  padding: 22px;
+  border: 2px solid var(--sun);
+  background: var(--night-2);
+  color: var(--snow);
+  font: 0.86rem/1.6 var(--mono);
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+dialog h4 {
+  margin: 16px 0 4px;
+  color: var(--sun);
+  letter-spacing: 0.15em;
+}
+
+.credit {
+  margin: 18px 0 0;
+}
+
+/* ---- "how it works": mock source screens and the question they become ---- */
+
+.flow {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.shot {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  font: 0.8rem/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.shot figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+}
+
+.shot figcaption span {
+  font-size: 0.72rem;
+  opacity: 0.6;
+}
+
+.shot mark {
+  padding: 0 3px;
+  border-radius: 3px;
+  background: rgba(255, 180, 84, 0.35);
+  color: inherit;
+  box-shadow: 0 0 0 1px var(--sun);
+}
+
+.shot.photo {
+  background: #fff;
+  color: #1d1c1d;
+}
+
+.shot.photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.shot.photo figcaption {
+  border-bottom: 0;
+  border-top: 1px solid #ddd;
+}
+
+.shot.slack {
+  background: #1a1d21;
+  color: #d1d2d3;
+}
+
+.shot.slack .msg {
+  display: flex;
+  gap: 10px;
+  padding: 8px 12px;
+}
+
+.shot.slack .msg p {
+  margin: 0;
+}
+
+.shot.slack .msg b {
+  color: #fff;
+}
+
+.shot.slack time {
+  font-size: 0.7rem;
+  opacity: 0.55;
+}
+
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  color: #10131f;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.shot.bitbucket {
+  background: #f7f8f9;
+  color: #172b4d;
+}
+
+.shot.bitbucket table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.shot.bitbucket td {
+  padding: 7px 12px;
+  border-top: 1px solid #dfe1e6;
+  vertical-align: top;
+}
+
+.shot.bitbucket td:first-child {
+  white-space: nowrap;
+  font-weight: 600;
+  color: #0c66e4;
+}
+
+.shot.bitbucket .merged {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: #216e4e;
+  text-align: right;
+}
+
+.flow-arrow {
+  margin: 2px 0;
+  color: var(--sun);
+  text-align: center;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+.flow-arrow span {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1.1;
+}
+
+.shot.card {
+  border-color: var(--sun);
+  background: var(--night);
+  color: var(--snow);
+  font-family: var(--mono);
+}
+
+.shot.card figcaption {
+  color: var(--sun);
+  letter-spacing: 0.2em;
+  font-size: 0.72rem;
+}
+
+.card-prompt {
+  margin: 10px 12px 8px;
+  font: 1rem/1.3 var(--display);
+}
+
+.card-answers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0 12px 12px;
+  list-style: none;
+}
+
+.card-answers li {
+  display: flex;
+  gap: 8px;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+}
+
+.card-answers em {
+  color: var(--sun);
+  font-style: normal;
+}
+
+.close {
+  float: right;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--snow);
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ---- small screens: the mountain sits behind the questions ---- */
+
+@media (max-width: 900px) {
+  .world {
+    opacity: 0.38;
+  }
+
+  .world svg {
+    width: 100vw;
+  }
+
+  .world.is-3d::after {
+    display: none;
+  }
+
+  .stage {
+    width: auto;
+    margin: 0 16px;
+    padding: 96px 0 56px;
+  }
+
+  .altbar {
+    top: 12px;
+    right: 16px;
+  }
+
+  .altbar strong {
+    font-size: 1.4rem;
+  }
+
+  .toast {
+    top: 84px;
+    right: 16px;
+  }
+
+  .answer {
+    grid-template-columns: 1fr;
+  }
+
+  .answer button {
+    padding: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---- "how it works" fills most of the screen ---- */
+
+#works {
+  width: min(1500px, 96vw);
+  max-width: 96vw;
+  height: 94vh;
+  max-height: 94vh;
+  padding: 28px 36px;
+  font-size: 1.05rem;
+}
+
+#works h3 {
+  font-size: 1.5rem;
+}
+
+#works h4 {
+  margin-top: 30px;
+  font-size: 1.15rem;
+}
+
+#works .hint {
+  max-width: 90ch;
+  font-size: 1rem;
+}
+
+#works .shot {
+  font-size: 1.05rem;
+}
+
+#works .shot figcaption span {
+  font-size: 0.85rem;
+}
+
+#works .card-prompt {
+  font-size: 1.5rem;
+}
+
+#works .card-answers li {
+  padding: 6px 12px;
+  font-size: 1rem;
+}
+
+#works .flow-arrow {
+  font-size: 1rem;
+}
+
+#works .shot.slack time,
+#works .shot.bitbucket .merged {
+  font-size: 0.8rem;
+}
+
+/* Wide screens: source on the left, the question it becomes on the right. */
+@media (min-width: 1100px) {
+  #works .flow {
+    grid-template-columns: minmax(0, 1.25fr) 150px minmax(0, 1fr);
+    align-items: center;
+    gap: 18px;
+  }
+
+  #works .flow-arrow span {
+    font-size: 2rem;
+    transform: rotate(-90deg);
+  }
+}
+
+/* ---- question kind, and the "did you mean" offer ---- */
+
+.kind {
+  margin: 0 0 6px;
+  color: var(--sun);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+}
+
+.link.suggest {
+  display: inline;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ---- the Kopi easter egg: an invisible click target over the tiny coffee stall ---- */
+
+.kopi-hit {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  margin: -30px 0 0 -22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.kopi-hit:hover,
+.kopi-hit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 180, 84, 0.7), 0 0 18px rgba(255, 180, 84, 0.6);
+}
+
+/* ---- team credit, in the same pill style as the Day One header ---- */
+
+.byline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0 18px;
+}
+
+.byline i {
+  margin: 0 8px 2px 2px;
+  color: #ff5a50; /* Day One's flag red, lifted a little to read on the night sky */
+  font: italic 400 25px/1 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+}
+
+.byline .name {
+  display: inline-block;
+  padding: 8px 14px 9px;
+  border-radius: 999px 999px 999px 7px;
+  font: 700 14px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.byline .n1 {
+  background: #024b8f;
+  color: #fff;
+  transform: rotate(-4deg);
+}
+
+.byline .n2 {
+  background: #da332b;
+  color: #fff;
+  transform: rotate(3deg) translateY(3px);
+}
+
+.byline .n3 {
+  background: #fedd1b;
+  color: #024b8f;
+  transform: rotate(-2deg) translateY(-1px);
+}
