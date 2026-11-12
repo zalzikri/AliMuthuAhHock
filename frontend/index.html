@@ -453,7 +453,8 @@ const mem = {
 function openHire(token){ history.pushState({}, "", "/n/" + token); LAST = ""; watch(token); }
 function watch(token){
   TOKEN = token;
-  const tick = async () => { try { await render(await api("/n/" + token), token); } catch(e){ console.warn(e); } };
+  const tick = async () => { try { const n = ++SEQ; const v = await api("/n/" + token);
+    if (n > DRAWN) { DRAWN = n; await render(v, token); } } catch(e){ console.warn(e); } };
   tick();
   clearInterval(TIMER); TIMER = setInterval(tick, 1500);
 }
@@ -600,17 +601,22 @@ function explore(v, d){
     </div>
   </section>`;
 }
-let BY_YOU = false;     // true only for the render that follows YOUR confirmation
+/* Every request gets a number. A response older than the one on screen is ignored, so a slow
+   background update can never undo your confirmation. "byYou" travels WITH the confirmation's
+   own response, so a background update can never take or clear it. */
+let SEQ = 0, DRAWN = 0, YOU = {stage:null, at:0};
 async function confirmStep(token, step){
   const el = document.querySelector("#we");
-  BY_YOU = true;
-  await render(await api(`/n/${token}/steps/${step}/confirm`, {method:"POST",
+  const n = ++SEQ;
+  YOU = {stage: (STAGES.find(g => g.ids.includes(step)) || {}).key, at: Date.now()};
+  const v = await api(`/n/${token}/steps/${step}/confirm`, {method:"POST",
     headers:{"content-type":"application/json"},
-    body: JSON.stringify({work_email: el ? el.value.trim() : ""})}), token);
+    body: JSON.stringify({work_email: el ? el.value.trim() : ""})});
+  if (n > DRAWN) { DRAWN = n; await render(v, token, true); }
 }
 /* Polling runs every 1.5 s. Build the whole screen as one string and touch the DOM only when that
    string changes: no empty column between polls, no lost hover, no reset of typed text. */
-async function render(v, token){
+async function render(v, token, byYou = false){
   if (!DIR) DIR = await api("/directory");
   V = v;
   const list = stagesOf(v);
@@ -628,13 +634,12 @@ async function render(v, token){
     const we2 = $("#we");
     if (we2 && typed !== null) { we2.value = typed; if (focused) we2.focus(); }
   }
-  celebrate(list, done);
-  BY_YOU = false;
+  celebrate(list, done, byYou);
   events(v, list, done);
   place();
 }
 /* ---------- achievements ---------- */
-function celebrate(list, done){
+function celebrate(list, done, byYou){
   const seen = new Set(mem.get("celebrated") || []);
   const fresh = list.filter(g => g.complete && !seen.has(g.key));
   const allFresh = done && !seen.has("__all");
@@ -649,9 +654,12 @@ function celebrate(list, done){
   const g = fresh[fresh.length - 1], i = list.indexOf(g), next = list[i + 1];
   const num = document.querySelector(`.stepper li[data-key="${g.key}"] .node`);
   if (num) num.classList.add("pop");
-  /* confetti only when YOUR confirmation finished the stage. A stage that IT finished in the
-     background only pops its number, so confetti never seems to come from an unrelated click. */
-  if (BY_YOU) confetti(innerWidth/2, innerHeight/2, 130);
+  /* Confetti only when YOUR confirmation finished the stage: the stage must hold the step you
+     confirmed, and this render is the answer to that confirmation, or comes within 1.2 s of it
+     (on a slow network a background update can arrive first). A stage that IT finished in the
+     background only pops its number. */
+  const yours = g.key === YOU.stage && (byYou || Date.now() - YOU.at < 1200);
+  if (yours) { YOU = {stage:null, at:0}; confetti(innerWidth/2, innerHeight/2, 130); }
 
   FIRST = false;
 }
