@@ -36,6 +36,7 @@ class Step:
     fields: tuple = ()     # pre-filled form values, for a `slack_guided` step
     howto: tuple = ()      # numbered instructions shown on the card
     then_self: bool = False  # IT grants it, then the hire still has to sign in
+    self_after: tuple = ()   # her own part waits for these, e.g. she needs her inbox first
     hint: str = ""         # one line of context shown on the card
 
 
@@ -72,7 +73,7 @@ STEPS: tuple[Step, ...] = (
          deps=("email",), staff_only=True,
          subject="GES access for {name}",
          body="Grant GES access for {name}. Login is the employee ID.",
-         then_self=True,
+         then_self=True, self_after=("password_reset",),
          hint="GES holds your role, employee details, KPI and leave.",
          howto=(
              "GES mails {work_email} with your user ID and a temporary password. "

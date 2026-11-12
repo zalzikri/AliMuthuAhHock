@@ -38,6 +38,19 @@ def run(employment, job_family, project):
     print(f"  work email read back from the ticket reply: {v['work_email']}")
     assert v["your_turn"]["id"] == "password_reset"
 
+    # GES mails her WORK inbox, so her GES part must wait until she has signed in
+    ges = next((s for s in v["steps"] if s["id"] == "ges"), None)
+    if ges:
+        desk.resolve(ges["ticket_id"])
+        v = engine.view(conn, desk, oid)
+        ges = next(s for s in v["steps"] if s["id"] == "ges")
+        assert ges["state"] == "waiting_user" and ges["held_by"], ges
+        assert v["your_turn"]["id"] == "password_reset", "GES must not jump the sign-in"
+        engine.confirm(conn, desk, oid, "ges")
+        assert next(s for s in engine.view(conn, desk, oid)["steps"]
+                    if s["id"] == "ges")["state"] == "waiting_user", "early GES confirm ignored"
+        print("  GES granted early, held until she signs in: ok")
+
     engine.confirm(conn, desk, oid, "password_reset")
     for _ in range(5):
         v = engine.view(conn, desk, oid)

@@ -141,7 +141,9 @@ def advance(conn, desk, oid: int) -> None:
 def confirm(conn, desk, oid: int, step_id: str, work_email: str = "") -> None:
     if work_email:
         set_work_email(conn, oid, work_email.strip())
-    if _states(conn, oid).get(step_id) in (WAIT_USER, WAIT_PERSON):
+    states = _states(conn, oid)
+    held = any(states.get(d) not in (None, DONE) for d in flow.STEP_BY_ID[step_id].self_after)
+    if states.get(step_id) in (WAIT_USER, WAIT_PERSON) and not held:
         _set(conn, oid, step_id, DONE)
     advance(conn, desk, oid)
 
@@ -189,6 +191,10 @@ def view(conn, desk, oid: int) -> dict:
                            for d in flow.deps_for(s, o["employment"])
                            if d in flow.STEP_BY_ID],
         })
+    by_id = {s["id"]: s for s in steps}
+    for s in steps:   # granted by IT, but her part needs another step first (GES needs her inbox)
+        s["held_by"] = [by_id[d]["title"] for d in flow.STEP_BY_ID[s["id"]].self_after
+                        if d in by_id and by_id[d]["state"] != DONE] if s["state"] == WAIT_USER else []
     out["steps"] = steps
     done = sum(1 for s in steps if s["state"] == DONE)
     out["progress"] = {"done": done, "total": len(steps)}
@@ -198,7 +204,9 @@ def view(conn, desk, oid: int) -> dict:
     out["link_expires_in_hours"] = _link_hours_left(conn, oid)
     for s in steps:
         s["ask_email"] = (s["id"] == "password_reset" and not o["work_email"])
-    out["your_turn"] = next((s for s in steps if s["state"] in (WAIT_USER, WAIT_PERSON)), None)
+    mine = [s for s in steps if s["state"] in (WAIT_USER, WAIT_PERSON) and not s["held_by"]]
+    out["your_turn"] = mine[0] if mine else None
+    out["your_turn_count"] = len(mine)
     out["waiting_on"] = next((s for s in steps if s["state"] == OPEN), None)
     return out
 

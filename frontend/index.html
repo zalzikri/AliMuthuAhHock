@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Day One</title>
-<link rel="icon" type="image/png" href="/brand/favicon.png?v=5">
+<link rel="icon" type="image/png" href="/brand/favicon.png?v=6">
 <style>
 /* ===================== DESIGN TOKENS =====================
    Jalur Gemilang only. Official CMYK (Jabatan Penerangan):
@@ -43,10 +43,13 @@ a{color:inherit}
 
 /* poster layer */
 .poster{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+/* bg.jpg is 2752x1536, so at 100vh tall it is 179.2vh wide; the hibiscus's right edge is at 49.2% = 88.2vh.
+   The first card starts at 96vw - 880px. Tuck the flower 30px under it, and never open a gap on the left. */
 .bg{position:absolute;top:0;height:100vh;width:auto;max-width:none;
-  left:min(0px, calc(96vw - 850px - 78.7vh))}   /* hibiscus right edge tucks 30px under the first card */
-.accent{position:absolute;right:0;bottom:0;height:84vh;width:auto;mix-blend-mode:multiply}
-.grain{position:fixed;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:.07;mix-blend-mode:multiply}
+  left:min(0px, calc(96vw - 850px - 88.2vh))}
+.accent{position:absolute;right:0;bottom:0;width:min(19vw,330px);height:auto}
+/* No page-wide grain layer: the art carries its own grain, and noise on the white paper reads as dirt.
+   No blend modes or SVG filters on fixed layers either: they repaint the whole screen on every scroll. */
 .tag{position:fixed;left:3vw;bottom:5vh;z-index:2;background:var(--yellow);color:var(--blue);
   font:600 10.5px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;
   writing-mode:vertical-rl;transform:rotate(180deg);padding:14px 10px;max-height:46vh;
@@ -55,7 +58,7 @@ a{color:inherit}
 
 /* page */
 .wrap{position:relative;z-index:2;max-width:880px;margin:0 4vw 0 auto;padding:30px 0 64px}
-@media (max-width:1100px){.wrap{margin:0 auto;padding:24px 18px 56px}.bg,.accent{opacity:.22}}
+@media (max-width:1100px){.wrap{margin:0 auto;padding:24px 18px 56px}.bg,.accent{opacity:.22}.tag{display:none}}
 
 header{margin:0 0 28px}
 header .mark{display:flex;align-items:center;gap:16px}
@@ -156,13 +159,12 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .hide{display:none}
 </style></head>
 <body>
-<div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=5" alt=""><img class="accent" src="/brand/accent.jpg?v=5" alt=""></div>
-<svg class="grain" aria-hidden="true"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div class="poster" aria-hidden="true"><img class="bg" src="/brand/bg.jpg?v=6" alt=""><img class="accent" src="/brand/accent.png?v=6" alt=""></div>
 <div class="tag"><b>KopiCode 2026 presents</b><br>Day One: onboarding<br>Ali &middot; Muthu &middot; Ah Hock<br>13/11/26</div>
 <div class="wrap">
 <header>
   <div class="mark">
-    <img class="logo" src="/brand/logo-420.png?v=5" alt="Ali, Muthu and Ah Hock">
+    <img class="logo" src="/brand/logo-420.png?v=6" alt="Ali, Muthu and Ah Hock">
     <div class="title">
       <b>Day&nbsp;One</b>
       <div class="with"><i>with</i><span class="name n1">Ali</span><span class="name n2">Muthu</span><span class="name n3">Ah&nbsp;Hock</span></div>
@@ -176,7 +178,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 const $ = s => document.querySelector(s);
 const api = (p, o) => fetch("/api" + p, o).then(r => r.json());
 let F = {employment:"staff", job_family:"developer", project:"odin", want_claude:true};
-let PROJECTS = {}, TIMER = null;
+let PROJECTS = {}, TIMER = null, DIR = null, LAST = "";
 
 const esc = s => (s||"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
@@ -261,11 +263,11 @@ async function submit(){
 
 /* ---------- her page ---------- */
 function watch(token){
-  const tick = async () => { try { render(await api("/n/" + token), token); } catch(e){} };
+  const tick = async () => { try { await render(await api("/n/" + token), token); } catch(e){ console.warn(e); } };
   tick(); clearInterval(TIMER); TIMER = setInterval(tick, 1500);
 }
 const CH = {
-  self:   {k:"Your turn — 1 thing", act:"I have done it"},
+  self:   {k:"Your turn", act:"I have done it"},
   slack_guided:{k:"Your turn — this one is not GSD", act:"I have sent it"},
   person: {k:"Nothing for you today — waiting on a person", act:"He has added me"},
 };
@@ -294,8 +296,9 @@ function card(v, token){
       <span class="muted">We guessed it from your name. Correct it if it differs.</span>
     </div>` : "";
   const copy = (t.fields||[]).length ? t.fields.map(f => f.label + ": " + f.value).join("\n") : t.ask;
+  const n = v.your_turn_count || 1;
   return `<div class="turn ${t.channel==="person"?"calm":""}">
-    <div class="k">${c.k}</div>
+    <div class="k">${c.k}${n > 1 ? ` &middot; 1 of ${n}` : ""}</div>
     <div class="v">${esc(t.title)}</div>
     <div class="d">${esc(t.hint || "")}</div>
     ${howto}${fields}${ask}${emailAsk}
@@ -305,27 +308,32 @@ function card(v, token){
         : `<p class="warn">That link has expired. IT must reset the account - raise a GSD ticket.</p>`) : ""}
     ${t.id==="password_reset" ? '<p class="muted" style="margin-top:9px">Day One never sees or stores your password.</p>' : ""}
     <div class="acts">
-      ${copy ? `<button class="btn ghost sm" onclick='navigator.clipboard.writeText(${JSON.stringify(copy)})'>Copy</button>`:""}
+      ${copy ? `<button class="btn ghost sm" data-copy="${esc(copy)}" onclick="navigator.clipboard.writeText(this.dataset.copy)">Copy</button>`:""}
       ${t.channel==="person" && v.poc_email ? `<a class="btn ghost sm" href="mailto:${v.poc_email}">Email ${esc(v.poc_name)}</a>`:""}
       <button class="btn sm" onclick="confirmStep('${token}','${t.id}')">${c.act}</button>
     </div></div>`;
 }
 async function confirmStep(token, step){
   const el = document.querySelector("#we");
-  render(await api(`/n/${token}/steps/${step}/confirm`, {method:"POST",
+  await render(await api(`/n/${token}/steps/${step}/confirm`, {method:"POST",
     headers:{"content-type":"application/json"},
     body: JSON.stringify({work_email: el ? el.value.trim() : ""})}), token);
 }
-function render(v, token){
+/* Polling runs every 1.5 s. Build the whole screen as one string and touch the DOM only when that
+   string changes: no empty right column between polls, no lost hover, no reset of what she types. */
+async function render(v, token){
+  if (!DIR) DIR = await api("/directory");
   const icon = s => s.state==="done" ? '<span class="ico done">&#10003;</span>'
     : s.state==="open" ? '<span class="ico open"></span>'
-    : s.state.startsWith("waiting") ? '<span class="ico now"></span>' : '<span class="ico"></span>';
+    : s.state.startsWith("waiting") && !(s.held_by||[]).length ? '<span class="ico now"></span>'
+    : s.state==="waiting_user" ? '<span class="ico open"></span>' : '<span class="ico"></span>';
   const sub = s => s.state==="done" ? "ready"
     : s.state==="open" ? `with IT &middot; GSD #${s.ticket_id} &middot; usually ${s.eta_days} days`
+    : s.state==="waiting_user" && s.held_by.length ? `IT granted it &middot; yours after ${esc(s.held_by.join(", "))}`
     : s.state==="waiting_user" ? "your turn"
     : s.state==="waiting_person" ? `${esc(v.poc_name)} does this` 
     : "queued &middot; needs " + s.blocked_by.join(", ");
-  $("#app").innerHTML = `<div class="cols">
+  const html = `<div class="cols">
     <div class="main">
       ${card(v, token)}
       <div class="panel"><h2>Everything else — ${v.progress.done} of ${v.progress.total} ready</h2>
@@ -334,15 +342,19 @@ function render(v, token){
       ${v.work_email ? `<p class="muted" style="margin-top:11px">Your address: <b>${esc(v.work_email)}</b></p>` : ""}
       </div>
     </div>
-    <div class="side panel" id="side"></div>
+    <div class="side panel" id="side">${side(v, DIR)}</div>
   </div>`;
-  side(v);
+  if (html === LAST) return;
+  const we = $("#we"), typed = we ? we.value : null, focused = we && document.activeElement === we;
+  LAST = html;
+  $("#app").innerHTML = html;
+  const we2 = $("#we");
+  if (we2 && typed !== null) { we2.value = typed; if (focused) we2.focus(); }
 }
-async function side(v){
-  const d = await api("/directory");
+function side(v, d){
   const mine = d.find(x => x.key === (v.project||"").toLowerCase());
   const idle = !v.your_turn;
-  $("#side").innerHTML = `
+  return `
     ${idle ? `<h2>While you wait</h2>
       <div class="card"><b>Test what you know</b>
         <p>A short quiz on GTech. Two minutes, no access needed.</p>
