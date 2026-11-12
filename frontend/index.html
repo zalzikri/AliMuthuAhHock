@@ -441,12 +441,6 @@ const STAGES = [
   {key:"tools",   name:"Work tools",       blurb:"Slack, Atlassian, Bitbucket, Claude Code", ids:["slack","atlassian","bitbucket","claude_seat"]},
   {key:"project", name:"Your project",     blurb:"GCP access and the repo",                 ids:["gcp","repo_access"]},
 ];
-const NEXT_TIP = {
-  account: "Day One now asks IT for GEMS (SAP SuccessFactors), GES (the HR information system) and GSD (Gamuda Service Desk) access.",
-  hr:      "The new hire can now raise their own GSD tickets. Day One asks for Slack, Atlassian (Jira and Confluence) and Bitbucket.",
-  tools:   "Slack and Bitbucket are ready. Last stage: GCP (Google Cloud) access and the repo.",
-  project: "All access is ready.",
-};
 let TOKEN = "", V = null, TOGGLE = {}, EXP = new Set(), FIRST = true;
 const mem = {
   get: k => { try { return JSON.parse(localStorage.getItem(`dayone:${TOKEN}:${k}`)); } catch(e){ return null; } },
@@ -647,7 +641,7 @@ function celebrate(list, done){
   const g = fresh[fresh.length - 1], i = list.indexOf(g), next = list[i + 1];
   const num = document.querySelector(`.stepper li[data-key="${g.key}"] .node`);
   if (num) { num.classList.add("pop"); const r = num.getBoundingClientRect(); confetti(r.left + r.width/2, r.top + r.height/2, 110); }
-  say("stage:" + g.key, [`<b>${esc(g.name)} is done.</b>${next ? ` Next stage: ${esc(next.name)}.` : ""}`, NEXT_TIP[g.key] || ""].filter(Boolean));
+
   FIRST = false;
 }
 function toast(html){
@@ -679,7 +673,8 @@ function confetti(x, y, n){
 /* ---------- the guide: part of the app ----------
    An event in the app shows ONE message from one avatar, next to the part of the screen it is about.
    The message goes away when you do something, or when the next event replaces it.
-   Each event shows one time only (kept in localStorage "dayone:seen"). No Next, no queue, no polling. */
+   Each event shows one time per tab (sessionStorage). Nothing talks DURING the cascade: Muthu explains it
+   before it starts, when the page opens, and Ah Hock explains after it ends. */
 const WHO = {
   ali:    {name:"Ali",     role:"The problem",       img:"/brand/av-ali.png"},
   muthu:  {name:"Muthu",   role:"How Day One helps", img:"/brand/av-muthu.png"},
@@ -687,16 +682,6 @@ const WHO = {
 };
 /* Each message can have several pages. The presenter (or the new hire) moves with Next or the arrow keys.
    Content from docs/PRD.md, written in ASD-STE100. */
-const STEP_TXT = {
-  password_reset: ["IT created the account. Now the new hire must do one thing: <b>open the yellow step</b> and set a password.",
-                   "Google sends the sign-in link to the person who started the onboarding, not to the new hire. The link works for <b>48 hours</b> only, so Day One shows a countdown."],
-  ges:            ["IT gave access to <b>GES</b>, the HR information system: role, employee details, KPI and leave. <b>Open the yellow step.</b>",
-                   "GES sends a user ID and a temporary password to the work email. The user ID is the employee ID on the employee card."],
-  gcp:            ["<b>GCP</b> (Google Cloud) access goes through Slack, not GSD. Many new hires do not know this. <b>Open the yellow step.</b>",
-                   "In Slack, <b>/gcp-request</b> opens a form. Day One fills in the values of that form for you. Copy them, send the form, then confirm."],
-  repo_access:    ["Bitbucket has no way to request repo access. A team contact must add the new hire. <b>Open the yellow step.</b>",
-                   "Day One shows the contact for this project and writes the message. Send it. Confirm when you have access."],
-};
 const MSG = {
   start: {who:"ali", t:".side.panel", pages:[
     "Hello. We are Ali, Muthu and Ah Hock. This is <b>Day One</b>, the onboarding app for new hires at GTech. I am Ali. I explain the problem.",
@@ -711,15 +696,19 @@ const MSG = {
     "The new hire gets one link to their own page. <b>No password is necessary</b>, because the new hire has no company account yet."]},
   page: {who:"muthu", t:".stepper", pages:[
     "This is the page of the new hire. The stepper shows the 4 stages: Account, HR and help desk, Work tools, Your project. <b>The red dot shows the stage now.</b>",
-    "Day One checks each GSD ticket by itself, so nobody types status updates. When IT finishes a ticket, Day One sends the next request at once."]},
+    "Day One checks each GSD ticket by itself, so nobody types status updates. IT finishes the requests one by one, and each stage starts when the stage before it is done.",
+    "When the new hire must act, the step turns <b>yellow</b>. Open it: it tells the new hire what to do, in short steps. For example, the Google sign-in link works for 48 hours only, so Day One shows a countdown.",
+    "Some steps are not GSD tickets. <b>GCP</b> (Google Cloud) access goes through Slack, and a team contact adds the new hire to the repo. Day One writes the form values and the message.",
+    "While IT works, the new hire learns about GTech products below. Each card shows a contact person. Then a short quiz."]},
   finish: {who:"ahhock", t:".finish .stepper", pages:[
     "I am Ah Hock. I explain how Day One works. All access steps are in <b>one map</b>. Each step knows which steps must come first. The same map covers staff, interns, developers and non-developers.",
     "Each step has a channel: a GSD ticket, a Slack form, a task for the new hire, or a team contact. Day One sends each request through the correct channel.",
     "Day One creates each GSD ticket through the <b>Freshservice API</b>, the system behind GSD. This demo uses a local copy of that API, because a GSD user account cannot get an API key. One setting connects Day One to the real GSD.",
     {team:true, text:"Next: connect Day One to the real GSD, and add the GTech quiz. <b>From day one, every new hire knows the next step.</b> Thank you."}]},
 };
-const seen = () => new Set(JSON.parse(localStorage.getItem("dayone:seen") || "[]"));
-const markSeen = id => { const x = seen(); x.add(id); localStorage.setItem("dayone:seen", JSON.stringify([...x])); };
+/* one time per browser TAB: a reload does not repeat a message, a new tab shows the guide again */
+const seen = () => new Set(JSON.parse(sessionStorage.getItem("dayone:seen") || "[]"));
+const markSeen = id => { const x = seen(); x.add(id); sessionStorage.setItem("dayone:seen", JSON.stringify([...x])); };
 let SHOWN = null, STARTED = "";
 const isMine = x => x.state === "waiting_person" || (x.state === "waiting_user" && !(x.held_by||[]).length);
 
@@ -727,20 +716,14 @@ const isMine = x => x.state === "waiting_person" || (x.state === "waiting_user" 
 let PAGE = 0;
 function say(id, pages){
   if (seen().has(id)) return;
-  const base = MSG[id] || (id.startsWith("stage:") ? {who:"muthu", t:".stepper"}
-    : id.startsWith("yellow:") ? {who:"muthu", t:`.mine[data-id="${id.slice(7)}"]`} : null);
+  const base = MSG[id];
   if (!base) return;
   markSeen(id);
-  const p = pages || base.pages || STEP_TXT[id.slice(7)] || ["Your turn. <b>Open the yellow step.</b>"];
+  const p = pages || base.pages;
   show({...base, id, pages: Array.isArray(p) ? p : [p]});
 }
 /* the new hire's page: which events happened in this render? Show the most important new one. */
-function events(v, list, done){
-  if (done) return say("finish");
-  const yellow = v.steps.filter(isMine).map(x => "yellow:" + x.id).filter(id => !seen().has(id));
-  if (yellow.length) { markSeen("page"); return say(yellow[0]); }
-  say("page");
-}
+function events(v, list, done){ say(done ? "finish" : "page"); }
 function show(m){ SHOWN = m; PAGE = 0; drawMsg(true); }
 function drawMsg(scroll){
   const m = SHOWN; if (!m) return;
